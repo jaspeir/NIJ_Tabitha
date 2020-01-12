@@ -1,0 +1,16 @@
+Package: DRSA
+Type: Package
+Title: Dominance-based Rough Set Approach and the DOMLEM Algorithm
+Version: 0.1.0
+Author: Endre Palatinus
+Maintainer: Endre Palatinus <palatinuse@gmail.com>
+Description: This package provides functions used in the DRSA, including:
+    - Upward and downward class unions
+    - P-dominating and P-dominated sets  
+    - P-lower and P-upper approximations and boundary regions
+    - Upward and downward multi- and mega-unions
+    - Decision rules
+    - Rule support, certainty, strength, coverage and consistency.
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
