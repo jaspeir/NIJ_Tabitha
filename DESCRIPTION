@@ -14,3 +14,13 @@ Description: This package provides functions used in the DRSA, including:
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+    dplyr,
+    purrr,
+    magrittr,
+    readxl
+Suggests:
+    testthat
+Depends:
+    R (>= 3.5.0)
+RoxygenNote: 7.0.2
