@@ -21,6 +21,22 @@ test_that("does not outrank smaller", {
   expect_false(outranks(r1, r2, "q"))
 })
 
+test_that("outranks equal - second attribute", {
+  r1 = tibble(a = (0), b = (1))
+  r2 = tibble(a = (0), b = (1))
+
+  expect_true(outranks(r1, r2, "b"))
+})
+
+test_that("does not outrank - second attribute", {
+  r1 = tibble(a = (0), b = (1))
+  r2 = tibble(a = (0), b = (2))
+
+  expect_false(outranks(r1, r2, "b"))
+})
+
+
+
 test_that("should fail for empty operands", {
   r1 = data.frame(q = NULL)
   r2 = tibble(q = (1))
