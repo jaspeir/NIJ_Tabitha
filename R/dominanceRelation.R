@@ -8,5 +8,5 @@
 dominates = function(x, y, P) {
   stopifnot(nrow(x) == nrow(y), nrow(x) > 0, P %in% names(x), P %in% names(y))
 
-  all(map_lgl(P, ~ outranks(x, y, .)))
+  map_dfc(P, ~ outranks(x, y, .)) %>% apply(FUN = all, MARGIN = 1)
 }

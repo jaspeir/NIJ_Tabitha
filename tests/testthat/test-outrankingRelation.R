@@ -62,3 +62,17 @@ test_that("should fail for unequal rows", {
   expect_error(outranks(r1, r2, "q"))
   expect_error(outranks(r2, r1, "q"))
 })
+
+test_that("vectorized execution - outranks equal", {
+  r1 = tibble(q = c(1, 2))
+  r2 = tibble(q = c(1, 2))
+
+  expect_equal(outranks(r1, r2, "q"), c(TRUE, TRUE))
+})
+
+test_that("vectorized execution - does not outrank", {
+  r1 = tibble(q = c(1, 2))
+  r2 = tibble(q = c(2, 3))
+
+  expect_equal(outranks(r1, r2, "q"), c(FALSE, FALSE))
+})
