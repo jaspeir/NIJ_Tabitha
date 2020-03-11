@@ -2,9 +2,11 @@
 
 export(dominatedSet)
 export(dominates)
+export(dominatesMixed)
 export(dominatingSet)
 export(downwardClassUnion)
 export(outranks)
+export(similar)
 export(upwardClassUnion)
 import(dplyr)
 import(purrr)
