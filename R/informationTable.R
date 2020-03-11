@@ -32,6 +32,14 @@ InformationTable <- R6::R6Class(
         self$alpha = rep(NA_real_, ncol(decisionTable))
         self$beta = rep(NA_real_, ncol(decisionTable))
       }
+    },
+
+    isCompatible = function(it) {
+      return(class(it) == 'InformationTable' &
+               names(it$decisionTable) == names(self$decisionTable) &
+               it$types == self$types &
+               it$alpha == self$alpha &
+               it$beta == self$beta)
     }
   )
 )
