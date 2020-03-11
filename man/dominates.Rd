@@ -2,8 +2,7 @@
 % Please edit documentation in R/dominanceRelation.R
 \name{dominates}
 \alias{dominates}
-\title{Function to determine whether x dominates y on criterion set P.
-We assume q is of gain-type criterion.}
+\title{Function to determine whether x dominates y on the mixed attribute set P.}
 \usage{
 dominates(x, y, P)
 }
@@ -12,12 +11,11 @@ dominates(x, y, P)
 
 \item{y}{the right operand}
 
-\item{P}{the set of criterions to test}
+\item{P}{the set of attributes to test}
 }
 \value{
-whether x dominates y on criterion set P
+whether x dominates y on attribute set P
 }
 \description{
-Function to determine whether x dominates y on criterion set P.
-We assume q is of gain-type criterion.
+Function to determine whether x dominates y on the mixed attribute set P.
 }

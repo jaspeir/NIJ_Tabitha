@@ -2,7 +2,7 @@
 
 export(dominatedSet)
 export(dominates)
-export(dominatesMixed)
+export(dominatesOutrankOnly)
 export(dominatingSet)
 export(downwardClassUnion)
 export(outranks)
