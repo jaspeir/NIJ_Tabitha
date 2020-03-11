@@ -11,7 +11,7 @@ test_that("does not dominate single", {
   r1 = tibble(q = (1))
   r2 = tibble(q = (2))
 
-  expect_false(outranks(r1, r2, c("q")))
+  expect_false(dominates(r1, r2, c("q")))
 })
 
 test_that("dominates two attributes", {
