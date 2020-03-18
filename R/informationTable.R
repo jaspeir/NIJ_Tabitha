@@ -4,42 +4,124 @@
 #'
 #' @export
 InformationTable <- R6::R6Class(
-  "InformationTable",
+  classname = "InformationTable",
+
   public = list(
+
+    # the set of examples
     decisionTable = data.frame(),
-    types = NA,
-    alpha = NA,
-    beta = NA,
 
-    initialize = function(decisionTable, types = NA, alpha = NA, beta = NA) {
+    # meta-data of the attributes, including their name and type,
+    # along with alpha and beta parameters for similarity variables
+    metaData = data.frame(),
+
+    ### Derived fields ###
+    # vector of object names
+    objects = NA,
+
+
+    #' Constructor. The meta-data dataframe is optional, and if not provided, we assume all dominance attributes.
+    initialize = function(decisionTable, metaData = NA) {
+
+      # ERROR-CHECKS on the decision table:
       stopifnot('data.frame' %in% class(decisionTable))
-
+      stopifnot(ncol(decisionTable) >= 3)  # at least one attribute apart from object and decision
       self$decisionTable = decisionTable
-      if (all(is.na(types))) {
-        types = rep('indiscernibility', ncol(decisionTable))
-      }
-      self$types = factor(types,
-                     levels = c('indiscernibility', 'similarity', 'dominance', 'misc', 'object', 'decision'),
-                     ordered = FALSE)
 
-      isSimilarity = types == 'similarity'
-      if (any(isSimilarity)) {
-        stopifnot(length(alpha) == ncol(decisionTable), length(beta) == ncol(decisionTable))
-        stopifnot(all(!is.na(alpha[isSimilarity])), all(!is.na(beta[isSimilarity])))
-        self$alpha = alpha
-        self$beta = beta
-      } else {
-        self$alpha = rep(NA_real_, ncol(decisionTable))
-        self$beta = rep(NA_real_, ncol(decisionTable))
+      # ERROR-CHECKS on the meta-data:
+      if (is.na(metaData)) {
+
+        # if meta-data not provided, then set the types as follows:
+        # - first attribute to object,
+        # - last attribute to decision,
+        # - all other attributes to dominance
+
+        attributeCount = ncol(decisionTable)
+
+        metaData = data.frame(
+          name = names(decisionTable),
+          type = c('object', rep('dominance', attributeCount - 2), 'decision'),
+          alpha = rep(NA_real_, attributeCount),
+          beta = rep(NA_real_, attributeCount)
+        )
       }
+
+      stopifnot('data.frame' %in% class(metaData))
+      stopifnot(setequal(c('name', 'type', 'alpha', 'beta'), names(metaData)))  # it should contain exactly the name, type, alpha and beta columns
+      stopifnot(setequal(names(decisionTable), metaData$name))  # need meta-data for all columns of the decision table
+
+      metaData$type = factor(metaData$type,
+                          levels = c('indiscernibility', 'similarity', 'dominance', 'misc', 'object', 'decision'),
+                          ordered = FALSE)
+
+      objectColumn = which(metaData$type == 'object', arr.ind = TRUE)
+      stopifnot(length(objectColumn) == 1)  # we expect exactly one object column
+      self$objects = decisionTable[[objectColumn]]
+
+      stopifnot(metaData %>%
+        filter(type == 'similarity') %>%
+        filter(is.na(alpha) | is.na(beta)) %>%
+        nrow() == 0
+      )  # all similarity variables need the alpha and beta parameters provided
+
+      self$metaData = metaData
     },
 
+    #' Method to determine whether another information table is compatible with this one.
     isCompatible = function(it) {
-      return(class(it) == 'InformationTable' &
-               names(it$decisionTable) == names(self$decisionTable) &
-               it$types == self$types &
-               it$alpha == self$alpha &
-               it$beta == self$beta)
+      return(class(it) == 'InformationTable' &&
+               it$metaData == self$metaData)
+    },
+
+    #' Method that partitions attribute set P into into sets of the same attribute type.
+    #' Only types relevant for the dominance relation are considered (indiscernibility, similarity, and dominance).
+    #' @param P the set of attributes to partition - vector of attribute names
+    #' @return a list of attribute sets
+    partitionAttributes = function(P) {
+
+      types = self$metaData %>%
+        filter(name %in% P) %>%
+        select(name, type)
+
+      P_ind = types %>% filter(type == "indiscernibility") %>% pull(name)
+      P_sim = types %>% filter(type == "similarity") %>% pull(name)
+      P_dom = types %>% filter(type == "dominance") %>% pull(name)
+
+      return(list(ind = P_ind, sim = P_sim, dom = P_dom))
     }
+
+    #' Function to determine whether x dominates y on the mixed attribute set P.
+    #' @param x the left operand - object name
+    #' @param y the right operand - object name
+    #' @param P the set of attributes to test - vector of attribute names
+    #' @return whether x dominates y on attribute set P
+    #' @export
+    dominates = function(x, y, P) {
+
+      # ERROR-CHECKS:
+      stopifnot(length(x) == length(y), length(x) > 0)
+      stopifnot(x %in% self$objects, y %in% self$objects)
+      stopifnot(P %in% self$metaData$name)
+
+      P = self$partitionAttributes(P)
+
+      # TODO: adapt function calls
+      R_ind = map_dfc(P$ind, function(q) {pull(x, !!q) == pull(y, !!q)}) %>% apply(FUN = all, MARGIN = 1)
+      R_sim = map_dfc(P$sim, ~ similar(x, y, .)) %>% apply(FUN = all, MARGIN = 1)
+      R_dom = map_dfc(P$dom, ~ outranks(x, y, .)) %>% apply(FUN = all, MARGIN = 1)
+
+      if (length(R_ind) == 0) {
+        R_ind = rep(TRUE, nrow(x))
+      }
+      if (length(R_sim) == 0) {
+        R_sim = rep(TRUE, nrow(x))
+      }
+      if (length(R_dom) == 0) {
+        R_dom = rep(TRUE, nrow(x))
+      }
+
+      R_ind & R_sim & R_dom
+    }
+
   )
 )
