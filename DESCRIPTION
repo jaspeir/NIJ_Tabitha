@@ -21,7 +21,10 @@ Imports:
     readxl,
     R6
 Suggests:
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 Depends:
     R (>= 3.5.0)
 RoxygenNote: 7.0.2
+VignetteBuilder: knitr

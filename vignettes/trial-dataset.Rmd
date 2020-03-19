@@ -1,0 +1,73 @@
+---
+title: "Creatiing The Trial Dataset"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{trial-dataset}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(DRSA)
+library(tibble)
+library(readxl)
+```
+
+# Introduction
+
+In this vignette we give an introduction to creating information tables using the DRSA package. We consider a real-life dataset, the trial dataset, which contains footwear decision data. The examples and the description of the attributes is contained in an Excel file included in this package (`inst/extdata/JS_DRSA_Trial_Key_and_Data_Table.xlsx`).
+
+# Creating the decision table
+
+We start by reading the Input Data sheet of the Excel file into a data-frame. This sheet contains the examples of decisions. Each row consists of several attributes, including the object identifier and the decision made.
+
+```{r}
+datasetPath = system.file("extdata", "JS_DRSA_Trial_Key_and_Data_Table.xlsx", package = "DRSA", mustWork = TRUE)
+decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
+```
+
+
+# Creating the meta-data
+
+We continue by creating the meta-data of our dataset. It contains important details of the attributes in our dataset. The meta-data has to be provided as a data-frame containing one row for each attribute. Each row contains the name and type of the attribute, and in case of similarity attributes, the alpha- and beta-parameters of the similarity metric as well.
+
+```{r}
+metaData = tribble(
+  ~name, ~type, ~alpha, ~beta,
+  'OBJECT', 'object', NA, NA,
+  'UNAME', 'misc', NA, NA,
+  'QIMG', 'misc', NA, NA,
+  'KIMG', 'misc', NA, NA,
+  'Q1', 'similarity', 0.2, 0.0,
+  'Q2', 'similarity', 0.0, 1.0,
+  'Q3OD', 'dominance', NA, NA,
+  'Q3PSO', 'dominance', NA, NA,
+  'Q3PSD', 'dominance', NA, NA,
+  'Q3OTHVAL', 'dominance', NA, NA,
+  'Q3OTH_RESP', 'misc', NA, NA,
+  'QF2', 'indiscernibility', NA, NA,
+  'QF4', 'similarity', 0.0, 1.0,
+  'QF3ST', 'indiscernibility', NA, NA,
+  'QF3PD', 'indiscernibility', NA, NA,
+  'QF3IL', 'indiscernibility', NA, NA,
+  'QF3ISP', 'indiscernibility', NA, NA,
+  'QF1',  'decision', NA, NA
+)
+```
+
+# Creating the information table
+
+Finally, we have everything we need to create an information table. We simply provide the decision table and the meta-data to the constructor of the `InformationTable` class.
+
+```{r}
+informationTable = InformationTable$new(decisionTable, metaData)
+save(informationTable, file = "../data/trial-informationTable.RData")
+```
+
