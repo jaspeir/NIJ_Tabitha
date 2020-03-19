@@ -113,8 +113,8 @@ InformationTable <- R6::R6Class(
       stopifnot(P %in% self$metaData$name)
 
       # the subsets of the decision table, relevant for the object in x and y, respectively:
-      X = self$decisionTable[map_int(x, ~ which(. == self$objects)), P]
-      Y = self$decisionTable[map_int(y, ~ which(. == self$objects)), P]
+      X = self$decisionTable[map_int(x, ~ which(. == self$objects)), ] %>% select(P)
+      Y = self$decisionTable[map_int(y, ~ which(. == self$objects)), ] %>% select(P)
 
       # the partitioned set of attributes to consider:
       P = self$partitionAttributes(P)
