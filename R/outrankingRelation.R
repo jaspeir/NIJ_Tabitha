@@ -8,5 +8,5 @@
 outranks = function(x, y, q) {
   stopifnot(nrow(x) == nrow(y), nrow(x) > 0, q %in% names(x), q %in% names(y))
 
-  pull(x, !!q) >= pull(y, !!q)
+  x[[q]] >= y[[q]]
 }
