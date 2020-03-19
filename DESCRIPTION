@@ -18,7 +18,8 @@ Imports:
     dplyr,
     purrr,
     magrittr,
-    readxl
+    readxl,
+    R6
 Suggests:
     testthat
 Depends:

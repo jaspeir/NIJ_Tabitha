@@ -28,5 +28,6 @@
 #' @importFrom magrittr %>% %<>%
 
 #' @import readxl
+#' @import R6
 
 "_PACKAGE"
