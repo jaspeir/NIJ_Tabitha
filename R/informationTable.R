@@ -63,7 +63,10 @@ InformationTable <- R6::R6Class(
 
       objectColumn = which(metaData$type == 'object', arr.ind = TRUE)
       stopifnot(length(objectColumn) == 1)  # we expect exactly one object column
-      self$objects = decisionTable[[objectColumn]]
+      objects = decisionTable[[objectColumn]]
+      stopifnot(length(unique(objects)) == length(objects))
+      self$objects = objects
+
 
       decisionColumn = which(metaData$type == 'decision', arr.ind = TRUE)
       stopifnot(length(decisionColumn) == 1)  # we expect exactly one decision column
@@ -185,7 +188,32 @@ InformationTable <- R6::R6Class(
       beta = self$metaData$beta[attributeIndex]
 
       abs(exampleX - exampleY) <= alpha * exampleY + beta
-    }
+    },
 
+    #' @description
+    #' This method calculates the dominating set of an object with respect to a criterion set.
+    #' @param x the object - object name
+    #' @param P the criterion set
+    #' @return the set of objects that dominate object x
+    dominatingSet = function(x, P) {
+
+      stopifnot(x %in% self$objects)
+
+      d = map_lgl(self$objects, ~ self$dominates(., x, P))
+      self$objects[d]
+    },
+
+    #' @description
+    #' This method calculates the dominated set of an object with respect to a criterion set.
+    #' @param x the object - object name
+    #' @param P the criterion set
+    #' @return the set of objects that are dominated by object x
+    dominatedSet = function(x, P) {
+
+      stopifnot(x %in% self$objects)
+
+      d = map_lgl(self$objects, ~ self$dominates(x, ., P))
+      self$objects[d]
+    }
   )
 )

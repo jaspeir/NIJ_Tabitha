@@ -32,6 +32,8 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \item \href{#method-partitionAttributes}{\code{InformationTable$partitionAttributes()}}
 \item \href{#method-dominates}{\code{InformationTable$dominates()}}
 \item \href{#method-similar}{\code{InformationTable$similar()}}
+\item \href{#method-dominatingSet}{\code{InformationTable$dominatingSet()}}
+\item \href{#method-dominatedSet}{\code{InformationTable$dominatedSet()}}
 \item \href{#method-clone}{\code{InformationTable$clone()}}
 }
 }
@@ -171,6 +173,48 @@ Method to determine whether x is similar to y on attribute q.
 }
 \subsection{Returns}{
 whether x is similar to y on attribute q
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dominatingSet"></a>}}
+\subsection{Method \code{dominatingSet()}}{
+This method calculates the dominating set of an object with respect to a criterion set.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatingSet(x, P)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{the object - object name}
+
+\item{\code{P}}{the criterion set}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the set of objects that dominate object x
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dominatedSet"></a>}}
+\subsection{Method \code{dominatedSet()}}{
+This method calculates the dominated set of an object with respect to a criterion set.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatedSet(x, P)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{the object - object name}
+
+\item{\code{P}}{the criterion set}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the set of objects that are dominated by object x
 }
 }
 \if{html}{\out{<hr>}}
