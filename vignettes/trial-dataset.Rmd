@@ -1,5 +1,5 @@
 ---
-title: "Creatiing The Trial Dataset"
+title: "Creating The Trial Dataset"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{trial-dataset}
