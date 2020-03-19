@@ -29,7 +29,7 @@ InformationTable <- R6::R6Class(
       self$decisionTable = decisionTable
 
       # ERROR-CHECKS on the meta-data:
-      if (is.na(metaData)) {
+      if (all(is.na(metaData))) {
 
         # if meta-data not provided, then set the types as follows:
         # - first attribute to object,
@@ -88,14 +88,13 @@ InformationTable <- R6::R6Class(
       P_dom = types %>% filter(type == "dominance") %>% pull(name)
 
       return(list(ind = P_ind, sim = P_sim, dom = P_dom))
-    }
+    },
 
     #' Function to determine whether x dominates y on the mixed attribute set P.
     #' @param x the left operand - object name
     #' @param y the right operand - object name
     #' @param P the set of attributes to test - vector of attribute names
     #' @return whether x dominates y on attribute set P
-    #' @export
     dominates = function(x, y, P) {
 
       # ERROR-CHECKS:
@@ -103,27 +102,48 @@ InformationTable <- R6::R6Class(
       stopifnot(x %in% self$objects, y %in% self$objects)
       stopifnot(P %in% self$metaData$name)
 
-      P = self$partitionAttributes(P)
-
-      # the subsets of the decision table, relevant for the object in x and y, respectively
+      # the subsets of the decision table, relevant for the object in x and y, respectively:
       X = self$decisionTable[map_int(x, ~ which(. == self$objects)), P]
       Y = self$decisionTable[map_int(y, ~ which(. == self$objects)), P]
 
+      # the partitioned set of attributes to consider:
+      P = self$partitionAttributes(P)
+
       R_ind = map_dfc(P$ind, function(q) {pull(X, !!q) == pull(Y, !!q)}) %>% apply(FUN = all, MARGIN = 1)
-      R_sim = map_dfc(P$sim, ~ similar(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
+      R_sim = map_dfc(P$sim, ~ self$similar(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
       R_dom = map_dfc(P$dom, ~ outranks(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
 
       if (length(R_ind) == 0) {
-        R_ind = rep(TRUE, nrow(x))
+        R_ind = rep(TRUE, nrow(X))
       }
       if (length(R_sim) == 0) {
-        R_sim = rep(TRUE, nrow(x))
+        R_sim = rep(TRUE, nrow(X))
       }
       if (length(R_dom) == 0) {
-        R_dom = rep(TRUE, nrow(x))
+        R_dom = rep(TRUE, nrow(X))
       }
 
       R_ind & R_sim & R_dom
+    },
+
+    #' Method to determine whether x is similar to y on attribute q.
+    #' @param x the left operand - a data frame
+    #' @param y the right operand - a data frame
+    #' @param q the attribute to test
+    #' @return whether x is similar to y on attribute q
+    similar = function(x, y, q) {
+
+      # ERROR-CHECKS:
+      stopifnot(nrow(x) == nrow(y), nrow(x) > 0, q %in% names(x), q %in% names(y))
+
+      exampleX = x[[q]]
+      exampleY = y[[q]]
+
+      attributeIndex = which(self$metaData$name == q)
+      alpha = self$metaData$alpha[attributeIndex]
+      beta = self$metaData$beta[attributeIndex]
+
+      abs(exampleX - exampleY) <= alpha * exampleY + beta
     }
 
   )
