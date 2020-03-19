@@ -1,6 +1,12 @@
-#' A class for storing all relevant information of an information table.
+#' R6 class representing an information table.
 #'
-#' It stores the decision table, the types of the attributes, and the alpha and beta values of the similarity attributes.
+#' @description
+#' An information table consists of the decision table and meta-data.
+#'
+#' @details
+#' This class stores the decision table, and meta-data.
+#' The decision table consists of an object identifier column, a decision column, and at least one additional attribute.
+#' The meta-data consist of the attribute names, their types, and the alpha and beta values for similarity attributes.
 #'
 #' @export
 InformationTable <- R6::R6Class(
@@ -8,19 +14,20 @@ InformationTable <- R6::R6Class(
 
   public = list(
 
-    # the set of examples
+    #' @field decisionTable the set of examples
     decisionTable = data.frame(),
 
-    # meta-data of the attributes, including their name and type,
-    # along with alpha and beta parameters for similarity variables
+    #' @field metaData meta-data of the attributes, including their name and type, along with alpha and beta parameters for similarity variables
     metaData = data.frame(),
 
     ### Derived fields ###
-    # vector of object names
+    #' @field objects vector of object names
     objects = NA,
 
-
-    #' Constructor. The meta-data dataframe is optional, and if not provided, we assume all dominance attributes.
+    #' @description
+    #' Create a new information table object.
+    #' @param decisionTable data frame containing the decision examples
+    #' @param metaData data frame containing the meta-data of the attributes. This parameter is optional, and if not provided, we assume all dominance attributes.
     initialize = function(decisionTable, metaData = NA) {
 
       # ERROR-CHECKS on the decision table:
@@ -67,12 +74,15 @@ InformationTable <- R6::R6Class(
       self$metaData = metaData
     },
 
+    #' @description
     #' Method to determine whether another information table is compatible with this one.
+    #' @param it the information table to compare to
     isCompatible = function(it) {
       return(class(it) == 'InformationTable' &&
                it$metaData == self$metaData)
     },
 
+    #' @description
     #' Method that partitions attribute set P into into sets of the same attribute type.
     #' Only types relevant for the dominance relation are considered (indiscernibility, similarity, and dominance).
     #' @param P the set of attributes to partition - vector of attribute names
@@ -109,9 +119,9 @@ InformationTable <- R6::R6Class(
       # the partitioned set of attributes to consider:
       P = self$partitionAttributes(P)
 
-      R_ind = map_dfc(P$ind, function(q) {pull(X, !!q) == pull(Y, !!q)}) %>% apply(FUN = all, MARGIN = 1)
+      R_ind = map_dfc(P$ind, function(q) { X[[q]] == Y[[q]] }) %>% apply(FUN = all, MARGIN = 1)
       R_sim = map_dfc(P$sim, ~ self$similar(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
-      R_dom = map_dfc(P$dom, ~ outranks(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
+      R_dom = map_dfc(P$dom, function(q) { X[[q]] >= Y[[q]] }) %>% apply(FUN = all, MARGIN = 1)
 
       if (length(R_ind) == 0) {
         R_ind = rep(TRUE, nrow(X))

@@ -2,24 +2,136 @@
 % Please edit documentation in R/informationTable.R
 \name{InformationTable}
 \alias{InformationTable}
-\title{A class for storing all relevant information of an information table.}
+\title{R6 class representing an information table.}
 \description{
-It stores the decision table, the types of the attributes, and the alpha and beta values of the similarity attributes.
+An information table consists of the decision table and meta-data.
+}
+\details{
+This class stores the decision table, and meta-data.
+The decision table consists of an object identifier column, a decision column, and at least one additional attribute.
+The meta-data consist of the attribute names, their types, and the alpha and beta values for similarity attributes.
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{decisionTable}}{the set of examples}
+
+\item{\code{metaData}}{meta-data of the attributes, including their name and type, along with alpha and beta parameters for similarity variables}
+
+\item{\code{objects}}{vector of object names}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{InformationTable$new()}}
+\item \href{#method-isCompatible}{\code{InformationTable$isCompatible()}}
+\item \href{#method-partitionAttributes}{\code{InformationTable$partitionAttributes()}}
+\item \href{#method-dominates}{\code{InformationTable$dominates()}}
+\item \href{#method-similar}{\code{InformationTable$similar()}}
 \item \href{#method-clone}{\code{InformationTable$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
+Create a new information table object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$new(decisionTable, types = NA, alpha = NA, beta = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$new(decisionTable, metaData = NA)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{decisionTable}}{data frame containing the decision examples}
+
+\item{\code{metaData}}{data frame containing the meta-data of the attributes. This parameter is optional, and if not provided, we assume all dominance attributes.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-isCompatible"></a>}}
+\subsection{Method \code{isCompatible()}}{
+Method to determine whether another information table is compatible with this one.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$isCompatible(it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{it}}{the information table to compare to}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-partitionAttributes"></a>}}
+\subsection{Method \code{partitionAttributes()}}{
+Method that partitions attribute set P into into sets of the same attribute type.
+Only types relevant for the dominance relation are considered (indiscernibility, similarity, and dominance).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$partitionAttributes(P)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{P}}{the set of attributes to partition - vector of attribute names}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a list of attribute sets
+Function to determine whether x dominates y on the mixed attribute set P.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dominates"></a>}}
+\subsection{Method \code{dominates()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominates(x, y, P)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{the left operand - object name}
+
+\item{\code{y}}{the right operand - object name}
+
+\item{\code{P}}{the set of attributes to test - vector of attribute names}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+whether x dominates y on attribute set P
+Method to determine whether x is similar to y on attribute q.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-similar"></a>}}
+\subsection{Method \code{similar()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$similar(x, y, q)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{the left operand - a data frame}
+
+\item{\code{y}}{the right operand - a data frame}
+
+\item{\code{q}}{the attribute to test}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+whether x is similar to y on attribute q
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
