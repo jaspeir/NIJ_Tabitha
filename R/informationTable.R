@@ -105,10 +105,13 @@ InformationTable <- R6::R6Class(
 
       P = self$partitionAttributes(P)
 
-      # TODO: adapt function calls
-      R_ind = map_dfc(P$ind, function(q) {pull(x, !!q) == pull(y, !!q)}) %>% apply(FUN = all, MARGIN = 1)
-      R_sim = map_dfc(P$sim, ~ similar(x, y, .)) %>% apply(FUN = all, MARGIN = 1)
-      R_dom = map_dfc(P$dom, ~ outranks(x, y, .)) %>% apply(FUN = all, MARGIN = 1)
+      # the subsets of the decision table, relevant for the object in x and y, respectively
+      X = self$decisionTable[map_int(x, ~ which(. == self$objects)), P]
+      Y = self$decisionTable[map_int(y, ~ which(. == self$objects)), P]
+
+      R_ind = map_dfc(P$ind, function(q) {pull(X, !!q) == pull(Y, !!q)}) %>% apply(FUN = all, MARGIN = 1)
+      R_sim = map_dfc(P$sim, ~ similar(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
+      R_dom = map_dfc(P$dom, ~ outranks(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
 
       if (length(R_ind) == 0) {
         R_ind = rep(TRUE, nrow(x))
