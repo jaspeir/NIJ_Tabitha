@@ -27,6 +27,8 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \itemize{
 \item \href{#method-new}{\code{InformationTable$new()}}
 \item \href{#method-isCompatible}{\code{InformationTable$isCompatible()}}
+\item \href{#method-downwardClassUnion}{\code{InformationTable$downwardClassUnion()}}
+\item \href{#method-upwardClassUnion}{\code{InformationTable$upwardClassUnion()}}
 \item \href{#method-partitionAttributes}{\code{InformationTable$partitionAttributes()}}
 \item \href{#method-dominates}{\code{InformationTable$dominates()}}
 \item \href{#method-similar}{\code{InformationTable$similar()}}
@@ -65,6 +67,44 @@ Method to determine whether another information table is compatible with this on
 \item{\code{it}}{the information table to compare to}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-downwardClassUnion"></a>}}
+\subsection{Method \code{downwardClassUnion()}}{
+Method for calculating the downward class union.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$downwardClassUnion(class)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{class}}{the decision class to compare to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the set of objects in the downward class union
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-upwardClassUnion"></a>}}
+\subsection{Method \code{upwardClassUnion()}}{
+Method for calculating the upward class union.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$upwardClassUnion(class)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{class}}{the decision class to compare to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the set of objects in the upward class union
 }
 }
 \if{html}{\out{<hr>}}

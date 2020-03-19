@@ -65,6 +65,9 @@ InformationTable <- R6::R6Class(
       stopifnot(length(objectColumn) == 1)  # we expect exactly one object column
       self$objects = decisionTable[[objectColumn]]
 
+      decisionColumn = which(metaData$type == 'decision', arr.ind = TRUE)
+      stopifnot(length(decisionColumn) == 1)  # we expect exactly one decision column
+
       stopifnot(metaData %>%
         filter(type == 'similarity') %>%
         filter(is.na(alpha) | is.na(beta)) %>%
@@ -80,6 +83,34 @@ InformationTable <- R6::R6Class(
     isCompatible = function(it) {
       return(class(it) == 'InformationTable' &&
                it$metaData == self$metaData)
+    },
+
+    #' @description
+    #' Method for calculating the downward class union.
+    #' @param class the decision class to compare to
+    #' @return the set of objects in the downward class union
+    downwardClassUnion = function(class) {
+
+      objectColumn = which(self$metaData$type == 'object', arr.ind = TRUE)
+      decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
+
+      self$decisionTable[, c(objectColumn, decisionColumn)] %>%
+        filter(.[[2]] <= class) %>%
+        pull(1)
+    },
+
+    #' @description
+    #' Method for calculating the upward class union.
+    #' @param class the decision class to compare to
+    #' @return the set of objects in the upward class union
+    upwardClassUnion = function(class) {
+
+      objectColumn = which(self$metaData$type == 'object', arr.ind = TRUE)
+      decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
+
+      self$decisionTable[, c(objectColumn, decisionColumn)] %>%
+        filter(.[[2]] >= class) %>%
+        pull(1)
     },
 
     #' @description
