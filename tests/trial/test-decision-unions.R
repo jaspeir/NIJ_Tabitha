@@ -1,3 +1,5 @@
+library(testthat)
+
 readSolution = function(fileName) {
   inputFile = file(fileName)
   line = readLines(inputFile)
@@ -7,87 +9,90 @@ readSolution = function(fileName) {
   solution[solution != "" & solution != "0"]
 }
 
+load('data/trial-informationTable.RData')
+
 test_that("five or greater", {
 
-  solution = readSolution("Decision_Unions/five_or_greater.txt")
+  solution = readSolution("tests/trial/Decision_Unions/five_or_greater.txt")
 
-  expect_equal(upwardClassUnion(decisionTable, 5), solution)
+  expect_equal(informationTable$upwardClassUnion(5), solution)
 })
 
 test_that("five or less", {
 
-  solution = readSolution("Decision_Unions/five_or_less.txt")
+  solution = readSolution("tests/trial/Decision_Unions/five_or_less.txt")
 
-  expect_equal(downwardClassUnion(decisionTable, 5), solution)
+  expect_equal(informationTable$downwardClassUnion(5), solution)
 })
 
 test_that("four or greater", {
 
-  solution = readSolution("Decision_Unions/four_or_greater.txt")
+  solution = readSolution("tests/trial/Decision_Unions/four_or_greater.txt")
 
-  expect_equal(upwardClassUnion(decisionTable, 4), solution)
+  expect_equal(informationTable$upwardClassUnion(4), solution)
 })
 
 test_that("four or less", {
 
-  solution = readSolution("Decision_Unions/four_or_less.txt")
+  solution = readSolution("tests/trial/Decision_Unions/four_or_less.txt")
 
-  expect_equal(downwardClassUnion(decisionTable, 4), solution)
+  expect_equal(informationTable$downwardClassUnion(4), solution)
 })
 
 test_that("seven or greater", {
 
-  solution = readSolution("Decision_Unions/seven_or_greater.txt")
+  solution = readSolution("tests/trial/Decision_Unions/seven_or_greater.txt")
 
-  expect_equal(upwardClassUnion(decisionTable, 7), solution)
+  expect_equal(informationTable$upwardClassUnion(7), solution)
 })
 
 test_that("seven or less", {
 
-  solution = readSolution("Decision_Unions/seven_or_less.txt")
+  solution = readSolution("tests/trial/Decision_Unions/seven_or_less.txt")
 
-  expect_equal(downwardClassUnion(decisionTable, 7), solution)
+  expect_equal(informationTable$downwardClassUnion(7), solution)
 })
 
 
 test_that("six or greater", {
 
-  solution = readSolution("Decision_Unions/six_or_greater.txt")
+  solution = readSolution("tests/trial/Decision_Unions/six_or_greater.txt")
 
-  expect_equal(upwardClassUnion(decisionTable, 6), solution)
+  expect_equal(informationTable$upwardClassUnion(6), solution)
 })
 
 test_that("six or less", {
 
-  solution = readSolution("Decision_Unions/six_or_less.txt")
+  solution = readSolution("tests/trial/Decision_Unions/six_or_less.txt")
 
-  expect_equal(downwardClassUnion(decisionTable, 6), solution)
+  expect_equal(informationTable$downwardClassUnion(6), solution)
 })
 
 test_that("three or greater", {
 
-  solution = readSolution("Decision_Unions/three_or_greater.txt")
+  solution = readSolution("tests/trial/Decision_Unions/three_or_greater.txt")
 
-  expect_equal(upwardClassUnion(decisionTable, 3), solution)
+  expect_equal(informationTable$upwardClassUnion(3), solution)
 })
 
 test_that("three or less", {
 
-  solution = readSolution("Decision_Unions/three_or_less.txt")
+  solution = readSolution("tests/trial/Decision_Unions/three_or_less.txt")
 
-  expect_equal(downwardClassUnion(decisionTable, 3), solution)
+  expect_equal(informationTable$downwardClassUnion(3), solution)
 })
 
 test_that("two or greater", {
 
-  solution = readSolution("Decision_Unions/two_or_greater.txt")
+  solution = readSolution("tests/trial/Decision_Unions/two_or_greater.txt")
 
-  expect_equal(upwardClassUnion(decisionTable, 2), solution)
+  expect_equal(informationTable$upwardClassUnion(2), solution)
 })
 
 test_that("two or less", {
 
-  solution = readSolution("Decision_Unions/two_or_less.txt")
+  solution = readSolution("tests/trial/Decision_Unions/two_or_less.txt")
 
-  expect_equal(downwardClassUnion(decisionTable, 2), solution)
+  expect_equal(informationTable$downwardClassUnion(2), solution)
 })
+
