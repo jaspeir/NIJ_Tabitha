@@ -138,8 +138,9 @@ InformationTable <- R6::R6Class(
     #' @param x the left operand - object name
     #' @param y the right operand - object name
     #' @param P the set of attributes to test - vector of attribute names
+    #' @param compareSimilaritySwitched whether to test similarity with the parameters switched
     #' @return whether x dominates y on attribute set P
-    dominates = function(x, y, P) {
+    dominates = function(x, y, P, compareSimilaritySwitched = FALSE) {
 
       # ERROR-CHECKS:
       stopifnot(length(x) == length(y), length(x) > 0)
@@ -154,7 +155,11 @@ InformationTable <- R6::R6Class(
       P = self$partitionAttributes(P)
 
       R_ind = map_dfc(P$ind, function(q) { X[[q]] == Y[[q]] }) %>% apply(FUN = all, MARGIN = 1)
-      R_sim = map_dfc(P$sim, ~ self$similar(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
+      if (compareSimilaritySwitched) {
+        R_sim = map_dfc(P$sim, ~ self$similar(Y, X, .)) %>% apply(FUN = all, MARGIN = 1)
+      } else {
+        R_sim = map_dfc(P$sim, ~ self$similar(X, Y, .)) %>% apply(FUN = all, MARGIN = 1)
+      }
       R_dom = map_dfc(P$dom, function(q) { X[[q]] >= Y[[q]] }) %>% apply(FUN = all, MARGIN = 1)
 
       if (length(R_ind) == 0) {
@@ -194,12 +199,13 @@ InformationTable <- R6::R6Class(
     #' This method calculates the dominating set of an object with respect to a criterion set.
     #' @param x the object - object name
     #' @param P the criterion set
+    #' @param compareSimilaritySwitched whether to test similarity with the parameters switched
     #' @return the set of objects that dominate object x
-    dominatingSet = function(x, P) {
+    dominatingSet = function(x, P, compareSimilaritySwitched = TRUE) {
 
       stopifnot(x %in% self$objects)
 
-      d = map_lgl(self$objects, ~ self$dominates(., x, P))
+      d = map_lgl(self$objects, ~ self$dominates(., x, P, compareSimilaritySwitched = compareSimilaritySwitched))
       self$objects[d]
     },
 
@@ -207,12 +213,13 @@ InformationTable <- R6::R6Class(
     #' This method calculates the dominated set of an object with respect to a criterion set.
     #' @param x the object - object name
     #' @param P the criterion set
+    #' @param compareSimilaritySwitched whether to test similarity with the parameters switched
     #' @return the set of objects that are dominated by object x
-    dominatedSet = function(x, P) {
+    dominatedSet = function(x, P, compareSimilaritySwitched = FALSE) {
 
       stopifnot(x %in% self$objects)
 
-      d = map_lgl(self$objects, ~ self$dominates(x, ., P))
+      d = map_lgl(self$objects, ~ self$dominates(x, ., P, compareSimilaritySwitched = compareSimilaritySwitched))
       self$objects[d]
     }
   )
