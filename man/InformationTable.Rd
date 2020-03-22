@@ -31,6 +31,7 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \item \href{#method-upwardClassUnion}{\code{InformationTable$upwardClassUnion()}}
 \item \href{#method-partitionAttributes}{\code{InformationTable$partitionAttributes()}}
 \item \href{#method-dominates}{\code{InformationTable$dominates()}}
+\item \href{#method-dominatingAndDominatedSets}{\code{InformationTable$dominatingAndDominatedSets()}}
 \item \href{#method-similar}{\code{InformationTable$similar()}}
 \item \href{#method-dominatingSet}{\code{InformationTable$dominatingSet()}}
 \item \href{#method-dominatedSet}{\code{InformationTable$dominatedSet()}}
@@ -134,7 +135,7 @@ Function to determine whether x dominates y on the mixed attribute set P.
 \if{html}{\out{<a id="method-dominates"></a>}}
 \subsection{Method \code{dominates()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominates(x, y, P)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominates(x, y, P, compareSimilaritySwitched = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -145,12 +146,30 @@ Function to determine whether x dominates y on the mixed attribute set P.
 \item{\code{y}}{the right operand - object name}
 
 \item{\code{P}}{the set of attributes to test - vector of attribute names}
+
+\item{\code{compareSimilaritySwitched}}{whether to test similarity with the parameters switched}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 whether x dominates y on attribute set P
-Method to determine whether x is similar to y on attribute q.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dominatingAndDominatedSets"></a>}}
+\subsection{Method \code{dominatingAndDominatedSets()}}{
+Method for calculating the P-dominated and P-dominating sets all at once.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatingAndDominatedSets(P)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{P}}{the set of attributes to test - vector of attribute names
+Method to determine whether x is similar to y on attribute q.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -180,7 +199,7 @@ whether x is similar to y on attribute q
 \subsection{Method \code{dominatingSet()}}{
 This method calculates the dominating set of an object with respect to a criterion set.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatingSet(x, P)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatingSet(x, P, compareSimilaritySwitched = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -189,6 +208,8 @@ This method calculates the dominating set of an object with respect to a criteri
 \item{\code{x}}{the object - object name}
 
 \item{\code{P}}{the criterion set}
+
+\item{\code{compareSimilaritySwitched}}{whether to test similarity with the parameters switched}
 }
 \if{html}{\out{</div>}}
 }
@@ -201,7 +222,7 @@ the set of objects that dominate object x
 \subsection{Method \code{dominatedSet()}}{
 This method calculates the dominated set of an object with respect to a criterion set.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatedSet(x, P)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$dominatedSet(x, P, compareSimilaritySwitched = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -210,6 +231,8 @@ This method calculates the dominated set of an object with respect to a criterio
 \item{\code{x}}{the object - object name}
 
 \item{\code{P}}{the criterion set}
+
+\item{\code{compareSimilaritySwitched}}{whether to test similarity with the parameters switched}
 }
 \if{html}{\out{</div>}}
 }

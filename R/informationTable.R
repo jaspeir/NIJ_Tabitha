@@ -175,6 +175,67 @@ InformationTable <- R6::R6Class(
       R_ind & R_sim & R_dom
     },
 
+    #' @description
+    #' Method for calculating the P-dominated and P-dominating sets all at once.
+    #' @param P the set of attributes to test - vector of attribute names
+    dominatingAndDominatedSets = function(P) {
+
+      # ERROR-CHECKS:
+      stopifnot(P %in% self$metaData$name)
+
+      # the subsets of the decision table, relevant for the object in x and y, respectively:
+      X = self$decisionTable %>% select(P)
+      Y = self$decisionTable %>% select(P)
+
+      # the partitioned set of attributes to consider:
+      P = self$partitionAttributes(P)
+
+      # Determine indiscernibility
+      n = length(self$objects)
+      R_ind = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
+      for (i in 1:n) {
+        for (j in i:n) {
+          result = all(X[i, P$ind] == Y[j, P$ind])
+          R_ind[i, j] = result
+          R_ind[j, i] = result
+        }
+      }
+
+      # Determine similarity
+      R_sim = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
+      R_sim_star = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
+      simAttributeIndex = map_int(P$sim, ~ which(self$metaData$name == ., arr.ind = T))
+      alpha = self$metaData$alpha[simAttributeIndex]
+      beta = self$metaData$beta[simAttributeIndex]
+      for (i in 1:n) {
+        for (j in 1:n) {
+
+          exampleX = X[i, simAttributeIndex]
+          exampleY = Y[j, simAttributeIndex]
+
+          R_sim[i, j] = all(abs(exampleX - exampleY) <= alpha * exampleY + beta)
+          R_sim_star[i, j] = all(abs(exampleX - exampleY) <= alpha * exampleX + beta)
+        }
+      }
+
+      # Determine dominance
+      R_dominates = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
+      for (i in 1:n) {
+        for (j in 1:n) {
+          R_dominates[i, j] = all(X[i, P$dom] >= Y[j, P$dom])
+        }
+      }
+      R_dominatedBy = t(R_dominates)
+
+      # Return the results:
+      return(list(
+        dominating = R_ind & R_sim & R_dominatedBy,
+        dominating_star = R_ind & R_sim_star & R_dominatedBy,
+        dominated = R_ind & R_sim & R_dominates,
+        dominated_star = R_ind & R_sim_star & R_dominates
+      ))
+    },
+
     #' Method to determine whether x is similar to y on attribute q.
     #' @param x the left operand - a data frame
     #' @param y the right operand - a data frame
