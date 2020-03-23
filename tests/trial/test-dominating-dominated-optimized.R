@@ -38,4 +38,5 @@ test_that('compare optimized and point operators for dominating- and dominated-s
 
   expect_true(allEqual(pointOperators$dominatingSets_L, optimizedOperators$dominatingSets_L))
   expect_true(allEqual(pointOperators$dominatingSets_U, optimizedOperators$dominatingSets_U))
+
 })
