@@ -14,29 +14,28 @@ test_that('compare optimized and point operators for dominating- and dominated-s
 
   # Point-operators:
   pointOperators = list(
-    dominatedSets = map(informationTable$objects,
+    dominatedSets_L = map(informationTable$objects,
                          ~ informationTable$dominatedSet(., P, compareSimilaritySwitched = FALSE)),
-    dominatedSetsStar = map(informationTable$objects,
+    dominatedSets_U = map(informationTable$objects,
                         ~ informationTable$dominatedSet(., P, compareSimilaritySwitched = TRUE)),
-    dominatingSets = map(informationTable$objects,
+    dominatingSets_L = map(informationTable$objects,
                          ~ informationTable$dominatingSet(., P, compareSimilaritySwitched = FALSE)),
-    dominatingSetsStar = map(informationTable$objects,
+    dominatingSets_U = map(informationTable$objects,
                          ~ informationTable$dominatingSet(., P, compareSimilaritySwitched = TRUE))
   )
 
   # Optimized operators:
   optimizedSets = informationTable$dominatingAndDominatedSets(P)
   optimizedOperators = list(
-    dominatedSets = convertMatrixToList(optimizedSets$dominated, informationTable$objects),
-    dominatedSetsStar = convertMatrixToList(optimizedSets$dominated_star, informationTable$objects),
-    dominatingSets = convertMatrixToList(optimizedSets$dominating, informationTable$objects),
-    dominatingSetsStar = convertMatrixToList(optimizedSets$dominating_star, informationTable$objects)
+    dominatedSets_L = convertMatrixToList(optimizedSets$dominated_L, informationTable$objects),
+    dominatedSets_U = convertMatrixToList(optimizedSets$dominated_U, informationTable$objects),
+    dominatingSets_L = convertMatrixToList(optimizedSets$dominating_L, informationTable$objects),
+    dominatingSets_U = convertMatrixToList(optimizedSets$dominating_U, informationTable$objects)
   )
 
-  expect_true(allEqual(pointOperators$dominatedSets, optimizedOperators$dominatedSets))
-  expect_true(allEqual(pointOperators$dominatedSetsStar, optimizedOperators$dominatedSetsStar))
+  expect_true(allEqual(pointOperators$dominatedSets_L, optimizedOperators$dominatedSets_L))
+  expect_true(allEqual(pointOperators$dominatedSets_U, optimizedOperators$dominatedSets_U))
 
-  # TODO: why is there a "switch" between star and non-star versions:
-  expect_true(allEqual(pointOperators$dominatingSetsStar, optimizedOperators$dominatingSets))
-  expect_true(allEqual(pointOperators$dominatingSets, optimizedOperators$dominatingSetsStar))
+  expect_true(allEqual(pointOperators$dominatingSets_L, optimizedOperators$dominatingSets_L))
+  expect_true(allEqual(pointOperators$dominatingSets_U, optimizedOperators$dominatingSets_U))
 })
