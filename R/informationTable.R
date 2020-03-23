@@ -184,8 +184,8 @@ InformationTable <- R6::R6Class(
       stopifnot(P %in% self$metaData$name)
 
       # the subsets of the decision table, relevant for the object in x and y, respectively:
-      X = self$decisionTable %>% select(P)
-      Y = self$decisionTable %>% select(P)
+      X = self$decisionTable
+      Y = self$decisionTable
 
       # the partitioned set of attributes to consider:
       P = self$partitionAttributes(P)
@@ -203,7 +203,6 @@ InformationTable <- R6::R6Class(
 
       # Determine similarity
       R_sim = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
-      R_sim_star = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
       simAttributeIndex = map_int(P$sim, ~ which(self$metaData$name == ., arr.ind = T))
       alpha = self$metaData$alpha[simAttributeIndex]
       beta = self$metaData$beta[simAttributeIndex]
@@ -214,9 +213,9 @@ InformationTable <- R6::R6Class(
           exampleY = Y[j, simAttributeIndex]
 
           R_sim[i, j] = all(abs(exampleX - exampleY) <= alpha * exampleY + beta)
-          R_sim_star[i, j] = all(abs(exampleX - exampleY) <= alpha * exampleX + beta)
         }
       }
+      R_sim_switched = t(R_sim)
 
       # Determine dominance
       R_dominates = matrix(rep(TRUE, n * n), nrow = n, ncol = n)
@@ -229,10 +228,10 @@ InformationTable <- R6::R6Class(
 
       # Return the results:
       return(list(
-        dominating = R_ind & R_sim & R_dominatedBy,
-        dominating_star = R_ind & R_sim_star & R_dominatedBy,
-        dominated = R_ind & R_sim & R_dominates,
-        dominated_star = R_ind & R_sim_star & R_dominates
+        dominating_L = R_ind & R_sim_switched & R_dominatedBy,
+        dominating_U = R_ind & R_sim & R_dominatedBy,
+        dominated_L = R_ind & R_sim & R_dominates,
+        dominated_U = R_ind & R_sim_switched & R_dominates
       ))
     },
 
