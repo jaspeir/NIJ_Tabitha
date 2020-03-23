@@ -117,6 +117,31 @@ InformationTable <- R6::R6Class(
     },
 
     #' @description
+    #' Method for calculating all downward- and upward class unions at once.
+    #' @return a pair of matrices for both class unions, where each row represents a class, and each column represents an object
+    classUnions = function() {
+
+      decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
+
+      decisions = self$decisionTable[[decisionColumn]]
+      decisionCard = length(unique(decisions))
+
+      decisionIDs = 1:decisionCard
+      decisions = factor(decisions, labels = decisionIDs, levels = sort(unique(decisions)), ordered = TRUE)
+      objectCount = length(self$objects)
+
+      upwardClassUnions = matrix(nrow = decisionCard, ncol = objectCount)
+      downwardClassUnions = upwardClassUnions
+
+      for (objectID in 1:objectCount) {
+        upwardClassUnions[decisionIDs, objectID] = decisions[objectID] >= decisionIDs
+        downwardClassUnions[decisionIDs, objectID] = decisions[objectID] <= decisionIDs
+      }
+
+      return(list(upward = upwardClassUnions, downward = downwardClassUnions))
+    },
+
+    #' @description
     #' Method that partitions attribute set P into into sets of the same attribute type.
     #' Only types relevant for the dominance relation are considered (indiscernibility, similarity, and dominance).
     #' @param P the set of attributes to partition - vector of attribute names
@@ -281,6 +306,32 @@ InformationTable <- R6::R6Class(
 
       d = map_lgl(self$objects, ~ self$dominates(x, ., P, compareSimilaritySwitched = compareSimilaritySwitched))
       self$objects[d]
+    },
+
+
+    upwardClassUnionLowerApproximation = function(class, dominating_L) {
+      result = list()
+      upwardClassUnion = self$upwardClassUnion(class)
+
+      for (objectID in seq_along(length(self$objects))) {
+        dominatingSet = self$objects[dominating_L[objectID, ] ]
+        if (all(dominatingSet %in% upwardClassUnion)) {
+          result = c(result, self$objects[objectID])
+        }
+      }
+
+      return(unlist(result))
+    },
+
+    upwardClassUnionUpperApproximation = function(class, dominating_U) {
+      upwardClassUnion = self$upwardClassUnion(class)
+
+      result = rep(FALSE, length(self$objects))
+      for (object in upwardClassUnion) {
+        result = result | dominating_U[object, ]
+      }
+
+      return(self$objects[result])
     }
   )
 )
