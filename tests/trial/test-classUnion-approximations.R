@@ -30,7 +30,15 @@ test_that("get all approximations", {
   approx = informationTable$roughSets(P)
 })
 
+test_that("get accuracy of approximations", {
+  approx = informationTable$roughSets(P)
+  informationTable$accuracyOfApproximation(approx)
+})
+
 test_that("get boundary regions", {
   approx = informationTable$roughSets(P)
-  informationTable$boundaryRegions(approx)
+  boundaryRegions = informationTable$boundaryRegions(approx)
+  boundaryRegions
+
+  informationTable$qualityOfApproximation(boundaryRegions)
 })

@@ -42,6 +42,8 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \item \href{#method-downwardClassUnionLowerApproximation}{\code{InformationTable$downwardClassUnionLowerApproximation()}}
 \item \href{#method-roughSets}{\code{InformationTable$roughSets()}}
 \item \href{#method-boundaryRegions}{\code{InformationTable$boundaryRegions()}}
+\item \href{#method-accuracyOfApproximation}{\code{InformationTable$accuracyOfApproximation()}}
+\item \href{#method-qualityOfApproximation}{\code{InformationTable$qualityOfApproximation()}}
 \item \href{#method-clone}{\code{InformationTable$clone()}}
 }
 }
@@ -371,6 +373,44 @@ This method calculates the boundary regions of rough sets.
 }
 \subsection{Returns}{
 the upward and downward boundary regions
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-accuracyOfApproximation"></a>}}
+\subsection{Method \code{accuracyOfApproximation()}}{
+This method calculates the accuracy of the approximations of the class unions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$accuracyOfApproximation(roughSets)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{roughSets}}{the approximations}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a pair of vectors describing the accuracy of the downward and upward class union approximations
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-qualityOfApproximation"></a>}}
+\subsection{Method \code{qualityOfApproximation()}}{
+This method calculates the quality of the approximations of the class unions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$qualityOfApproximation(boundaryRegions)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{boundaryRegions}}{the boundary regions of the rough set}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a number expressing the ratio of all P-correctly sorted actions to all actions in the decision table
 }
 }
 \if{html}{\out{<hr>}}

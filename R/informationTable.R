@@ -410,6 +410,38 @@ InformationTable <- R6::R6Class(
         upward = roughSets$upward_U & !roughSets$upward_L,
         downward = roughSets$downward_U & !roughSets$downward_L
       ))
+    },
+
+    #' @description
+    #' This method calculates the accuracy of the approximations of the class unions.
+    #' @param roughSets the approximations
+    #' @return a pair of vectors describing the accuracy of the downward and upward class union approximations
+    accuracyOfApproximation = function(roughSets) {
+
+      classCount = nrow(roughSets$upward_U)
+
+      acc = list(
+        upward = rep(NA_real_, classCount),
+        downward = rep(NA_real_, classCount)
+      )
+
+      for (class in 1:classCount) {
+        acc$upward[class] = sum(roughSets$upward_L[class, ]) / sum(roughSets$upward_U[class, ])
+        acc$downward[class] = sum(roughSets$downward_L[class, ]) / sum(roughSets$downward_U[class, ])
+      }
+
+      return(acc)
+    },
+
+    #' @description
+    #' This method calculates the quality of the approximations of the class unions.
+    #' @param boundaryRegions the boundary regions of the rough set
+    #' @return a number expressing the ratio of all P-correctly sorted actions to all actions in the decision table
+    qualityOfApproximation = function(boundaryRegions) {
+
+      incorrectlySorted = apply(boundaryRegions$downward, MARGIN = 2, FUN = any)
+
+      return(sum(!incorrectlySorted) / length(self$objects))
     }
   )
 )
