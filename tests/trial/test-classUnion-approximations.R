@@ -1,7 +1,7 @@
-library(DRSA)
-library(testthat)
+context("Examples for calculating a rough-set.")
 
 informationTable = InformationTable$new(informationTable$decisionTable, informationTable$metaData)
+P = names(informationTable$decisionTable)
 optimizedSets = informationTable$dominatingAndDominatedSets(P)
 
 test_that("calculate P-upper approximations of upward class unions", {
@@ -27,5 +27,10 @@ test_that("calculate P-lower approximations of downward class unions", {
 })
 
 test_that("get all approximations", {
-  approx = informationTable$roughSets()
+  approx = informationTable$roughSets(P)
+})
+
+test_that("get boundary regions", {
+  approx = informationTable$roughSets(P)
+  informationTable$boundaryRegions(approx)
 })
