@@ -309,29 +309,34 @@ InformationTable <- R6::R6Class(
     },
 
 
-    upwardClassUnionLowerApproximation = function(class, dominating_L) {
-      result = list()
-      upwardClassUnion = self$upwardClassUnion(class)
+    # upwardClassUnionLowerApproximation = function(class, dominating_L) {
+    #
+    #   result = list()
+    #   upwardClassUnion = self$classUnions()$upward
+    #
+    #   for (objectID in seq_along(self$objects)) {
+    #
+    #     dominatingSet = self$objects[dominating_L[objectID, ] ]
+    #     if (all(dominatingSet %in% upwardClassUnion)) {
+    #       result = c(result, self$objects[objectID])
+    #     }
+    #   }
+    #
+    #   return(unlist(result))
+    # },
 
-      for (objectID in seq_along(length(self$objects))) {
-        dominatingSet = self$objects[dominating_L[objectID, ] ]
-        if (all(dominatingSet %in% upwardClassUnion)) {
-          result = c(result, self$objects[objectID])
-        }
+    upwardClassUnionUpperApproximation = function(dominating_U) {
+
+      upwardClassUnion = self$classUnions()$upward
+
+      approximations = matrix(nrow = nrow(upwardClassUnion), ncol = ncol(upwardClassUnion))
+
+      for (class in 1:nrow(upwardClassUnion)) {
+        result = dominating_U[upwardClassUnion[class,], ]
+        approximations[class, ] = apply(result, MARGIN = 2, FUN = any)
       }
 
-      return(unlist(result))
-    },
-
-    upwardClassUnionUpperApproximation = function(class, dominating_U) {
-      upwardClassUnion = self$upwardClassUnion(class)
-
-      result = rep(FALSE, length(self$objects))
-      for (object in upwardClassUnion) {
-        result = result | dominating_U[object, ]
-      }
-
-      return(self$objects[result])
+      return(approximations)
     }
   )
 )
