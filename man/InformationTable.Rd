@@ -41,6 +41,7 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \item \href{#method-downwardClassUnionUpperApproximation}{\code{InformationTable$downwardClassUnionUpperApproximation()}}
 \item \href{#method-downwardClassUnionLowerApproximation}{\code{InformationTable$downwardClassUnionLowerApproximation()}}
 \item \href{#method-roughSets}{\code{InformationTable$roughSets()}}
+\item \href{#method-boundaryRegions}{\code{InformationTable$boundaryRegions()}}
 \item \href{#method-clone}{\code{InformationTable$clone()}}
 }
 }
@@ -339,11 +340,37 @@ the approximations for all classes in a boolean matrix from
 \subsection{Method \code{roughSets()}}{
 This method calculates the P-lower and P-upper approximations of class unions and boundary regions.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$roughSets()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$roughSets(P)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{P}}{the attribute set}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 a named list of the approximations
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-boundaryRegions"></a>}}
+\subsection{Method \code{boundaryRegions()}}{
+This method calculates the boundary regions of rough sets.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$boundaryRegions(roughSets)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{roughSets}}{the class union approximations.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the upward and downward boundary regions
 }
 }
 \if{html}{\out{<hr>}}

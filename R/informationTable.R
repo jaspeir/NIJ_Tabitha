@@ -382,8 +382,9 @@ InformationTable <- R6::R6Class(
 
     #' @description
     #' This method calculates the P-lower and P-upper approximations of class unions and boundary regions.
+    #' @param P the attribute set
     #' @return a named list of the approximations
-    roughSets = function() {
+    roughSets = function(P) {
 
       dom = self$dominatingAndDominatedSets(P)
 
@@ -398,6 +399,17 @@ InformationTable <- R6::R6Class(
       approx$downward_L = self$downwardClassUnionLowerApproximation(approx$upward_U)
 
       return(approx)
+    },
+
+    #' @description
+    #' This method calculates the boundary regions of rough sets.
+    #' @param roughSets the class union approximations.
+    #' @return the upward and downward boundary regions
+    boundaryRegions = function(roughSets) {
+      return(list(
+        upward = roughSets$upward_U & !roughSets$upward_L,
+        downward = roughSets$downward_U & !roughSets$downward_L
+      ))
     }
   )
 )
