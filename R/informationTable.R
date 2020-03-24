@@ -308,23 +308,10 @@ InformationTable <- R6::R6Class(
       self$objects[d]
     },
 
-
-    # upwardClassUnionLowerApproximation = function(class, dominating_L) {
-    #
-    #   result = list()
-    #   upwardClassUnion = self$classUnions()$upward
-    #
-    #   for (objectID in seq_along(self$objects)) {
-    #
-    #     dominatingSet = self$objects[dominating_L[objectID, ] ]
-    #     if (all(dominatingSet %in% upwardClassUnion)) {
-    #       result = c(result, self$objects[objectID])
-    #     }
-    #   }
-    #
-    #   return(unlist(result))
-    # },
-
+    #' @description
+    #' This method calculates the P-upper approximations of the upward class unions.
+    #' @param dominating_U the P-dominating sets (U) - matrix
+    #' @return the approximations for all classes in a boolean matrix from
     upwardClassUnionUpperApproximation = function(dominating_U) {
 
       upwardClassUnion = self$classUnions()$upward
@@ -339,6 +326,10 @@ InformationTable <- R6::R6Class(
       return(approximations)
     },
 
+    #' @description
+    #' This method calculates the P-lower approximations of the upward class unions.
+    #' @param downwardClassUnionUpperApproximation the P-upper approximations of the downward class unions - matrix
+    #' @return the approximations for all classes in a boolean matrix from
     upwardClassUnionLowerApproximation = function(downwardClassUnionUpperApproximation) {
       U = rep(TRUE, length(self$objects))
 
@@ -353,6 +344,10 @@ InformationTable <- R6::R6Class(
       return(approximations)
     },
 
+    #' @description
+    #' This method calculates the P-upper approximations of the downward class unions.
+    #' @param dominated_U the P-dominated sets (U) - matrix
+    #' @return the approximations for all classes in a boolean matrix from
     downwardClassUnionUpperApproximation = function(dominated_U) {
 
       downwardClassUnion = self$classUnions()$downward
@@ -367,6 +362,10 @@ InformationTable <- R6::R6Class(
       return(approximations)
     },
 
+    #' @description
+    #' This method calculates the P-lower approximations of the downward class unions.
+    #' @param upwardClassUnionUpperApproximation the P-upper approximations of the upward class unions - matrix
+    #' @return the approximations for all classes in a boolean matrix from
     downwardClassUnionLowerApproximation = function(upwardClassUnionUpperApproximation) {
       U = rep(TRUE, length(self$objects))
 

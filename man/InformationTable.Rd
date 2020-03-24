@@ -29,12 +29,17 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \item \href{#method-isCompatible}{\code{InformationTable$isCompatible()}}
 \item \href{#method-downwardClassUnion}{\code{InformationTable$downwardClassUnion()}}
 \item \href{#method-upwardClassUnion}{\code{InformationTable$upwardClassUnion()}}
+\item \href{#method-classUnions}{\code{InformationTable$classUnions()}}
 \item \href{#method-partitionAttributes}{\code{InformationTable$partitionAttributes()}}
 \item \href{#method-dominates}{\code{InformationTable$dominates()}}
 \item \href{#method-dominatingAndDominatedSets}{\code{InformationTable$dominatingAndDominatedSets()}}
 \item \href{#method-similar}{\code{InformationTable$similar()}}
 \item \href{#method-dominatingSet}{\code{InformationTable$dominatingSet()}}
 \item \href{#method-dominatedSet}{\code{InformationTable$dominatedSet()}}
+\item \href{#method-upwardClassUnionUpperApproximation}{\code{InformationTable$upwardClassUnionUpperApproximation()}}
+\item \href{#method-upwardClassUnionLowerApproximation}{\code{InformationTable$upwardClassUnionLowerApproximation()}}
+\item \href{#method-downwardClassUnionUpperApproximation}{\code{InformationTable$downwardClassUnionUpperApproximation()}}
+\item \href{#method-downwardClassUnionLowerApproximation}{\code{InformationTable$downwardClassUnionLowerApproximation()}}
 \item \href{#method-clone}{\code{InformationTable$clone()}}
 }
 }
@@ -108,6 +113,18 @@ Method for calculating the upward class union.
 }
 \subsection{Returns}{
 the set of objects in the upward class union
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-classUnions"></a>}}
+\subsection{Method \code{classUnions()}}{
+Method for calculating all downward- and upward class unions at once.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$classUnions()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+a pair of matrices for both class unions, where each row represents a class, and each column represents an object
 }
 }
 \if{html}{\out{<hr>}}
@@ -238,6 +255,86 @@ This method calculates the dominated set of an object with respect to a criterio
 }
 \subsection{Returns}{
 the set of objects that are dominated by object x
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-upwardClassUnionUpperApproximation"></a>}}
+\subsection{Method \code{upwardClassUnionUpperApproximation()}}{
+This method calculates the P-upper approximations of the upward class unions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$upwardClassUnionUpperApproximation(dominating_U)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{dominating_U}}{the P-dominating sets (U) - matrix}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the approximations for all classes in a boolean matrix from
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-upwardClassUnionLowerApproximation"></a>}}
+\subsection{Method \code{upwardClassUnionLowerApproximation()}}{
+This method calculates the P-lower approximations of the upward class unions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$upwardClassUnionLowerApproximation(
+  downwardClassUnionUpperApproximation
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{downwardClassUnionUpperApproximation}}{the P-upper approximations of the downward class unions - matrix}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the approximations for all classes in a boolean matrix from
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-downwardClassUnionUpperApproximation"></a>}}
+\subsection{Method \code{downwardClassUnionUpperApproximation()}}{
+This method calculates the P-upper approximations of the downward class unions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$downwardClassUnionUpperApproximation(dominated_U)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{dominated_U}}{the P-dominated sets (U) - matrix}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the approximations for all classes in a boolean matrix from
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-downwardClassUnionLowerApproximation"></a>}}
+\subsection{Method \code{downwardClassUnionLowerApproximation()}}{
+This method calculates the P-lower approximations of the downward class unions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$downwardClassUnionLowerApproximation(
+  upwardClassUnionUpperApproximation
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{upwardClassUnionUpperApproximation}}{the P-upper approximations of the upward class unions - matrix}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the approximations for all classes in a boolean matrix from
 }
 }
 \if{html}{\out{<hr>}}
