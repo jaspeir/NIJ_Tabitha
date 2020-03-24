@@ -40,6 +40,7 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \item \href{#method-upwardClassUnionLowerApproximation}{\code{InformationTable$upwardClassUnionLowerApproximation()}}
 \item \href{#method-downwardClassUnionUpperApproximation}{\code{InformationTable$downwardClassUnionUpperApproximation()}}
 \item \href{#method-downwardClassUnionLowerApproximation}{\code{InformationTable$downwardClassUnionLowerApproximation()}}
+\item \href{#method-roughSets}{\code{InformationTable$roughSets()}}
 \item \href{#method-clone}{\code{InformationTable$clone()}}
 }
 }
@@ -281,15 +282,13 @@ the approximations for all classes in a boolean matrix from
 \subsection{Method \code{upwardClassUnionLowerApproximation()}}{
 This method calculates the P-lower approximations of the upward class unions.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$upwardClassUnionLowerApproximation(
-  downwardClassUnionUpperApproximation
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$upwardClassUnionLowerApproximation(downward_U)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{downwardClassUnionUpperApproximation}}{the P-upper approximations of the downward class unions - matrix}
+\item{\code{downward_U}}{the P-upper approximations of the downward class unions - matrix}
 }
 \if{html}{\out{</div>}}
 }
@@ -321,20 +320,30 @@ the approximations for all classes in a boolean matrix from
 \subsection{Method \code{downwardClassUnionLowerApproximation()}}{
 This method calculates the P-lower approximations of the downward class unions.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{InformationTable$downwardClassUnionLowerApproximation(
-  upwardClassUnionUpperApproximation
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$downwardClassUnionLowerApproximation(upward_U)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{upwardClassUnionUpperApproximation}}{the P-upper approximations of the upward class unions - matrix}
+\item{\code{upward_U}}{the P-upper approximations of the upward class unions - matrix}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 the approximations for all classes in a boolean matrix from
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-roughSets"></a>}}
+\subsection{Method \code{roughSets()}}{
+This method calculates the P-lower and P-upper approximations of class unions and boundary regions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$roughSets()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+a named list of the approximations
 }
 }
 \if{html}{\out{<hr>}}

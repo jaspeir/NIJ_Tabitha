@@ -328,18 +328,18 @@ InformationTable <- R6::R6Class(
 
     #' @description
     #' This method calculates the P-lower approximations of the upward class unions.
-    #' @param downwardClassUnionUpperApproximation the P-upper approximations of the downward class unions - matrix
+    #' @param downward_U the P-upper approximations of the downward class unions - matrix
     #' @return the approximations for all classes in a boolean matrix from
-    upwardClassUnionLowerApproximation = function(downwardClassUnionUpperApproximation) {
+    upwardClassUnionLowerApproximation = function(downward_U) {
       U = rep(TRUE, length(self$objects))
 
-      classCount = nrow(downwardClassUnionUpperApproximation)
-      objectCount = ncol(downwardClassUnionUpperApproximation)
+      classCount = nrow(downward_U)
+      objectCount = ncol(downward_U)
 
       approximations = matrix(nrow = classCount, ncol = objectCount)
 
       approximations[1, ] = U
-      approximations[2:classCount, ] = !downwardClassUnionUpperApproximation[1:(classCount - 1), ]
+      approximations[2:classCount, ] = !downward_U[1:(classCount - 1), ]
 
       return(approximations)
     },
@@ -364,20 +364,40 @@ InformationTable <- R6::R6Class(
 
     #' @description
     #' This method calculates the P-lower approximations of the downward class unions.
-    #' @param upwardClassUnionUpperApproximation the P-upper approximations of the upward class unions - matrix
+    #' @param upward_U the P-upper approximations of the upward class unions - matrix
     #' @return the approximations for all classes in a boolean matrix from
-    downwardClassUnionLowerApproximation = function(upwardClassUnionUpperApproximation) {
+    downwardClassUnionLowerApproximation = function(upward_U) {
       U = rep(TRUE, length(self$objects))
 
-      classCount = nrow(upwardClassUnionUpperApproximation)
-      objectCount = ncol(upwardClassUnionUpperApproximation)
+      classCount = nrow(upward_U)
+      objectCount = ncol(upward_U)
 
       approximations = matrix(nrow = classCount, ncol = objectCount)
 
       approximations[classCount, ] = U
-      approximations[1:(classCount - 1), ] = !upwardClassUnionUpperApproximation[2:classCount, ]
+      approximations[1:(classCount - 1), ] = !upward_U[2:classCount, ]
 
       return(approximations)
+    },
+
+    #' @description
+    #' This method calculates the P-lower and P-upper approximations of class unions and boundary regions.
+    #' @return a named list of the approximations
+    roughSets = function() {
+
+      dom = self$dominatingAndDominatedSets(P)
+
+      approx = list(
+        upward_U = self$upwardClassUnionUpperApproximation(dom$dominating_U),
+        upward_L = NA,
+        downward_U = self$downwardClassUnionUpperApproximation(dom$dominated_U),
+        downward_L = NA
+      )
+
+      approx$upward_L = self$upwardClassUnionLowerApproximation(approx$downward_U)
+      approx$downward_L = self$downwardClassUnionLowerApproximation(approx$upward_U)
+
+      return(approx)
     }
   )
 )
