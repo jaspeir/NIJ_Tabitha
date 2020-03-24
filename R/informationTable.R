@@ -337,6 +337,48 @@ InformationTable <- R6::R6Class(
       }
 
       return(approximations)
+    },
+
+    upwardClassUnionLowerApproximation = function(downwardClassUnionUpperApproximation) {
+      U = rep(TRUE, length(self$objects))
+
+      classCount = nrow(downwardClassUnionUpperApproximation)
+      objectCount = ncol(downwardClassUnionUpperApproximation)
+
+      approximations = matrix(nrow = classCount, ncol = objectCount)
+
+      approximations[1, ] = U
+      approximations[2:classCount, ] = !downwardClassUnionUpperApproximation[1:(classCount - 1), ]
+
+      return(approximations)
+    },
+
+    downwardClassUnionUpperApproximation = function(dominated_U) {
+
+      downwardClassUnion = self$classUnions()$downward
+
+      approximations = matrix(nrow = nrow(downwardClassUnion), ncol = ncol(downwardClassUnion))
+
+      for (class in 1:nrow(downwardClassUnion)) {
+        result = dominated_U[downwardClassUnion[class,], ]
+        approximations[class, ] = apply(result, MARGIN = 2, FUN = any)
+      }
+
+      return(approximations)
+    },
+
+    downwardClassUnionLowerApproximation = function(upwardClassUnionUpperApproximation) {
+      U = rep(TRUE, length(self$objects))
+
+      classCount = nrow(upwardClassUnionUpperApproximation)
+      objectCount = ncol(upwardClassUnionUpperApproximation)
+
+      approximations = matrix(nrow = classCount, ncol = objectCount)
+
+      approximations[classCount, ] = U
+      approximations[1:(classCount - 1), ] = !upwardClassUnionUpperApproximation[2:classCount, ]
+
+      return(approximations)
     }
   )
 )
