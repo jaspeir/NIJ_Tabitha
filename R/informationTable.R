@@ -89,6 +89,18 @@ InformationTable <- R6::R6Class(
     },
 
     #' @description
+    #' Method for creating a new information table by removing examples of belonging to the specified objects.
+    #' @param objects the object to filter out
+    #' @return a new information table instance
+    removeObjects = function(objects) {
+
+      rowsToRemove = self$objects %in% objects
+      decisionTableFiltered = self$decisionTable[!rowsToRemove, ]
+
+      return(InformationTable$new(decisionTable = decisionTableFiltered, metaData = self$metaData))
+    },
+
+    #' @description
     #' Method for calculating the downward class union.
     #' @param class the decision class to compare to
     #' @return the set of objects in the downward class union

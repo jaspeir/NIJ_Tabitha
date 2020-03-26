@@ -27,6 +27,7 @@ The meta-data consist of the attribute names, their types, and the alpha and bet
 \itemize{
 \item \href{#method-new}{\code{InformationTable$new()}}
 \item \href{#method-isCompatible}{\code{InformationTable$isCompatible()}}
+\item \href{#method-removeObjects}{\code{InformationTable$removeObjects()}}
 \item \href{#method-downwardClassUnion}{\code{InformationTable$downwardClassUnion()}}
 \item \href{#method-upwardClassUnion}{\code{InformationTable$upwardClassUnion()}}
 \item \href{#method-classUnions}{\code{InformationTable$classUnions()}}
@@ -79,6 +80,25 @@ Method to determine whether another information table is compatible with this on
 \item{\code{it}}{the information table to compare to}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-removeObjects"></a>}}
+\subsection{Method \code{removeObjects()}}{
+Method for creating a new information table by removing examples of belonging to the specified objects.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{InformationTable$removeObjects(objects)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{objects}}{the object to filter out}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a new information table instance
 }
 }
 \if{html}{\out{<hr>}}
