@@ -25,10 +25,6 @@ ElementaryCondition <- R6::R6Class(
     #' @field beta for similarity attributes the beta parameter
     beta = NA,
 
-    ### Calculated fields ###
-    #' @field covered the set of matching objects - logical vector for all objects
-    covered = NA,
-
     #' @description
     #' Create a new ElementaryCondition object.
     #' @param attribute the attribute we filter on
@@ -49,8 +45,6 @@ ElementaryCondition <- R6::R6Class(
       self$attributeType = metaData$type
       self$alpha = metaData$alpha
       self$beta = metaData$beta
-
-      self$covered = self$elementCover(it)
     },
 
     #' @description
@@ -61,13 +55,13 @@ ElementaryCondition <- R6::R6Class(
 
       values = it$decisionTable[[self$attribute]]
 
-      cover = switch(self$attributeType,
+      covered = switch(self$attributeType,
               'indiscernibility' = values == self$value,
               'similarity' =  abs(values - value) <= self$alpha * value + self$beta,
               'dominance' = if (isLowerBound) values >= self$value else values <= self$value
       )
 
-      return(cover)
+      return(covered)
     },
 
     #' @description

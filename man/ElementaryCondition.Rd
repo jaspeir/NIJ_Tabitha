@@ -23,8 +23,6 @@ This class stores the attribute, the filter value, and for dominance variables w
 \item{\code{alpha}}{for similarity attributes the alpha parameter}
 
 \item{\code{beta}}{for similarity attributes the beta parameter}
-
-\item{\code{covered}}{the set of matching objects - logical vector for all objects}
 }
 \if{html}{\out{</div>}}
 }
