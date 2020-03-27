@@ -39,6 +39,7 @@ ElementaryCondition <- R6::R6Class(
       stopifnot('logical' %in% class(isLowerBound))
       self$attribute = attribute
       self$value = value
+      self$isLowerBound = isLowerBound
 
       metaData = it$metaData[it$metaData$name == attribute, ]
       self$attributeType = metaData$type
@@ -56,11 +57,11 @@ ElementaryCondition <- R6::R6Class(
 
       covered = switch(as.character(self$attributeType),
               'indiscernibility' = values == self$value,
-              'similarity' =  abs(values - value) <= self$alpha * value + self$beta,
-              'dominance' = if (isLowerBound) values >= self$value else values <= self$value
+              'similarity' =  abs(values - self$value) <= self$alpha * self$value + self$beta,
+              'dominance' = if (self$isLowerBound) values >= self$value else values <= self$value
       )
 
-      return(covered)
+      return(it$objects[covered])
     },
 
     #' @description
@@ -77,7 +78,7 @@ ElementaryCondition <- R6::R6Class(
       op = switch(as.character(self$attributeType),
                   'indiscernibility' = '=',
                   'similarity' =  '~',
-                  'dominance' = if (isLowerBound) '>=' else '<='
+                  'dominance' = if (self$isLowerBound) '>=' else '<='
       )
       return(paste0(self$attribute, ' ', op, ' ', self$value))
     }

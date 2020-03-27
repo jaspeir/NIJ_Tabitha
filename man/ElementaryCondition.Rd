@@ -32,6 +32,7 @@ This class stores the attribute, the filter value, and for dominance variables w
 \item \href{#method-new}{\code{ElementaryCondition$new()}}
 \item \href{#method-elementCover}{\code{ElementaryCondition$elementCover()}}
 \item \href{#method-print}{\code{ElementaryCondition$print()}}
+\item \href{#method-toString}{\code{ElementaryCondition$toString()}}
 \item \href{#method-clone}{\code{ElementaryCondition$clone()}}
 }
 }
@@ -82,6 +83,15 @@ the set of matching objects - logical vector
 Print method.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ElementaryCondition$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+toString method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ElementaryCondition$toString()}\if{html}{\out{</div>}}
 }
 
 }
