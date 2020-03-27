@@ -109,11 +109,11 @@ ComplexCondition <- R6::R6Class(
 
     #' @description
     #' Method that tries to make a complex condition shorter.
-    #' For each elementary condition e in E, check if [rule - {e}] subset or equal B then E := E - {e}.
+    #' For each elementary condition e in E, check if [E - {e}] subset or equal B then E := E - {e}.
     #' @param B the objects to cover - a vector describing a set of objects
     #' @param it the information table to use
     #' @return a complex condition
-    checkRules = function(B, it) {
+    reduceConditions = function(B, it) {
 
       removedConditions = rep(FALSE, length(self$conditions))  # which elementary condition has been removed already
 

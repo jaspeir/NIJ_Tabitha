@@ -25,7 +25,7 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-secondMetric}{\code{ComplexCondition$secondMetric()}}
 \item \href{#method-allMetrics}{\code{ComplexCondition$allMetrics()}}
 \item \href{#method-findBestElementary}{\code{ComplexCondition$findBestElementary()}}
-\item \href{#method-checkRules}{\code{ComplexCondition$checkRules()}}
+\item \href{#method-reduceConditions}{\code{ComplexCondition$reduceConditions()}}
 \item \href{#method-append}{\code{ComplexCondition$append()}}
 \item \href{#method-length}{\code{ComplexCondition$length()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
@@ -156,12 +156,12 @@ the better of the two elementary conditions
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-checkRules"></a>}}
-\subsection{Method \code{checkRules()}}{
+\if{html}{\out{<a id="method-reduceConditions"></a>}}
+\subsection{Method \code{reduceConditions()}}{
 Method that tries to make a complex condition shorter.
-For each elementary condition e in E, check if [rule - {e}] subset or equal B then E := E - {e}.
+For each elementary condition e in E, check if [E - {e}] subset or equal B then E := E - {e}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$checkRules(B, it)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$reduceConditions(B, it)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
