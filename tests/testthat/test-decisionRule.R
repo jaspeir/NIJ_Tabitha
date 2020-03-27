@@ -20,6 +20,28 @@ test_that("isWeaker - only t differs", {
   expect_false(d2$isWeaker(it = informationTable, rule = d1))
 })
 
+test_that("isWeaker - different attributes", {
+  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "Q2", value = 421, it = informationTable, isLowerBound = F)
+  c1 = ComplexCondition$new(e1)
+  c2 = ComplexCondition$new(e2)
+  d1 = DecisionRule$new(condition = c1, t = 0, type = "upward")
+  d2 = DecisionRule$new(condition = c2, t = 1, type = "upward")
+  expect_false(d1$isWeaker(it = informationTable, rule = d2))
+  expect_false(d2$isWeaker(it = informationTable, rule = d1))
+})
+
+test_that("isWeaker - same attribute, different values", {
+  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "Q1", value = 0, it = informationTable, isLowerBound = F)
+  c1 = ComplexCondition$new(e1)
+  c2 = ComplexCondition$new(e2)
+  d1 = DecisionRule$new(condition = c1, t = 1, type = "upward")
+  d2 = DecisionRule$new(condition = c2, t = 1, type = "upward")
+  expect_true(d1$isWeaker(it = informationTable, rule = d2))
+  expect_false(d2$isWeaker(it = informationTable, rule = d1))
+})
+
 test_that("isMinimal - empty rules", {
   c = ComplexCondition$new()
   d = DecisionRule$new(condition = c, t = 0, type = "upward")
