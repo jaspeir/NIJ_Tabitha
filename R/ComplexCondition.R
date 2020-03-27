@@ -67,6 +67,59 @@ ComplexCondition <- R6::R6Class(
     },
 
     #' @description
+    #' Method for calculating all comparison metrics used in the DOMLEM paper.
+    #' @param G the parameter of the metrics - a vector describing a set of objects
+    #' @param it the information table to use
+    #' @return a list of metrics. Higher is better.
+    allMetrics = function(G, it) {
+      return(list(first = self$firstMetric(G, it), second = self$secondMetric(G, it)))
+    },
+
+    #' @description
+    #' Method to evaluate if an elementary condition is better than the current best.
+    #' @param G the parameter of the metric - a vector describing a set of objects
+    #' @param it the information table to use
+    #' @param check the elementary condition to evaluate
+    #' @param best the current best elementary
+    #' @return the better of the two elementary conditions
+    findBestElementary = function(G, it, check, best) {
+      tempCheck = ComplexCondition$new(c(self$conditions, check))
+      tempBest = ComplexCondition$new(c(self$conditions, best))
+
+      checkMetric = tempCheck$allMetrics(G, it)
+      bestMetric = tempBest$allMetrics(G, it)
+
+      if (checkMetric$first > bestMetric$first ||
+          (checkMetric$first > bestMetric$first && checkMetric$second >= bestMetric$second)) {
+        return(check)
+      } else {
+        return(best)
+      }
+    },
+
+    #' @description
+    #' Method that tries to make a complex condition shorter.
+    #' For each elementary condition e in E, check if [rule - {e}] subset or equal B then E := E - {e}.
+    #' @param B the objects to cover - a vector describing a set of objects
+    #' @param it the information table to use
+    #' @return a complex condition
+    checkRules = function(B, it) {
+
+      removedConditions = rep(FALSE, length(self$conditions))  # which elementary condition has been removed already
+
+      for (i in seq_along(self$conditions)) {
+        temp = ComplexCondition$new(self$conditions[!removedConditions])
+        tempCover = temp$complexCover(it)
+        isSubset = tempCover & B == tempCover
+        if (isSubset) {
+          removedConditions[i] = TRUE
+        }
+      }
+
+      return(ComplexCondition$new(self$conditions[!removedConditions]))
+    },
+
+    #' @description
     #' Print method.
     print = function() {
       cat(paste(conditions, sep = " AND "))

@@ -13,8 +13,6 @@ A complex condition is the conjunction of elementary conditions.
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{conditions}}{the set elementary conditions}
-
-\item{\code{covered}}{the set of matching objects - logical vector for all objects}
 }
 \if{html}{\out{</div>}}
 }
@@ -25,6 +23,9 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-complexCover}{\code{ComplexCondition$complexCover()}}
 \item \href{#method-firstMetric}{\code{ComplexCondition$firstMetric()}}
 \item \href{#method-secondMetric}{\code{ComplexCondition$secondMetric()}}
+\item \href{#method-allMetrics}{\code{ComplexCondition$allMetrics()}}
+\item \href{#method-findBestElementary}{\code{ComplexCondition$findBestElementary()}}
+\item \href{#method-checkRules}{\code{ComplexCondition$checkRules()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
 \item \href{#method-clone}{\code{ComplexCondition$clone()}}
 }
@@ -50,9 +51,16 @@ Create a new ComplexCondition object.
 \subsection{Method \code{complexCover()}}{
 Method to calculate the set of objects matching this complex condition.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$complexCover()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$complexCover(it)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 the set of matching objects - logical vector
 }
@@ -62,13 +70,15 @@ the set of matching objects - logical vector
 \subsection{Method \code{firstMetric()}}{
 Method for calculating the first comparison metric used in the DOMLEM paper.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$firstMetric(G)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$firstMetric(G, it)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{G}}{the parameter of the metric - a vector describing a set of objects}
+
+\item{\code{it}}{the information table to use}
 }
 \if{html}{\out{</div>}}
 }
@@ -81,18 +91,88 @@ a numeric metric between 0 and 1. Higher is better.
 \subsection{Method \code{secondMetric()}}{
 Method for calculating the second comparison metric used in the DOMLEM paper.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$secondMetric(G)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$secondMetric(G, it)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{G}}{the parameter of the metric - a vector describing a set of objects}
+
+\item{\code{it}}{the information table to use}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-a numeric metric between 0 and 1. Higher is better.
+a non-negative integer metric. Higher is better.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-allMetrics"></a>}}
+\subsection{Method \code{allMetrics()}}{
+Method for calculating all comparison metrics used in the DOMLEM paper.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$allMetrics(G, it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{G}}{the parameter of the metrics - a vector describing a set of objects}
+
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a list of metrics. Higher is better.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-findBestElementary"></a>}}
+\subsection{Method \code{findBestElementary()}}{
+Method to evaluate if an elementary condition is better than the current best.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$findBestElementary(G, it, check, best)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{G}}{the parameter of the metric - a vector describing a set of objects}
+
+\item{\code{it}}{the information table to use}
+
+\item{\code{check}}{the elementary condition to evaluate}
+
+\item{\code{best}}{the current best elementary}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+the better of the two elementary conditions
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-checkRules"></a>}}
+\subsection{Method \code{checkRules()}}{
+Method that tries to make a complex condition shorter.
+For each elementary condition e in E, check if [rule - {e}] subset or equal B then E := E - {e}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$checkRules(B, it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{B}}{the objects to cover - a vector describing a set of objects}
+
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a complex condition
 }
 }
 \if{html}{\out{<hr>}}
