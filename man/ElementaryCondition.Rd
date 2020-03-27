@@ -74,7 +74,7 @@ Method to calculate the set of objects matching this elementary condition.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-the set of matching objects - logical vector
+the set of matching objects - set of object names
 }
 }
 \if{html}{\out{<hr>}}

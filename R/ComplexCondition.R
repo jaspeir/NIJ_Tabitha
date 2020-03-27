@@ -36,7 +36,7 @@ ComplexCondition <- R6::R6Class(
     #' @description
     #' Method to calculate the set of objects matching this complex condition.
     #' @param it the information table to use
-    #' @return the set of matching objects - logical vector
+    #' @return the set of matching objects - set of object names
     complexCover = function(it) {
 
       # Handle empty complex rule:
