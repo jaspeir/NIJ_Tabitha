@@ -38,6 +38,49 @@ DecisionRule <- R6::R6Class(
       self$condition = condition
       self$t = t
       self$type = type
+    },
+
+    #' @description
+    #' Method to decide if this decision rule is minimal among the provided set of rules.
+    #' @param rules the set of rules to check the minimality in
+    #' @return a boolean value
+    isMinimal = function(rules) {
+
+      for (rule in rules) {
+        if (self$isWeaker(rule)) {
+          return(FALSE)
+        }
+      }
+
+      return(TRUE)
+    },
+
+    #' @description
+    #' Method to decide if this decision rule is a weaker implication compared to the provided rule.
+    #' @param rule the rule to compare to
+    #' @return a boolean value
+    isWeaker = function(rule) {
+
+      if (rule$type != self$type) {
+        return(FALSE)
+      }
+
+      # self is weaker than rule, iff:
+      # "attributeSet(rule) is subset of attributeSet(self)
+      # rule$values <= self$values[restricted to attributeSet(rule)]
+      # rule$t >= self$t
+      otherValues = rule$getConstants()
+      otherAttributes = !is.na(otherValues)
+      thisValues = self$condition$getConstants()
+      thisAttributes = !is.na(thisValues)
+
+      if (isSubset(otherAttributes, thisAttributes) &&
+          otherValues[otherAttributes] <= thisAttributes[otherAttributes] &&
+          rule$t >= self$t) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
     }
   )
 )

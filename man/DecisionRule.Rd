@@ -26,6 +26,8 @@ For STAT2 type of rules the conditions are upper bounds, and assignment goes to 
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{DecisionRule$new()}}
+\item \href{#method-isMinimal}{\code{DecisionRule$isMinimal()}}
+\item \href{#method-isWeaker}{\code{DecisionRule$isWeaker()}}
 \item \href{#method-clone}{\code{DecisionRule$clone()}}
 }
 }
@@ -47,6 +49,44 @@ Create a new DecisionRule object.
 \item{\code{type}}{the type of the class union}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-isMinimal"></a>}}
+\subsection{Method \code{isMinimal()}}{
+Method to decide if this decision rule is minimal among the provided set of rules.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$isMinimal(rules)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rules}}{the set of rules to check the minimality in}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-isWeaker"></a>}}
+\subsection{Method \code{isWeaker()}}{
+Method to decide if this decision rule is a weaker implication compared to the provided rule.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$isWeaker(rule)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rule}}{the rule to compare to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a boolean value
 }
 }
 \if{html}{\out{<hr>}}
