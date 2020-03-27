@@ -53,18 +53,18 @@ DOMLEM <- R6::R6Class(
 
       # Create STAT1 type rules
       for (t in seq(from = classCount, to = 2)) {
-        approx = self$roughSets$upward_L[t]
+        approx = self$roughSets$upward_L[t, ]
         rules = self$findRules(approximation = approx, P = self$P, t = t, ruleType = "STAT1")
 
-        RULES = addMinimalRules(existingRules = RULES, newRules = rules)
+        RULES = self$addMinimalRules(existingRules = RULES, newRules = rules)
       }
 
       # Create STAT2 type rules
       for (t in seq(from = 1, to = classCount - 1)) {
-        approx = self$roughSets$downward_L[t]
+        approx = self$roughSets$downward_L[t, ]
         rules = self$findRules(approximation = approx, P = self$P, t = t, ruleType = "STAT2")
 
-        RULES = addMinimalRules(existingRules = RULES, newRules = rules)
+        RULES = self$addMinimalRules(existingRules = RULES, newRules = rules)
       }
 
       self$rules = RULES
@@ -79,7 +79,7 @@ DOMLEM <- R6::R6Class(
     #' @return the extracted decision rules
     findRules = function(approximation, P, t, ruleType) {
 
-      B = approximation
+      B = self$it$objects[approximation]
       G = B    # objects still to cover
       E = c()  # the set of extracted rules
 
@@ -93,13 +93,14 @@ DOMLEM <- R6::R6Class(
         e = ComplexCondition$new()  # starting complex condition
         S = G  # set of objects currently covered by E
 
-        while (e$length() == 0 || !isSubset(e$complexCover(it = EXAMPLES), B)) {
+        while (e$length() == 0 || !isSubsetArbitrary(e$complexCover(it = EXAMPLES), B)) {
 
           best = NA
 
           for (criterion in P) {
 
-            values = EXAMPLES$decisionTable[S, criterion]
+            S_index = map_int(S, ~ which(. == EXAMPLES$objects, arr.ind = TRUE))
+            values = EXAMPLES$decisionTable[S_index, criterion]
             for (value in values) {
               check = ElementaryCondition$new(attribute = criterion, value = value, it = EXAMPLES, isLowerBound = isLowerBound)
               best = e$findBestElementary(G = G, it = EXAMPLES, check = check, best = best)
@@ -107,25 +108,24 @@ DOMLEM <- R6::R6Class(
 
           }
 
-          e.append(best)
+          e$append(best)
           covered = best$elementCover(it = EXAMPLES)
-          S = S & covered
+          S = intersect(S,covered)
         }
 
         e = e$reduceConditions(B = B, it = static_examples)
         E = c(E, e)
 
         # remove examples covered by E
-        EXAMPLES = EXAMPLES$remove_objects(self$rules_cover(it = EXAMPLES, rules = E))
-        # TODO: BUG = G, and S do not get "reduced" like the set of examples does....
+        EXAMPLES = EXAMPLES$removeObjects(self$rulesCover(it = EXAMPLES, rules = E))
 
-        coveredGlobal = self$rules_cover(it = static_examples, rules = E)
-        G = B & !coveredGlobal
+        coveredGlobal = self$rulesCover(it = static_examples, rules = E)
+        G = setdiff(B, coveredGlobal)
       }
 
       # Make rules from the extracted complex conditions:
       classUnionType = switch(ruleType, "STAT1" = 'upward', "STAT2" = 'downward')
-      rules = map(E, DecisionRule$new(condition = ., t = t, type = classUnionType))
+      rules = map(E, ~ DecisionRule$new(condition = ., t = t, type = classUnionType))
 
       return(rules)
     },
@@ -134,10 +134,15 @@ DOMLEM <- R6::R6Class(
     #' Method to calculate the objects covered by a set of rules.
     #' @param it the infromation table to work on
     #' @param rules the set of rules
-    #' @return the covered objects - boolean vector
+    #' @return the covered objects - set of object names
     rulesCover = function(it, rules) {
-      covered = map_dfr(rules, function(rule) { rule$complexCover(it) })
-      return(apply(covered, MARGIN = 2, FUN = any))
+
+      covered = character(0)
+      walk(rules, function(rule) {
+        covered <<- union(covered, rule$complexCover(it))
+      })
+
+      return(covered)
     },
 
     #' @description
@@ -147,7 +152,7 @@ DOMLEM <- R6::R6Class(
     #' @return a set of decision rules
     addMinimalRules = function(existingRules, newRules) {
       for (rule in newRules) {
-        if (rule$isMinimal(existingRules)) {
+        if (rule$isMinimal(it = self$it, rules = existingRules)) {
           existingRules = c(existingRules, rule)
         }
       }
