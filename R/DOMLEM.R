@@ -49,12 +49,12 @@ DOMLEM <- R6::R6Class(
     main = function() {
       RULES = c()
 
-      classCount = nrow(self$roughSets*upward_L)
+      classCount = nrow(self$roughSets$upward_L)
 
       # Create STAT1 type rules
       for (t in seq(from = classCount, to = 2)) {
         approx = self$roughSets$upward_L[t]
-        rules = findRules(approx, self$P, t, ruleType = "STAT1")
+        rules = self$findRules(approximation = approx, P = self$P, t = t, ruleType = "STAT1")
 
         RULES = addMinimalRules(existingRules = RULES, newRules = rules)
       }
@@ -62,7 +62,7 @@ DOMLEM <- R6::R6Class(
       # Create STAT2 type rules
       for (t in seq(from = 1, to = classCount - 1)) {
         approx = self$roughSets$downward_L[t]
-        rules = findRules(approx, self$P, t, ruleType = "STAT2")
+        rules = self$findRules(approximation = approx, P = self$P, t = t, ruleType = "STAT2")
 
         RULES = addMinimalRules(existingRules = RULES, newRules = rules)
       }
@@ -77,7 +77,7 @@ DOMLEM <- R6::R6Class(
     #' @param t the t-parameter of the class union
     #' @param ruleType the type of rule to extract
     #' @return the extracted decision rules
-    findRules = function(approximation, t, P, ruleType) {
+    findRules = function(approximation, P, t, ruleType) {
 
       B = approximation
       G = B    # objects still to cover
@@ -86,11 +86,11 @@ DOMLEM <- R6::R6Class(
       isLowerBound = ruleType %in% c(1, 3, "one", "three", "STAT1", "stat1") # Type of rule to generate (for dominance variables)
 
       static_examples = self$it
-      EXAMPLES = self$it$copy()
+      EXAMPLES = self$it$clone()
 
       while (length(G) > 0) {
 
-        e = ComplexCondition$new(c())  # starting complex condition
+        e = ComplexCondition$new()  # starting complex condition
         S = G  # set of objects currently covered by E
 
         while (e$length() == 0 || !isSubset(e$complexCover(it = EXAMPLES), B)) {
@@ -117,6 +117,7 @@ DOMLEM <- R6::R6Class(
 
         # remove examples covered by E
         EXAMPLES = EXAMPLES$remove_objects(self$rules_cover(it = EXAMPLES, rules = E))
+        # TODO: BUG = G, and S do not get "reduced" like the set of examples does....
 
         coveredGlobal = self$rules_cover(it = static_examples, rules = E)
         G = B & !coveredGlobal
