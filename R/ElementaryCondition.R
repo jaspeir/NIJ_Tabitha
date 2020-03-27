@@ -81,6 +81,24 @@ ElementaryCondition <- R6::R6Class(
                   'dominance' = if (self$isLowerBound) '>=' else '<='
       )
       return(paste0(self$attribute, ' ', op, ' ', self$value))
+    },
+
+    #' @description
+    #' Method to compare two ElementaryConditions.
+    #' @param other the other elementary condition to compare to
+    #' @return a single boolean value
+    equals = function(other) {
+
+      if (any(is.null(other))) {
+        return(FALSE)
+      }
+      stopifnot("ElementaryCondition" %in% class(other))
+
+      return(
+        self$attribute == other$attribute &&
+        self$value == other$value &&
+        self$isLowerBound == other$isLowerBound
+      )
     }
   )
 )
