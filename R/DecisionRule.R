@@ -42,12 +42,13 @@ DecisionRule <- R6::R6Class(
 
     #' @description
     #' Method to decide if this decision rule is minimal among the provided set of rules.
+    #' @param it the information table to use
     #' @param rules the set of rules to check the minimality in
     #' @return a boolean value
-    isMinimal = function(rules) {
+    isMinimal = function(it, rules) {
 
       for (rule in rules) {
-        if (self$isWeaker(rule)) {
+        if (self$isWeaker(it, rule)) {
           return(FALSE)
         }
       }
@@ -57,9 +58,10 @@ DecisionRule <- R6::R6Class(
 
     #' @description
     #' Method to decide if this decision rule is a weaker implication compared to the provided rule.
+    #' @param it the information table to use
     #' @param rule the rule to compare to
     #' @return a boolean value
-    isWeaker = function(rule) {
+    isWeaker = function(it, rule) {
 
       if (rule$type != self$type) {
         return(FALSE)
@@ -69,21 +71,23 @@ DecisionRule <- R6::R6Class(
       # "attributeSet(rule) is subset of attributeSet(self)
       # rule$values <= self$values[restricted to attributeSet(rule)]
       # rule$t >= self$t
-      otherValues = rule$getConstants()
+      otherValues = rule$condition$getConstants(it)
       otherAttributes = !is.na(otherValues)
-      thisValues = self$condition$getConstants()
+      thisValues = self$condition$getConstants(it)
       thisAttributes = !is.na(thisValues)
 
       if (isSubset(otherAttributes, thisAttributes)) {
 
-        if (type == "STAT1" &&
-          otherValues[otherAttributes] <= thisAttributes[otherAttributes] &&
+        if (self$type == "upward" &&
+          all(otherValues[otherAttributes] <= thisAttributes[otherAttributes]) &&
           rule$t >= self$t) {
           return(TRUE)
-        } else if (type == "STAT2" &&
-                      otherValues[otherAttributes] >= thisAttributes[otherAttributes] &&
+        } else if (self$type == "downward" &&
+                      all(otherValues[otherAttributes] >= thisAttributes[otherAttributes]) &&
                       rule$t <= self$t) {
           return(TRUE)
+        } else {
+          return(FALSE)
         }
 
       } else {

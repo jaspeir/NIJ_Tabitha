@@ -56,12 +56,14 @@ Create a new DecisionRule object.
 \subsection{Method \code{isMinimal()}}{
 Method to decide if this decision rule is minimal among the provided set of rules.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$isMinimal(rules)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$isMinimal(it, rules)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{it}}{the information table to use}
+
 \item{\code{rules}}{the set of rules to check the minimality in}
 }
 \if{html}{\out{</div>}}
@@ -75,12 +77,14 @@ a boolean value
 \subsection{Method \code{isWeaker()}}{
 Method to decide if this decision rule is a weaker implication compared to the provided rule.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$isWeaker(rule)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$isWeaker(it, rule)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{it}}{the information table to use}
+
 \item{\code{rule}}{the rule to compare to}
 }
 \if{html}{\out{</div>}}
