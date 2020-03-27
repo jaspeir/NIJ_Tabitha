@@ -39,12 +39,14 @@ decisionTable = tribble(
   'w7', 'Medium', 'B', 350, 'Profit',
   'w8', 'Medium', 'B', 350, 'Loss'
 )
+
+decisionTable$A1 = factor(decisionTable$A1, levels = c("Medium", "Good"), ordered = TRUE)
 ```
 
 
 # Creating the meta-data
 
-We continue by creating the meta-data of our dataset. It contains important details of the attributes in our dataset. The meta-data has to be provided as a data-frame containing one row for each attribute.
+We continue by creating the meta-data of our dataset. It contains important details of the attributes in our dataset. The meta-data has to be provided as a data-frame containing one row for each attribute. With respect to A1, ‘‘good’’ is better than ‘‘medium’’, while with respect to A2 and A3 no preference is expressed on their domains. More- over, for attribute A2, the classical indiscernibility relation is considered, and for attribute A3, a similarity relation is defined such that alpha = 0.1, and beta = 0.0:
 
 ```{r}
 metaData = tribble(
@@ -53,7 +55,7 @@ metaData = tribble(
   
   'A1', 'dominance', NA, NA,
   'A2', 'indiscernibility', NA, NA,
-  'A3', 'dominance', NA, NA,
+  'A3', 'similarity', 0.1, 0.0,
 
   'd',  'decision', NA, NA
 )
