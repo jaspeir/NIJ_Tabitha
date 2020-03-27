@@ -32,7 +32,7 @@ DecisionRule <- R6::R6Class(
 
       # ERROR-CHECKS:
       stopifnot('ComplexCondition' %in% class(condition))
-      stopifnot('numeric' %in% class(t))
+      stopifnot('numeric' %in% class(t) || 'integer' %in% class(t))
       stopifnot(length(type) == 1, type %in% c('upward', 'downward'))
 
       self$condition = condition
