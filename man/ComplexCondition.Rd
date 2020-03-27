@@ -26,6 +26,7 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-allMetrics}{\code{ComplexCondition$allMetrics()}}
 \item \href{#method-findBestElementary}{\code{ComplexCondition$findBestElementary()}}
 \item \href{#method-reduceConditions}{\code{ComplexCondition$reduceConditions()}}
+\item \href{#method-getConstants}{\code{ComplexCondition$getConstants()}}
 \item \href{#method-append}{\code{ComplexCondition$append()}}
 \item \href{#method-length}{\code{ComplexCondition$length()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
@@ -175,6 +176,25 @@ For each elementary condition e in E, check if [E - {e}] subset or equal B then 
 }
 \subsection{Returns}{
 a complex condition
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getConstants"></a>}}
+\subsection{Method \code{getConstants()}}{
+Method for creating an efficient representation of the constants used in the filter conditions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$getConstants(it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a vector of filter values. Not filtered attributes have an NA value.
 }
 }
 \if{html}{\out{<hr>}}

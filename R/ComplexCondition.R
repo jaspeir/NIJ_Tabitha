@@ -129,6 +129,20 @@ ComplexCondition <- R6::R6Class(
     },
 
     #' @description
+    #' Method for creating an efficient representation of the constants used in the filter conditions.
+    #' @param it the information table to use
+    #' @return a vector of filter values. Not filtered attributes have an NA value.
+    getConstants = function(it) {
+      activeConstants = map_dfr(conditions, function(cond) { list(name = cond$attribute, value = cond$value)})
+
+      constants = rep(NA, nrow(it$metaData))
+      attributeIndexes = map_int(activeConstants$name, which(. == it$metaData$name, arr.ind = TRUE))
+      constants[attributeIndexes] = activeConstants$value[attributeIndexes]
+
+      return(constants)
+    },
+
+    #' @description
     #' Method for appending an additional elementary condition to the current conditions.
     #' @param elem the elementary condition to be added
     append = function(elem) {
