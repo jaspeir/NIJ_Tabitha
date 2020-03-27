@@ -56,9 +56,7 @@ DOMLEM <- R6::R6Class(
         approx = self$roughSets$upward_L[t]
         rules = findRules(approx, self$P, t, ruleType = "STAT1")
 
-        # TODO: select only minimal rules
-
-        RULES = c(RULES, rules)
+        RULES = addMinimalRules(existingRules = RULES, newRules = rules)
       }
 
       # Create STAT2 type rules
@@ -66,9 +64,7 @@ DOMLEM <- R6::R6Class(
         approx = self$roughSets$downward_L[t]
         rules = findRules(approx, self$P, t, ruleType = "STAT2")
 
-        # TODO: select only minimal rules
-
-        RULES = c(RULES, rules)
+        RULES = addMinimalRules(existingRules = RULES, newRules = rules)
       }
 
       self$rules = RULES
