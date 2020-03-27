@@ -60,6 +60,10 @@ ComplexCondition <- R6::R6Class(
     firstMetric = function(G, it) {
       covered = self$complexCover(it)
 
+      if (length(covered) == 0) {
+        return(0)
+      }
+
       return(length(intersect(covered, G)) / length(covered))
     },
 
@@ -70,6 +74,10 @@ ComplexCondition <- R6::R6Class(
     #' @return a non-negative integer metric. Higher is better.
     secondMetric = function(G, it) {
       covered = self$complexCover(it)
+
+      if (length(covered) == 0) {
+        return(0)
+      }
 
       return(length(intersect(covered,G)))
     },
@@ -127,7 +135,7 @@ ComplexCondition <- R6::R6Class(
       for (i in seq_along(self$conditions)) {
         temp = ComplexCondition$new(self$conditions[!removedConditions])
         tempCover = temp$complexCover(it)
-        if (isSubset(tempCover, B)) {
+        if (isSubsetArbitrary(tempCover, B)) {
           removedConditions[i] = TRUE
         }
       }
