@@ -74,10 +74,18 @@ DecisionRule <- R6::R6Class(
       thisValues = self$condition$getConstants()
       thisAttributes = !is.na(thisValues)
 
-      if (isSubset(otherAttributes, thisAttributes) &&
+      if (isSubset(otherAttributes, thisAttributes)) {
+
+        if (type == "STAT1" &&
           otherValues[otherAttributes] <= thisAttributes[otherAttributes] &&
           rule$t >= self$t) {
-        return(TRUE)
+          return(TRUE)
+        } else if (type == "STAT2" &&
+                      otherValues[otherAttributes] >= thisAttributes[otherAttributes] &&
+                      rule$t <= self$t) {
+          return(TRUE)
+        }
+
       } else {
         return(FALSE)
       }
