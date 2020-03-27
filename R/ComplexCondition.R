@@ -134,7 +134,14 @@ ComplexCondition <- R6::R6Class(
       removedConditions = rep(FALSE, length(self$conditions))  # which elementary condition has been removed already
 
       for (i in seq_along(self$conditions)) {
-        temp = ComplexCondition$new(self$conditions[!removedConditions])
+        tempRemoved = removedConditions
+        tempRemoved[i] = TRUE
+
+        if (sum(!tempRemoved) == 0) {
+          break()
+        }
+
+        temp = ComplexCondition$new(self$conditions[!tempRemoved])
         tempCover = temp$complexCover(it)
         if (isSubsetArbitrary(tempCover, B)) {
           removedConditions[i] = TRUE
@@ -200,6 +207,7 @@ ComplexCondition <- R6::R6Class(
         return(FALSE)
       }
       stopifnot("ComplexCondition" %in% class(other))
+
       if (self$length() != other$length()) {
         return(FALSE)
       }

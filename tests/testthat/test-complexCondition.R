@@ -174,3 +174,36 @@ test_that("findBestElementary - same attribute, different values, one part alrea
   expect_true(e1$equals(newBest))
 })
 
+test_that("reduceConditions - empty condition", {
+  c = ComplexCondition$new()
+  B = informationTable$objects
+
+  expect_true(c$equals(c$reduceConditions(B = B, it = informationTable)))
+})
+
+test_that("reduceConditions - a single condition", {
+  e = ElementaryCondition$new(attribute = "QF3ST", value = 9, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new(e)
+  B = informationTable$objects
+
+  reduced = c$reduceConditions(B = B, it = informationTable)
+  expect_true(c$equals(reduced))
+})
+
+test_that("reduceConditions - two conditions, first covered", {
+  e1 = ElementaryCondition$new(attribute = "QF3ST", value = 9, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "QF2", value = 9, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new(c(e1, e2))
+  B = c("X12", "X15", "X23", "X24")
+
+  reduced = c$reduceConditions(B = B, it = informationTable)
+  expectedReduced = ComplexCondition$new(c(e1))
+
+  expect_true(expectedReduced$equals(reduced))
+
+  c = ComplexCondition$new(c(e2, e1))
+  reduced = c$reduceConditions(B = B, it = informationTable)
+  expect_true(expectedReduced$equals(reduced))
+})
