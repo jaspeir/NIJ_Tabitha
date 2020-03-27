@@ -188,6 +188,25 @@ ComplexCondition <- R6::R6Class(
     #' toString method.
     toString = function() {
       cat(paste(map_chr(self$conditions, ~ .$toString()), collapse = " AND "))
+    },
+
+    #' @description
+    #' Method to compare two ComplexConditions.
+    #' @param other the other complex condition to compare to
+    #' @return a single boolean value
+    equals = function(other) {
+
+      if (any(is.null(other))) {
+        return(FALSE)
+      }
+      stopifnot("ComplexCondition" %in% class(other))
+      if (self$length() != other$length()) {
+        return(FALSE)
+      }
+
+      equal = map2_lgl(self$conditions, other$conditions, function(a, b) {a$equals(b)})
+
+      return(all(equal))
     }
   )
 )
