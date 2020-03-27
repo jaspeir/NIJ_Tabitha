@@ -104,7 +104,8 @@ ComplexCondition <- R6::R6Class(
     #' @return the better of the two elementary conditions
     findBestElementary = function(G, it, check, best) {
 
-      if (is.na(best) || is.null(best)) {
+      stopifnot("ElementaryCondition" %in% class(check))
+      if (!"ElementaryCondition" %in% class(best)) {
         return(check)
       }
 
@@ -115,7 +116,7 @@ ComplexCondition <- R6::R6Class(
       bestMetric = tempBest$allMetrics(G, it)
 
       if (checkMetric$first > bestMetric$first ||
-          (checkMetric$first > bestMetric$first && checkMetric$second >= bestMetric$second)) {
+          (checkMetric$first == bestMetric$first && checkMetric$second >= bestMetric$second)) {
         return(check)
       } else {
         return(best)

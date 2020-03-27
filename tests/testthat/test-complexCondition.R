@@ -102,3 +102,32 @@ test_that("getConstants - two rules", {
   constants[6] = 421
   expect_equal(c$getConstants(informationTable), constants)
 })
+
+test_that("findBestElementary - empty best", {
+  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "Q2", value = 421, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new(e1)
+  newBest = c$findBestElementary(G = character(0), it = informationTable, check = e2, best = NULL)
+
+  expect_true(e2$equals(newBest))
+})
+
+test_that("findBestElementary - same attribute, different values", {
+  e1 = ElementaryCondition$new(attribute = "QF3ST", value = 8, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "QF3ST", value = 9, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new()
+
+  newBest = NULL
+  newBest = c$findBestElementary(G = informationTable$objects, it = informationTable, check = e1, best = newBest)
+  newBest = c$findBestElementary(G = informationTable$objects, it = informationTable, check = e2, best = newBest)
+
+  expect_true(e1$equals(newBest))
+
+  newBest = NULL
+  newBest = c$findBestElementary(G = informationTable$objects, it = informationTable, check = e2, best = newBest)
+  newBest = c$findBestElementary(G = informationTable$objects, it = informationTable, check = e1, best = newBest)
+
+  expect_true(e1$equals(newBest))
+})
