@@ -60,10 +60,7 @@ ComplexCondition <- R6::R6Class(
     firstMetric = function(G, it) {
       covered = self$complexCover(it)
 
-      # ERROR-CHECKS:
-      stopifnot(length(G) == length(covered))
-
-      return(sum(covered & G) / sum(covered))
+      return(length(intersect(covered, G)) / length(covered))
     },
 
     #' @description
@@ -74,10 +71,7 @@ ComplexCondition <- R6::R6Class(
     secondMetric = function(G, it) {
       covered = self$complexCover(it)
 
-      # ERROR-CHECKS:
-      stopifnot(length(G) == length(covered))
-
-      return(sum(covered & G))
+      return(length(intersect(covered,G)))
     },
 
     #' @description
@@ -86,6 +80,10 @@ ComplexCondition <- R6::R6Class(
     #' @param it the information table to use
     #' @return a list of metrics. Higher is better.
     allMetrics = function(G, it) {
+      # ERROR-CHECKS:
+      stopifnot("character" %in% class(G))
+      stopifnot("InformationTable" %in% class(it))
+
       return(list(first = self$firstMetric(G, it), second = self$secondMetric(G, it)))
     },
 

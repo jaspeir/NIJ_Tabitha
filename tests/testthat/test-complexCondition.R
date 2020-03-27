@@ -1,3 +1,5 @@
+context("ComplexCondition")
+
 test_that("create empty should succeed", {
   c = ComplexCondition$new()
   expect_true(TRUE)
@@ -44,4 +46,34 @@ test_that("conjuction of two elements", {
   e2 = ElementaryCondition$new(attribute = "Q3PSO", value = 2, it = informationTable, isLowerBound = F)
   c = ComplexCondition$new(c(e1, e2))
   expect_equal(c$complexCover(informationTable), c("X23"))
+})
+
+test_that("first metric - empty G", {
+  c = ComplexCondition$new()
+  expect_equal(c$firstMetric(G = c(), it = informationTable), 0)
+})
+
+test_that("first metric - single element in G", {
+  c = ComplexCondition$new()
+  expect_equal(c$firstMetric(G = c("X1"), it = informationTable), 1/length(informationTable$objects))
+})
+
+test_that("first metric - G outside cover", {
+  c = ComplexCondition$new()
+  expect_equal(c$firstMetric(G = c("XOR"), it = informationTable), 0)
+})
+
+test_that("second metric - empty G", {
+  c = ComplexCondition$new()
+  expect_equal(c$secondMetric(G = c(), it = informationTable), 0)
+})
+
+test_that("second metric - single element in G", {
+  c = ComplexCondition$new()
+  expect_equal(c$secondMetric(G = c("X1"), it = informationTable), 1)
+})
+
+test_that("second metric - G outside cover", {
+  c = ComplexCondition$new()
+  expect_equal(c$secondMetric(G = c("XOR"), it = informationTable), 0)
 })
