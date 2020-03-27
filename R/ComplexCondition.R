@@ -32,6 +32,11 @@ ComplexCondition <- R6::R6Class(
     #' @return the set of matching objects - logical vector
     complexCover = function(it) {
 
+      # Handle empty complex rule:
+      if (self$length() == 0) {
+        return(rep(FALSE, length(it$objects)))
+      }
+
       coveredEach = map_dfr(conditions, function(elem) {elem$elementCover(it) })
       covered = apply(coveredEach, MARGIN = 2, FUN = all)
 
@@ -83,6 +88,11 @@ ComplexCondition <- R6::R6Class(
     #' @param best the current best elementary
     #' @return the better of the two elementary conditions
     findBestElementary = function(G, it, check, best) {
+
+      if (is.na(best) || is.null(best)) {
+        return(check)
+      }
+
       tempCheck = ComplexCondition$new(c(self$conditions, check))
       tempBest = ComplexCondition$new(c(self$conditions, best))
 
@@ -110,13 +120,25 @@ ComplexCondition <- R6::R6Class(
       for (i in seq_along(self$conditions)) {
         temp = ComplexCondition$new(self$conditions[!removedConditions])
         tempCover = temp$complexCover(it)
-        isSubset = tempCover & B == tempCover
-        if (isSubset) {
+        if (isSubset(tempCover, B)) {
           removedConditions[i] = TRUE
         }
       }
 
       return(ComplexCondition$new(self$conditions[!removedConditions]))
+    },
+
+    #' @description
+    #' Method for appending an additional elementary condition to the current conditions.
+    #' @param elem the elementary condition to be added
+    append = function(elem) {
+      self$conditions = c(self$conditions, elem)
+    },
+
+    #' @description
+    #' Method that returns the number of elementary conditions in this complex condition.
+    length = function() {
+      return(length(self$conditions))
     },
 
     #' @description

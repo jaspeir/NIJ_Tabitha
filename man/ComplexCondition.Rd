@@ -26,6 +26,8 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-allMetrics}{\code{ComplexCondition$allMetrics()}}
 \item \href{#method-findBestElementary}{\code{ComplexCondition$findBestElementary()}}
 \item \href{#method-checkRules}{\code{ComplexCondition$checkRules()}}
+\item \href{#method-append}{\code{ComplexCondition$append()}}
+\item \href{#method-length}{\code{ComplexCondition$length()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
 \item \href{#method-clone}{\code{ComplexCondition$clone()}}
 }
@@ -174,6 +176,31 @@ For each elementary condition e in E, check if [rule - {e}] subset or equal B th
 \subsection{Returns}{
 a complex condition
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-append"></a>}}
+\subsection{Method \code{append()}}{
+Method for appending an additional elementary condition to the current conditions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$append(elem)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{elem}}{the elementary condition to be added}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-length"></a>}}
+\subsection{Method \code{length()}}{
+Method that returns the number of elementary conditions in this complex condition.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$length()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print"></a>}}
