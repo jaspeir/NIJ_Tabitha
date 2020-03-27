@@ -65,13 +65,15 @@ Main method.
 \subsection{Method \code{findRules()}}{
 Method to extract a given type of decision rules for a given class union approximation.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DOMLEM$findRules(approximation, P, ruleType)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DOMLEM$findRules(approximation, t, P, ruleType)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{approximation}}{the class union approximation to cover}
+
+\item{\code{t}}{the t-parameter of the class union}
 
 \item{\code{P}}{the set of attributes used for creating the approximations}
 

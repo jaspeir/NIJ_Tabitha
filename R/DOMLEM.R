@@ -49,34 +49,39 @@ DOMLEM <- R6::R6Class(
     main = function() {
       RULES = c()
 
-      # TODO: make sure we loop over the rough sets in the right order, and skip any unnecessary elements
+      classCount = nrow(self$roughSets*upward_L)
 
       # Create STAT1 type rules
-      for (approx in self$roughSets$upward_L) {
-        rules = findRules(approx, self$P, ruleType = "STAT1")
+      for (t in seq(from = classCount, to = 2)) {
+        approx = self$roughSets$upward_L[t]
+        rules = findRules(approx, self$P, t, ruleType = "STAT1")
 
-        # TODO: make rules from the extracted complex conditions
+        # TODO: select only minimal rules
 
         RULES = c(RULES, rules)
       }
 
       # Create STAT2 type rules
-      for (approx in self$roughSets$downward_L) {
-        rules = findRules(approx, self$P, ruleType = "STAT2")
+      for (t in seq(from = 1, to = classCount - 1)) {
+        approx = self$roughSets$downward_L[t]
+        rules = findRules(approx, self$P, t, ruleType = "STAT2")
+
+        # TODO: select only minimal rules
+
         RULES = c(RULES, rules)
       }
 
-      # TODO: save RULES
-
+      self$rules = RULES
     },
 
     #' @description
     #' Method to extract a given type of decision rules for a given class union approximation.
     #' @param approximation the class union approximation to cover
     #' @param P the set of attributes used for creating the approximations
+    #' @param t the t-parameter of the class union
     #' @param ruleType the type of rule to extract
     #' @return the extracted decision rules
-    findRules = function(approximation, P, ruleType) {
+    findRules = function(approximation, t, P, ruleType) {
 
       B = approximation
       G = B    # objects still to cover
@@ -111,17 +116,21 @@ DOMLEM <- R6::R6Class(
           S = S & covered
         }
 
-        e = e$checkRules(B = B, it = static_examples)
+        e = e$reduceConditions(B = B, it = static_examples)
         E = c(E, e)
 
-        # remove examples covered by RULE
+        # remove examples covered by E
         EXAMPLES = EXAMPLES$remove_objects(self$rules_cover(it = EXAMPLES, rules = E))
 
         coveredGlobal = self$rules_cover(it = static_examples, rules = E)
         G = B & !coveredGlobal
       }
 
-      return(E)
+      # Make rules from the extracted complex conditions:
+      classUnionType = switch(ruleType, "STAT1" = 'upward', "STAT2" = 'downward')
+      rules = map(E, DecisionRule$new(condition = ., t = t, type = classUnionType))
+
+      return(rules)
     },
 
     #' @description
