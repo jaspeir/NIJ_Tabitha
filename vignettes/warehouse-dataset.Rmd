@@ -1,0 +1,70 @@
+---
+title: "Creating The Warehouse Dataset"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{warehouse-dataset}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(DRSA)
+library(tibble)
+```
+
+# Introduction
+
+In this vignette we give an introduction to using the DOMLEM algorithm for a small dataset from the literature. We consider a dataset from the following paper: Rough sets methodology for sorting problems in presence of multiple attributes and criteria, Greco et al., EJOR, 2002.
+
+# Creating the decision table
+
+We start by creating the decision table row-by-row as in the paper.
+
+```{r}
+decisionTable = tribble(
+  ~Warehouse, ~A1, ~A2, ~A3, ~d,
+  'w1', 'Medium', 'A', 500, 'Loss',
+  'w2', 'Good',   'A', 400, 'Profit',
+  'w3', 'Medium', 'A', 450, 'Profit',
+  'w4', 'Good',   'B', 400, 'Loss',
+  'w5', 'Good',   'B', 475, 'Profit',
+  'w6', 'Medium', 'B', 425, 'Profit',
+  'w7', 'Medium', 'B', 350, 'Profit',
+  'w8', 'Medium', 'B', 350, 'Loss'
+)
+```
+
+
+# Creating the meta-data
+
+We continue by creating the meta-data of our dataset. It contains important details of the attributes in our dataset. The meta-data has to be provided as a data-frame containing one row for each attribute.
+
+```{r}
+metaData = tribble(
+  ~name, ~type, ~alpha, ~beta,
+  'Warehouse', 'object', NA, NA,
+  
+  'A1', 'dominance', NA, NA,
+  'A2', 'indiscernibility', NA, NA,
+  'A3', 'dominance', NA, NA,
+
+  'd',  'decision', NA, NA
+)
+```
+
+# Creating the information table
+
+Finally, we have everything we need to create an information table. We simply provide the decision table and the meta-data to the constructor of the `InformationTable` class.
+
+```{r}
+warehouseIT = InformationTable$new(decisionTable, metaData)
+save(warehouseIT, file = "../data/warehouse-informationTable.RData")
+```
+
