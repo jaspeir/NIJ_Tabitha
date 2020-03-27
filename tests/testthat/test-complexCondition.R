@@ -77,3 +77,28 @@ test_that("second metric - G outside cover", {
   c = ComplexCondition$new()
   expect_equal(c$secondMetric(G = c("XOR"), it = informationTable), 0)
 })
+
+test_that("getConstants - empty rule", {
+  c = ComplexCondition$new()
+  constants = rep(NA, nrow(informationTable$metaData))
+  expect_equal(c$getConstants(informationTable), constants)
+})
+
+test_that("getConstants - single rule", {
+  e = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
+  c = ComplexCondition$new(e)
+  constants = rep(NA_real_, nrow(informationTable$metaData))
+  constants[5] = 42
+  expect_equal(c$getConstants(informationTable), constants)
+})
+
+test_that("getConstants - two rules", {
+  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "Q2", value = 421, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new(c(e1, e2))
+  constants = rep(NA_real_, nrow(informationTable$metaData))
+  constants[5] = 42
+  constants[6] = 421
+  expect_equal(c$getConstants(informationTable), constants)
+})

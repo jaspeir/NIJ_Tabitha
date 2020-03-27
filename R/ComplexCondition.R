@@ -117,7 +117,7 @@ ComplexCondition <- R6::R6Class(
     #' @description
     #' Method that tries to make a complex condition shorter.
     #' For each elementary condition e in E, check if [E - {e}] subset or equal B then E := E - {e}.
-    #' @param B the objects to cover - a vector describing a set of objects
+    #' @param B the objects to cover - set of object names
     #' @param it the information table to use
     #' @return a complex condition
     reduceConditions = function(B, it) {
@@ -140,11 +140,16 @@ ComplexCondition <- R6::R6Class(
     #' @param it the information table to use
     #' @return a vector of filter values. Not filtered attributes have an NA value.
     getConstants = function(it) {
-      activeConstants = map_dfr(conditions, function(cond) { list(name = cond$attribute, value = cond$value)})
 
       constants = rep(NA, nrow(it$metaData))
-      attributeIndexes = map_int(activeConstants$name, which(. == it$metaData$name, arr.ind = TRUE))
-      constants[attributeIndexes] = activeConstants$value[attributeIndexes]
+      if (self$length() == 0) {
+        return(constants)
+      }
+
+      # NOTE: we do not handle the case when there are multiple elementary conditions on the same attribute
+      activeConstants = map_dfr(self$conditions, function(cond) { list(name = cond$attribute, value = cond$value)})
+      attributeIndexes = map_int(activeConstants$name, ~ which(. == it$metaData$name, arr.ind = TRUE))
+      constants[attributeIndexes] = activeConstants$value
 
       return(constants)
     },
