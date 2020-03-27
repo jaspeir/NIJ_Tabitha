@@ -2,6 +2,7 @@
 
 export(ComplexCondition)
 export(DOMLEM)
+export(DecisionRule)
 export(ElementaryCondition)
 export(InformationTable)
 export(convertMatrixToList)
