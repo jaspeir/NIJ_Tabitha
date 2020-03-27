@@ -35,7 +35,6 @@ ElementaryCondition <- R6::R6Class(
 
       # ERROR-CHECKS:
       stopifnot('character' %in% class(attribute))
-      stopifnot('numeric' %in% class(value))
       stopifnot('InformationTable' %in% class(it))
       stopifnot('logical' %in% class(isLowerBound))
       self$attribute = attribute
@@ -55,7 +54,7 @@ ElementaryCondition <- R6::R6Class(
 
       values = it$decisionTable[[self$attribute]]
 
-      covered = switch(self$attributeType,
+      covered = switch(as.character(self$attributeType),
               'indiscernibility' = values == self$value,
               'similarity' =  abs(values - value) <= self$alpha * value + self$beta,
               'dominance' = if (isLowerBound) values >= self$value else values <= self$value
@@ -67,14 +66,20 @@ ElementaryCondition <- R6::R6Class(
     #' @description
     #' Print method.
     print = function() {
-      op = switch(self$attributeType,
-                     'indiscernibility' = '=',
-                     'similarity' =  '~',
-                     'dominance' = if (isLowerBound) '>=' else '<='
-      )
-      cat(paste0(self$attribute, ' ', op, ' ', self$value))
+      cat(self$toString())
 
       invisible(self)
+    },
+
+    #' @description
+    #' toString method.
+    toString = function() {
+      op = switch(as.character(self$attributeType),
+                  'indiscernibility' = '=',
+                  'similarity' =  '~',
+                  'dominance' = if (isLowerBound) '>=' else '<='
+      )
+      return(paste0(self$attribute, ' ', op, ' ', self$value))
     }
   )
 )

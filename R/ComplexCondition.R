@@ -21,9 +21,12 @@ ComplexCondition <- R6::R6Class(
     initialize = function(conditions) {
 
       # ERROR-CHECKS:
-      stopifnot('ElementaryCondition' %in% class(conditions))
-      stopifnot('InformationTable' %in% class(it))
-      self$conditions = conditions
+      if (missing(conditions)) {
+        self$conditions = c()
+      } else {
+        walk(conditions, ~ stopifnot('ElementaryCondition' %in% class(.)))
+        self$conditions = conditions
+      }
     },
 
     #' @description
@@ -37,7 +40,7 @@ ComplexCondition <- R6::R6Class(
         return(rep(FALSE, length(it$objects)))
       }
 
-      coveredEach = map_dfr(conditions, function(elem) {elem$elementCover(it) })
+      coveredEach = map_dfr(self$conditions, function(elem) {elem$elementCover(it) })
       covered = apply(coveredEach, MARGIN = 2, FUN = all)
 
       return(covered)
@@ -158,9 +161,15 @@ ComplexCondition <- R6::R6Class(
     #' @description
     #' Print method.
     print = function() {
-      cat(paste(conditions, sep = " AND "))
+      cat(self$toString())
 
       invisible(self)
+    },
+
+    #' @description
+    #' toString method.
+    toString = function() {
+      cat(paste(map_chr(self$conditions, ~ .$toString()), collapse = " AND "))
     }
   )
 )
