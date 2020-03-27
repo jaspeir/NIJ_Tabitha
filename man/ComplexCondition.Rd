@@ -30,6 +30,7 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-append}{\code{ComplexCondition$append()}}
 \item \href{#method-length}{\code{ComplexCondition$length()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
+\item \href{#method-toString}{\code{ComplexCondition$toString()}}
 \item \href{#method-clone}{\code{ComplexCondition$clone()}}
 }
 }
@@ -228,6 +229,15 @@ Method that returns the number of elementary conditions in this complex conditio
 Print method.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+toString method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$toString()}\if{html}{\out{</div>}}
 }
 
 }

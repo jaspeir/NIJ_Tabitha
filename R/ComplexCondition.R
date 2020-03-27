@@ -24,8 +24,12 @@ ComplexCondition <- R6::R6Class(
       if (missing(conditions)) {
         self$conditions = c()
       } else {
-        walk(conditions, ~ stopifnot('ElementaryCondition' %in% class(.)))
-        self$conditions = conditions
+        if ('ElementaryCondition' %in% class(conditions)) {
+          self$conditions = c(conditions)
+        } else {
+          walk(conditions, ~ stopifnot('ElementaryCondition' %in% class(.)))
+          self$conditions = conditions
+        }
       }
     },
 
@@ -37,11 +41,13 @@ ComplexCondition <- R6::R6Class(
 
       # Handle empty complex rule:
       if (self$length() == 0) {
-        return(rep(FALSE, length(it$objects)))
+        return(it$objects)
       }
 
-      coveredEach = map_dfr(self$conditions, function(elem) {elem$elementCover(it) })
-      covered = apply(coveredEach, MARGIN = 2, FUN = all)
+      covered = it$objects
+      walk(self$conditions, function(elem) {
+        covered <<- intersect(covered, elem$elementCover(it))
+      })
 
       return(covered)
     },
