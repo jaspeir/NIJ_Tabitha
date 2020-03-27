@@ -141,6 +141,21 @@ DOMLEM <- R6::R6Class(
     rulesCover = function(it, rules) {
       covered = map_dfr(rules, function(rule) { rule$complexCover(it) })
       return(apply(covered, MARGIN = 2, FUN = any))
+    },
+
+    #' @description
+    #' Method to add the minimal decision rules to the existing set of rules.
+    #' @param existingRules the set of rules to be extended
+    #' @param newRules the set of rules to be added
+    #' @return a set of decision rules
+    addMinimalRules = function(existingRules, newRules) {
+      for (rule in newRules) {
+        if (rule$isMinimal(existingRules)) {
+          existingRules = c(existingRules, rule)
+        }
+      }
+
+      return(existingRules)
     }
   )
 )

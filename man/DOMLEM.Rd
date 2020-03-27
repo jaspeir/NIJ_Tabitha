@@ -30,6 +30,7 @@ This is an extension of the original DOMLEM algorithm to consider mixed-type att
 \item \href{#method-main}{\code{DOMLEM$main()}}
 \item \href{#method-findRules}{\code{DOMLEM$findRules()}}
 \item \href{#method-rulesCover}{\code{DOMLEM$rulesCover()}}
+\item \href{#method-addMinimalRules}{\code{DOMLEM$addMinimalRules()}}
 \item \href{#method-clone}{\code{DOMLEM$clone()}}
 }
 }
@@ -104,6 +105,27 @@ Method to calculate the objects covered by a set of rules.
 }
 \subsection{Returns}{
 the covered objects - boolean vector
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-addMinimalRules"></a>}}
+\subsection{Method \code{addMinimalRules()}}{
+Method to add the minimal decision rules to the existing set of rules.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DOMLEM$addMinimalRules(existingRules, newRules)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{existingRules}}{the set of rules to be extended}
+
+\item{\code{newRules}}{the set of rules to be added}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a set of decision rules
 }
 }
 \if{html}{\out{<hr>}}
