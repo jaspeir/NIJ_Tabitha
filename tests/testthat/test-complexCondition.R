@@ -131,3 +131,46 @@ test_that("findBestElementary - same attribute, different values", {
 
   expect_true(e1$equals(newBest))
 })
+
+test_that("findBestElementary - same attribute, different values, reduced objects set", {
+  e1 = ElementaryCondition$new(attribute = "QF3ST", value = 8, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "QF3ST", value = 9, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new()
+  G = c("X12", "X15", "X23", "X24")
+
+  newBest = NULL
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e1, best = newBest)
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e2, best = newBest)
+
+  expect_true(e2$equals(newBest))
+
+  newBest = NULL
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e2, best = newBest)
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e1, best = newBest)
+
+  expect_true(e2$equals(newBest))
+})
+
+test_that("findBestElementary - same attribute, different values, one part already covered", {
+  e = ElementaryCondition$new(attribute = "QF3ST", value = 9, it = informationTable, isLowerBound = F)
+
+  e1 = ElementaryCondition$new(attribute = "Q3PSO", value = 5, it = informationTable, isLowerBound = F)
+  e2 = ElementaryCondition$new(attribute = "Q3PSO", value = 2, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new(e)
+  G = informationTable$objects
+
+  newBest = NULL
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e1, best = newBest)
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e2, best = newBest)
+
+  expect_true(e1$equals(newBest))
+
+  newBest = NULL
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e2, best = newBest)
+  newBest = c$findBestElementary(G = G, it = informationTable, check = e1, best = newBest)
+
+  expect_true(e1$equals(newBest))
+})
+
