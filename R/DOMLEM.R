@@ -95,7 +95,7 @@ DOMLEM <- R6::R6Class(
 
         while (e$length() == 0 || !isSubsetArbitrary(e$complexCover(it = EXAMPLES), B)) {
 
-          best = NA
+          best = NULL
 
           for (criterion in P) {
 
