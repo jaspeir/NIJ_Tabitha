@@ -169,7 +169,7 @@ For each elementary condition e in E, check if [E - {e}] subset or equal B then 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{B}}{the objects to cover - a vector describing a set of objects}
+\item{\code{B}}{the objects to cover - set of object names}
 
 \item{\code{it}}{the information table to use}
 }
