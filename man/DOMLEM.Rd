@@ -104,7 +104,7 @@ Method to calculate the objects covered by a set of rules.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-the covered objects - boolean vector
+the covered objects - set of object names
 }
 }
 \if{html}{\out{<hr>}}

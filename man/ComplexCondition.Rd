@@ -31,6 +31,7 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-length}{\code{ComplexCondition$length()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
 \item \href{#method-toString}{\code{ComplexCondition$toString()}}
+\item \href{#method-equals}{\code{ComplexCondition$equals()}}
 \item \href{#method-clone}{\code{ComplexCondition$clone()}}
 }
 }
@@ -240,6 +241,25 @@ toString method.
 \if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$toString()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-equals"></a>}}
+\subsection{Method \code{equals()}}{
+Method to compare two ComplexConditions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$equals(other)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{other}}{the other complex condition to compare to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a single boolean value
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

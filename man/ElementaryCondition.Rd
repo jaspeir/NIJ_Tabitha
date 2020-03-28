@@ -33,6 +33,7 @@ This class stores the attribute, the filter value, and for dominance variables w
 \item \href{#method-elementCover}{\code{ElementaryCondition$elementCover()}}
 \item \href{#method-print}{\code{ElementaryCondition$print()}}
 \item \href{#method-toString}{\code{ElementaryCondition$toString()}}
+\item \href{#method-equals}{\code{ElementaryCondition$equals()}}
 \item \href{#method-clone}{\code{ElementaryCondition$clone()}}
 }
 }
@@ -94,6 +95,25 @@ toString method.
 \if{html}{\out{<div class="r">}}\preformatted{ElementaryCondition$toString()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-equals"></a>}}
+\subsection{Method \code{equals()}}{
+Method to compare two ElementaryConditions.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ElementaryCondition$equals(other)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{other}}{the other elementary condition to compare to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a single boolean value
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
