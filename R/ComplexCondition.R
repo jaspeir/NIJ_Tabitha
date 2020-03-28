@@ -184,17 +184,16 @@ ComplexCondition <- R6::R6Class(
     },
 
     #' @description
-    #' Print method.
+    #' print method.
     print = function() {
       cat(self$toString())
-
       invisible(self)
     },
 
     #' @description
     #' toString method.
     toString = function() {
-      cat(paste(map_chr(self$conditions, ~ .$toString()), collapse = " AND "))
+      paste(map_chr(self$conditions, ~ .$toString()), collapse = " AND ")
     },
 
     #' @description
