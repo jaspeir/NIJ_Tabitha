@@ -37,6 +37,10 @@ ElementaryCondition <- R6::R6Class(
       stopifnot('character' %in% class(attribute))
       stopifnot('InformationTable' %in% class(it))
       stopifnot('logical' %in% class(isLowerBound))
+      stopifnot(length(attribute) == 1)
+      stopifnot(length(value) == 1)
+      stopifnot(length(isLowerBound) == 1)
+
       self$attribute = attribute
       self$value = value
       self$isLowerBound = isLowerBound
