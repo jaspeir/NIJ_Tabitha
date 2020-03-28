@@ -93,6 +93,36 @@ DecisionRule <- R6::R6Class(
       } else {
         return(FALSE)
       }
+    },
+
+    #' @description
+    #' print method.
+    print = function() {
+      cat(self$toString())
+      invisible(self)
+    },
+
+    #' @description
+    #' toString method.
+    toString = function() {
+      rhs = paste0("Cl", self$t, ifelse(self$type == 'upward', ">=", "<="))
+      paste0(self$condition$toString(), " => ", rhs)
+    },
+
+    #' @description
+    #' Method to compare two DecisionRules
+    #' @param other the other decision rule to compare to
+    #' @return a single boolean value
+    equals = function(other) {
+
+      if (any(is.null(other))) {
+        return(FALSE)
+      }
+      stopifnot("DecisionRule" %in% class(other))
+
+      return(self$condition$equals(other$condition) &&
+               self$t == other$t &&
+               self$type == other$type)
     }
   )
 )
