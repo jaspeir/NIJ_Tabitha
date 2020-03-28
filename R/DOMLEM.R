@@ -93,7 +93,9 @@ DOMLEM <- R6::R6Class(
         e = ComplexCondition$new()  # starting complex condition
         S = G  # set of objects currently covered by E
 
-        while (e$length() == 0 || !isSubsetArbitrary(e$complexCover(it = EXAMPLES), B)) {
+        maxRuleLength = length(P) * length(B)
+
+        while ((e$length() == 0 || !isSubsetArbitrary(e$complexCover(it = EXAMPLES), B)) && e$length() < maxRuleLength) {
 
           best = NULL
 
