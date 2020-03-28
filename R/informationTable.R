@@ -401,7 +401,7 @@ InformationTable <- R6::R6Class(
       dom = self$dominatingAndDominatedSets(P)
 
       approx = list(
-        upward_U = self$upwardClassUnionUpperApproximation(dom$dominating_U),
+        upward_U = self$upwardClassUnionUpperApproximation(dom$dominating_L),
         upward_L = NA,
         downward_U = self$downwardClassUnionUpperApproximation(dom$dominated_U),
         downward_L = NA
