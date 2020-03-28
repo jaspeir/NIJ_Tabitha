@@ -70,3 +70,41 @@ warehouseIT = InformationTable$new(decisionTable, metaData)
 save(warehouseIT, file = "../data/warehouse-informationTable.RData")
 ```
 
+# Calculating the rough sets
+
+The class unions look like as follows:
+
+```{r}
+classUnions = warehouseIT$classUnions()
+convertMatrixToList(classUnions$upward, warehouseIT$objects)
+convertMatrixToList(classUnions$downward, warehouseIT$objects)
+```
+
+Rough sets:
+
+```{r}
+P = c("A1", "A2", "A3")
+roughtSets = warehouseIT$roughSets(P)
+convertMatrixToList(roughtSets$upward_U, warehouseIT$objects)
+convertMatrixToList(roughtSets$upward_L, warehouseIT$objects)
+convertMatrixToList(roughtSets$downward_U, warehouseIT$objects)
+convertMatrixToList(roughtSets$downward_L, warehouseIT$objects)
+```
+
+Boundary regions:
+
+```{r}
+boundary = warehouseIT$boundaryRegions(roughtSets)
+convertMatrixToList(boundary$upward, warehouseIT$objects)
+convertMatrixToList(boundary$downward, warehouseIT$objects)
+```
+
+
+# Running the DOMLEM algorithm
+
+```{r}
+DOMLEM = DOMLEM$new(it = warehouseIT, P = P)
+cat(DOMLEM$rules)
+```
+
+
