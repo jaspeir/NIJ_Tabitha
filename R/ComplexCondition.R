@@ -163,7 +163,7 @@ ComplexCondition <- R6::R6Class(
       }
 
       # NOTE: we do not handle the case when there are multiple elementary conditions on the same attribute
-      activeConstants = map_dfr(self$conditions, function(cond) { list(name = cond$attribute, value = cond$value)})
+      activeConstants = map_dfr(self$conditions, function(cond) { list(name = cond$attribute, value = as.character(cond$value))})
       attributeIndexes = map_int(activeConstants$name, ~ which(. == it$metaData$name, arr.ind = TRUE))
       constants[attributeIndexes] = activeConstants$value
 
