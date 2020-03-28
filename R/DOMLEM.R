@@ -41,7 +41,7 @@ DOMLEM <- R6::R6Class(
       self$P = P
 
       # Run main method
-      self$main()
+      # self$main()
     },
 
     #' @description
@@ -100,7 +100,7 @@ DOMLEM <- R6::R6Class(
           for (criterion in P) {
 
             S_index = map_int(S, ~ which(. == EXAMPLES$objects, arr.ind = TRUE))
-            values = EXAMPLES$decisionTable[S_index, criterion]
+            values = EXAMPLES$decisionTable[S_index, ][[criterion]]
             for (value in values) {
               check = ElementaryCondition$new(attribute = criterion, value = value, it = EXAMPLES, isLowerBound = isLowerBound)
               best = e$findBestElementary(G = G, it = EXAMPLES, check = check, best = best)
