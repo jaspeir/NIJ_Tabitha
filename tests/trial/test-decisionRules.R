@@ -4,11 +4,14 @@ library(testthat)
 
 test_that("Extract decision rules", {
   # Set-up code:
-  informationTable = InformationTable$new(informationTable$decisionTable, informationTable$metaData)
+  load("data/trial-informationTable.RData")
+  trialIT = InformationTable$new(informationTable$decisionTable, informationTable$metaData)
 
-  P = names(informationTable$decisionTable)
+  P = names(trialIT$decisionTable)
+  P = trialIT$partitionAttributes(P)
+  P = c(P$ind, P$sim, P$dom)
 
-  DOMLEM = DOMLEM$new(it = informationTable, P = P)
+  DOMLEM = DOMLEM$new(it = trialIT, P = P)
 
   cat(DOMLEM$rules)
 })
