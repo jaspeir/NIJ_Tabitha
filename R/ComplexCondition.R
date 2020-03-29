@@ -171,6 +171,16 @@ ComplexCondition <- R6::R6Class(
     },
 
     #' @description
+    #' Method for deciding whether a provided elementary condition is part of this complex condition.
+    #' @param elem the elementary condition to check
+    #' @return a boolean value
+    contains = function(elem) {
+      results = map_lgl(self$conditions, function(e) e$equals(elem) )
+
+      return(any(results))
+    },
+
+    #' @description
     #' Method for appending an additional elementary condition to the current conditions.
     #' @param elem the elementary condition to be added
     append = function(elem) {
