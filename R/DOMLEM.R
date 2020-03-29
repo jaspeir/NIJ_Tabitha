@@ -47,7 +47,12 @@ DOMLEM <- R6::R6Class(
     #' @description
     #' Main method.
     main = function() {
-      RULES = c()
+
+      RULES = list(
+        STAT1 = c(),
+        STAT2 = c(),
+        STAT3 = c()
+      )
 
       classCount = nrow(self$roughSets$upward_L)
 
@@ -56,7 +61,7 @@ DOMLEM <- R6::R6Class(
         approx = self$roughSets$upward_L[t, ]
         rules = self$findRules(approximation = approx, P = self$P, t = t, ruleType = "STAT1")
 
-        RULES = self$addMinimalRules(existingRules = RULES, newRules = rules)
+        RULES$STAT1 = self$addMinimalRules(existingRules = RULES$STAT1, newRules = rules)
       }
 
       # Create STAT2 type rules
@@ -64,7 +69,17 @@ DOMLEM <- R6::R6Class(
         approx = self$roughSets$downward_L[t, ]
         rules = self$findRules(approximation = approx, P = self$P, t = t, ruleType = "STAT2")
 
-        RULES = self$addMinimalRules(existingRules = RULES, newRules = rules)
+        RULES$STAT2 = self$addMinimalRules(existingRules = RULES$STAT2, newRules = rules)
+      }
+
+      # Create STAT3 type rules
+      for (s in seq(from = 1, to = classCount - 1)) {
+        for (t in seq(from = s + 1, to = classCount)) {
+          approx = self$roughSets$downward_U[s, ] & self$roughSets$upward_U[t, ]
+          rules = self$findRules(approximation = approx, P = self$P, t = s:t, ruleType = "STAT3")
+
+          RULES$STAT3 = self$addMinimalRules(existingRules = RULES$STAT3, newRules = rules)
+        }
       }
 
       self$rules = RULES
@@ -126,8 +141,7 @@ DOMLEM <- R6::R6Class(
       }
 
       # Make rules from the extracted complex conditions:
-      classUnionType = switch(ruleType, "STAT1" = 'upward', "STAT2" = 'downward')
-      rules = map(E, ~ DecisionRule$new(condition = ., t = t, type = classUnionType))
+      rules = map(E, ~ DecisionRule$new(condition = ., t = t, type = ruleType))
 
       return(rules)
     },
