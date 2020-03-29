@@ -102,11 +102,14 @@ DecisionRule <- R6::R6Class(
     ruleMetrics = function(it) {
       lhs = self$condition$complexCover(it)
       rhs = NA
-      if (self$type == 'STAT1') {
-        rhs = it$upwardClassUnion(self$t)
+
+      classUnions = it$classUnions()
+
+      if (self$type == 'upward') {
+        rhs = classUnions$upward[self$t, ]
         rhs = it$objects[rhs]
-      } else if (self$type == 'STAT2') {
-        rhs = it$downwardClassUnion(self$t)
+      } else if (self$type == 'downward') {
+        rhs = classUnions$downward[self$t, ]
         rhs = it$objects[rhs]
       }
 
