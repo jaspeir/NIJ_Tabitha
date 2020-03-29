@@ -40,5 +40,5 @@ test_that("STAT2 decision rules", {
 test_that("decision rules obtained for all approximations", {
   domlem = DOMLEM$new(it = trialIT, P = P)
   domlem$main()
-  domlem$rules
+  print(domlem)
 })
