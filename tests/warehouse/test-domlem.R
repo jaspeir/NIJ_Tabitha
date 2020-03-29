@@ -17,7 +17,8 @@ test_that("decision rules obtained for some approximations", {
 })
 
 test_that("decision rules obtained for some other approximations", {
-  DOMLEM$debug('findRules')
+  #DOMLEM$debug('findRules')
+  #warehouseIT$metaData$alpha[4] = 0.099
   domlem = DOMLEM$new(it = warehouseIT, P = P)
 
   approx = domlem$roughSets$downward_L[1, ]
@@ -28,5 +29,5 @@ test_that("decision rules obtained for some other approximations", {
 test_that("decision rules obtained for all approximations", {
   domlem = DOMLEM$new(it = warehouseIT, P = P)
   domlem$main()
-  domlem$rules
+  print(domlem)
 })
