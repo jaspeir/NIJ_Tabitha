@@ -36,7 +36,7 @@ test_that("rule metrics for the global warming dataset as in the Pawlak 2002 pap
     ElementaryCondition$new(attribute = 'SolarEnergy', value = "Medium", isLowerBound = T, it = globalWarmingIT),
     ElementaryCondition$new(attribute = 'VolcanicActivity', value = "High", isLowerBound = T, it = globalWarmingIT)
   ))
-  rule = DecisionRule$new(condition = c, t = 2, type = 'upward')
+  rule = DecisionRule$new(condition = c, t = 2, type = 'STAT1')
   rule$ruleMetrics(globalWarmingIT)
 
   # Rule 3:
@@ -44,7 +44,7 @@ test_that("rule metrics for the global warming dataset as in the Pawlak 2002 pap
     ElementaryCondition$new(attribute = 'SolarEnergy', value = "Medium", isLowerBound = T, it = globalWarmingIT),
     ElementaryCondition$new(attribute = 'VolcanicActivity', value = "Low", isLowerBound = T, it = globalWarmingIT)
   ))
-  rule = DecisionRule$new(condition = c, t = 2, type = 'upward')
+  rule = DecisionRule$new(condition = c, t = 2, type = 'STAT1')
   rule$ruleMetrics(globalWarmingIT)
 
   # Rule 5:
@@ -52,7 +52,7 @@ test_that("rule metrics for the global warming dataset as in the Pawlak 2002 pap
     ElementaryCondition$new(attribute = 'SolarEnergy', value = "Medium", isLowerBound = T, it = globalWarmingIT),
     ElementaryCondition$new(attribute = 'VolcanicActivity', value = "Low", isLowerBound = T, it = globalWarmingIT)
   ))
-  rule = DecisionRule$new(condition = c, t = 1, type = 'downward')
+  rule = DecisionRule$new(condition = c, t = 1, type = 'STAT2')
   rule$ruleMetrics(globalWarmingIT)
 
 })
