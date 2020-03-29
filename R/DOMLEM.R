@@ -98,7 +98,12 @@ DOMLEM <- R6::R6Class(
       G = B    # objects still to cover
       E = c()  # the set of extracted rules
 
-      isLowerBound = ruleType %in% c(1, 3, "one", "three", "STAT1", "stat1") # Type of rule to generate (for dominance variables)
+
+      # TODO handle STAT3-type decision-rules
+      if (ruleType == "STAT3") {
+        return(c())
+      }
+      isLowerBound = ruleType == "STAT1" # Type of rule to generate (for dominance variables)
 
       static_examples = self$it
       EXAMPLES = self$it$clone()
