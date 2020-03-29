@@ -130,6 +130,11 @@ DOMLEM <- R6::R6Class(
 
           }
 
+          # Detect endless rules being generated and finish creating the complex:
+          if (e$contains(best)) {
+            break()
+          }
+
           e$append(best)
           covered = best$elementCover(it = EXAMPLES)
           S = intersect(S,covered)
@@ -179,6 +184,20 @@ DOMLEM <- R6::R6Class(
       }
 
       return(existingRules)
+    },
+
+    #' @description
+    #' print method.
+    print = function() {
+      cat(self$toString())
+      invisible(self)
+    },
+
+    #' @description
+    #' toString method.
+    toString = function() {
+      allRules = c(self$rules$STAT1, self$rules$STAT2, self$rules$STAT3)
+      paste(map_chr(allRules, function(r) r$toString()), collapse = '\n')
     }
   )
 )
