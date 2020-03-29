@@ -1,0 +1,110 @@
+---
+title: "Creating The Warehouse Dataset"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{warehouse-dataset}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(DRSA)
+library(tibble)
+```
+
+# Introduction
+
+In this vignette we give an introduction to using the DOMLEM algorithm for a small dataset from the literature. We consider a dataset from the following paper: Rough sets methodology for sorting problems in presence of multiple attributes and criteria, Greco et al., EJOR, 2002.
+
+# Creating the decision table
+
+We start by creating the decision table row-by-row as in the paper.
+
+```{r}
+decisionTable = tribble(
+  ~Warehouse, ~A1, ~A2, ~A3, ~d,
+  'w1', 'Medium', 'A', 500, 'Loss',
+  'w2', 'Good',   'A', 400, 'Profit',
+  'w3', 'Medium', 'A', 450, 'Profit',
+  'w4', 'Good',   'B', 400, 'Loss',
+  'w5', 'Good',   'B', 475, 'Profit',
+  'w6', 'Medium', 'B', 425, 'Profit',
+  'w7', 'Medium', 'B', 350, 'Profit',
+  'w8', 'Medium', 'B', 350, 'Loss'
+)
+
+decisionTable$A1 = factor(decisionTable$A1, levels = c("Medium", "Good"), ordered = TRUE)
+```
+
+
+# Creating the meta-data
+
+We continue by creating the meta-data of our dataset. It contains important details of the attributes in our dataset. The meta-data has to be provided as a data-frame containing one row for each attribute. With respect to A1, ‘‘good’’ is better than ‘‘medium’’, while with respect to A2 and A3 no preference is expressed on their domains. More- over, for attribute A2, the classical indiscernibility relation is considered, and for attribute A3, a similarity relation is defined such that alpha = 0.1, and beta = 0.0:
+
+```{r}
+metaData = tribble(
+  ~name, ~type, ~alpha, ~beta,
+  'Warehouse', 'object', NA, NA,
+  
+  'A1', 'dominance', NA, NA,
+  'A2', 'indiscernibility', NA, NA,
+  'A3', 'similarity', 0.1, 0.0,
+
+  'd',  'decision', NA, NA
+)
+```
+
+# Creating the information table
+
+Finally, we have everything we need to create an information table. We simply provide the decision table and the meta-data to the constructor of the `InformationTable` class.
+
+```{r}
+warehouseIT = InformationTable$new(decisionTable, metaData)
+save(warehouseIT, file = "../data/warehouse-informationTable.RData")
+```
+
+# Calculating the rough sets
+
+The class unions look like as follows:
+
+```{r}
+classUnions = warehouseIT$classUnions()
+convertMatrixToList(classUnions$upward, warehouseIT$objects)
+convertMatrixToList(classUnions$downward, warehouseIT$objects)
+```
+
+Rough sets:
+
+```{r}
+P = c("A1", "A2", "A3")
+roughtSets = warehouseIT$roughSets(P)
+convertMatrixToList(roughtSets$upward_U, warehouseIT$objects)
+convertMatrixToList(roughtSets$upward_L, warehouseIT$objects)
+convertMatrixToList(roughtSets$downward_U, warehouseIT$objects)
+convertMatrixToList(roughtSets$downward_L, warehouseIT$objects)
+```
+
+Boundary regions:
+
+```{r}
+boundary = warehouseIT$boundaryRegions(roughtSets)
+convertMatrixToList(boundary$upward, warehouseIT$objects)
+convertMatrixToList(boundary$downward, warehouseIT$objects)
+```
+
+
+# Running the DOMLEM algorithm
+
+```{r}
+DOMLEM = DOMLEM$new(it = warehouseIT, P = P)
+cat(DOMLEM$rules)
+```
+
+
