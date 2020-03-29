@@ -96,6 +96,32 @@ DecisionRule <- R6::R6Class(
     },
 
     #' @description
+    #' Method to calculate rule support, certainty, coverage, and strength
+    #' @param it the information table to use
+    #' @return a named list of integers
+    ruleMetrics = function(it) {
+      lhs = self$condition$complexCover(it)
+      rhs = NA
+      if (self$type == 'STAT1') {
+        rhs = it$upwardClassUnion(self$t)
+        rhs = it$objects[rhs]
+      } else if (self$type == 'STAT2') {
+        rhs = it$downwardClassUnion(self$t)
+        rhs = it$objects[rhs]
+      }
+
+      result = list(
+        support = length(intersect(lhs, rhs)),
+        certainty = length(intersect(lhs, rhs)) / length(lhs),
+        coverage = length(intersect(lhs, rhs)) / length(rhs),
+        strength = length(intersect(lhs, rhs)) / length(lhs) * (length(lhs) / nrow(it$decisionTable))
+      )
+
+      return(result)
+    },
+
+
+    #' @description
     #' print method.
     print = function() {
       cat(self$toString())
