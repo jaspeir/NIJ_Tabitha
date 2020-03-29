@@ -17,23 +17,25 @@ DecisionRule <- R6::R6Class(
     #' @field condition the left-hand side of the implication - a complex condition
     condition = NA,
 
-    #' @field t the right-hand side of the implication - t-parameter of class union
+    #' @field t the right-hand side of the implication - t-parameter of class union(s)
     t = NA,
 
-    #' @field type the right-hand side of the implication - a class union type (upward or downward)
+    #' @field type the right-hand side of the implication - (class union or union of classes)
     type = NA,
 
     #' @description
     #' Create a new DecisionRule object.
     #' @param condition the complex condition
-    #' @param t the t-parameter of the class union
-    #' @param type the type of the class union
+    #' @param t the t-parameter of the class union(s)
+    #' @param type the type of the rule
     initialize = function(condition, t, type) {
 
       # ERROR-CHECKS:
       stopifnot('ComplexCondition' %in% class(condition))
       stopifnot('numeric' %in% class(t) || 'integer' %in% class(t))
-      stopifnot(length(type) == 1, type %in% c('upward', 'downward'))
+      stopifnot(length(type) == 1 && type %in% c('STAT1', 'STAT2', 'STAT3'))
+      stopifnot(length(t) == 1 && type %in% c('STAT1', 'STAT2') ||
+                  length(t) > 1 && type == 'STAT3')
 
       self$condition = condition
       self$t = t
@@ -78,14 +80,19 @@ DecisionRule <- R6::R6Class(
 
       if (isSubset(otherAttributes, thisAttributes)) {
 
-        if (self$type == "upward" &&
+        if (self$type == "STAT1" &&
           all(otherValues[otherAttributes] <= thisAttributes[otherAttributes]) &&
           rule$t >= self$t) {
           return(TRUE)
-        } else if (self$type == "downward" &&
+        } else if (self$type == "STAT2" &&
                       all(otherValues[otherAttributes] >= thisAttributes[otherAttributes]) &&
                       rule$t <= self$t) {
           return(TRUE)
+        } else if (self$type == "STAT3") { #&&
+              #all(otherValues[otherAttributes] <= thisAttributes[otherAttributes]) &&
+              #rule$t >= self$t) {
+          #return(TRUE)
+          stop() # TODO implement comparison
         } else {
           return(FALSE)
         }
@@ -105,11 +112,16 @@ DecisionRule <- R6::R6Class(
 
       classUnions = it$classUnions()
 
-      if (self$type == 'upward') {
+      if (self$type == 'STAT1') {
         rhs = classUnions$upward[self$t, ]
         rhs = it$objects[rhs]
-      } else if (self$type == 'downward') {
+      } else if (self$type == 'STAT2') {
         rhs = classUnions$downward[self$t, ]
+        rhs = it$objects[rhs]
+      } else if (self$type == "STAT3") {
+        classStart = min(self$t)
+        classEnd = max(self$t)
+        rhs = classUnions$upward[classStart, ] & classUnions$downward[classEnd, ]
         rhs = it$objects[rhs]
       }
 
@@ -134,7 +146,12 @@ DecisionRule <- R6::R6Class(
     #' @description
     #' toString method.
     toString = function() {
-      rhs = paste0("Cl", self$t, ifelse(self$type == 'upward', ">=", "<="))
+      rhs = NA
+      if (self$type == "STAT3") {
+        rhs = paste0("Cl", min(self$t), " U ... U ", "Cl", max(self$t))
+      } else {
+        rhs = paste0("Cl", self$t, ifelse(self$type == 'STAT1', ">=", "<="))
+      }
       paste0(self$condition$toString(), " => ", rhs)
     },
 
