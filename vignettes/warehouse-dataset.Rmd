@@ -1,8 +1,8 @@
 ---
-title: "Creating The Global-Warming Dataset"
+title: "Creating The Warehouse Dataset"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{globalWarming-dataset}
+  %\VignetteIndexEntry{warehouse-dataset}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,32 +21,26 @@ library(tibble)
 
 # Introduction
 
-In this vignette we give an introduction to using the DOMLEM algorithm for a small dataset from the literature. We consider a dataset from the following paper: Rough sets and intelligent data analysis, Pawlak, Information Sciences, 2002.
+In this vignette we give an introduction to using the DOMLEM algorithm for a small dataset from the literature. We consider a dataset from the following paper: Rough sets methodology for sorting problems in presence of multiple attributes and criteria, Greco et al., EJOR, 2002.
 
 # Creating the decision table
 
 We start by creating the decision table row-by-row as in the paper.
 
 ```{r}
-# Define short-cuts:
-L = "Low"
-M = "Medium"
-H = "High"
-
 decisionTable = tribble(
-  ~Fact, ~SolarEnergy, ~VolcanicActivity, ~ResidualCO2, ~Temperature, ~DaysCount,
-  1, M, H, L, H, 20,
-  2, H, H, H, H, 30,
-  3, M, L, H, H, 90,
-  4, L, L, L, L, 120,
-  5, H, H, M, H, 70,
-  6, M, L, H, L, 34
+  ~Warehouse, ~A1, ~A2, ~A3, ~d,
+  'w1', 'Medium', 'A', 500, 'Loss',
+  'w2', 'Good',   'A', 400, 'Profit',
+  'w3', 'Medium', 'A', 450, 'Profit',
+  'w4', 'Good',   'B', 400, 'Loss',
+  'w5', 'Good',   'B', 475, 'Profit',
+  'w6', 'Medium', 'B', 425, 'Profit',
+  'w7', 'Medium', 'B', 350, 'Profit',
+  'w8', 'Medium', 'B', 350, 'Loss'
 )
 
-decisionTable$SolarEnergy = factor(decisionTable$SolarEnergy, levels = c("Low", "Medium", "High"), ordered = TRUE)
-decisionTable$VolcanicActivity = factor(decisionTable$VolcanicActivity, levels = c("Low", "Medium", "High"), ordered = TRUE)
-decisionTable$ResidualCO2 = factor(decisionTable$ResidualCO2, levels = c("Low", "Medium", "High"), ordered = TRUE)
-decisionTable$Temperature = factor(decisionTable$Temperature, levels = c("Low", "Medium", "High"), ordered = TRUE)
+decisionTable$A1 = factor(decisionTable$A1, levels = c("Medium", "Good"), ordered = TRUE)
 ```
 
 
@@ -57,14 +51,13 @@ We continue by creating the meta-data of our dataset. It contains important deta
 ```{r}
 metaData = tribble(
   ~name, ~type, ~alpha, ~beta,
-  'Fact', 'object', NA, NA,
+  'Warehouse', 'object', NA, NA,
   
-  'SolarEnergy', 'dominance', NA, NA,
-  'VolcanicActivity', 'dominance', NA, NA,
-  'ResidualCO2', 'dominance', NA, NA,
-  'Temperature', 'decision', NA, NA,
+  'A1', 'dominance', NA, NA,
+  'A2', 'indiscernibility', NA, NA,
+  'A3', 'similarity', 0.1, 0.0,
 
-  'DaysCount',  'miscellaneous', NA, NA
+  'd',  'decision', NA, NA
 )
 ```
 
@@ -73,8 +66,8 @@ metaData = tribble(
 Finally, we have everything we need to create an information table. We simply provide the decision table and the meta-data to the constructor of the `InformationTable` class.
 
 ```{r}
-globalWarmingIT = InformationTable$new(decisionTable, metaData)
-save(globalWarmingIT, file = "../data/globalWarming-informationTable.RData")
+warehouseIT = InformationTable$new(decisionTable, metaData)
+save(warehouseIT, file = "../data/warehouse-informationTable.RData")
 ```
 
 # Calculating the rough sets
@@ -82,37 +75,37 @@ save(globalWarmingIT, file = "../data/globalWarming-informationTable.RData")
 The class unions look like as follows:
 
 ```{r}
-classUnions = globalWarmingIT$classUnions()
-convertMatrixToList(classUnions$upward, globalWarmingIT$objects)
-convertMatrixToList(classUnions$downward, globalWarmingIT$objects)
+classUnions = warehouseIT$classUnions()
+convertMatrixToList(classUnions$upward, warehouseIT$objects)
+convertMatrixToList(classUnions$downward, warehouseIT$objects)
 ```
 
 Rough sets:
 
 ```{r}
-P = c("SolarEnergy", "VolcanicActivity", "ResidualCO2")
-roughtSets = globalWarmingIT$roughSets(P)
-convertMatrixToList(roughtSets$upward_U, globalWarmingIT$objects)
-convertMatrixToList(roughtSets$upward_L, globalWarmingIT$objects)
-convertMatrixToList(roughtSets$downward_U, globalWarmingIT$objects)
-convertMatrixToList(roughtSets$downward_L, globalWarmingIT$objects)
+P = c("A1", "A2", "A3")
+roughtSets = warehouseIT$roughSets(P)
+convertMatrixToList(roughtSets$upward_U, warehouseIT$objects)
+convertMatrixToList(roughtSets$upward_L, warehouseIT$objects)
+convertMatrixToList(roughtSets$downward_U, warehouseIT$objects)
+convertMatrixToList(roughtSets$downward_L, warehouseIT$objects)
 ```
 
 Boundary regions:
 
 ```{r}
-boundary = globalWarmingIT$boundaryRegions(roughtSets)
-convertMatrixToList(boundary$upward, globalWarmingIT$objects)
-convertMatrixToList(boundary$downward, globalWarmingIT$objects)
+boundary = warehouseIT$boundaryRegions(roughtSets)
+convertMatrixToList(boundary$upward, warehouseIT$objects)
+convertMatrixToList(boundary$downward, warehouseIT$objects)
 ```
 
 
 # Running the DOMLEM algorithm
 
 ```{r}
-domlem = DOMLEM$new(it = globalWarmingIT, P = P)
+domlem = DOMLEM$new(it = warehouseIT, P = P)
 domlem$main()
-cat(domlem$rules)
+print(domlem$rules)
 ```
 
 
