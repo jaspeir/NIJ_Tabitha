@@ -26,6 +26,16 @@ test_that("decision rules obtained for some other approximations", {
   rules
 })
 
+test_that("STAT3 decision rules", {
+  DOMLEM$debug('findRules')
+  #warehouseIT$metaData$alpha[4] = 0.099
+  domlem = DOMLEM$new(it = warehouseIT, P = P)
+
+  approx = domlem$roughSets$downward_L[1, ]
+  rules = domlem$findRules(approximation = approx, P = P, t = 1, ruleType = "STAT3")
+  rules
+})
+
 test_that("decision rules obtained for all approximations", {
   domlem = DOMLEM$new(it = warehouseIT, P = P)
   domlem$main()
