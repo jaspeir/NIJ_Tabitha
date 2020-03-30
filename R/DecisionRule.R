@@ -32,7 +32,7 @@ DecisionRule <- R6::R6Class(
 
       # ERROR-CHECKS:
       stopifnot('ComplexCondition' %in% class(condition))
-      stopifnot('numeric' %in% class(t) || 'integer' %in% class(t))
+      stopifnot(any(c('numeric', 'integer', 'factor') %in% class(t)))
       stopifnot(length(type) == 1 && type %in% c('STAT1', 'STAT2', 'STAT3'))
       stopifnot(length(t) == 1 && type %in% c('STAT1', 'STAT2') ||
                   length(t) > 1 && type == 'STAT3')
