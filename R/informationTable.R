@@ -282,6 +282,9 @@ InformationTable <- R6::R6Class(
           exampleX = X[i, simAttributeIndex]
           exampleY = Y[j, simAttributeIndex]
 
+          # TODO: for factors convert them to integers:
+          # factorVariables = map_lgl(self$decisionTable, is.factor)
+
           R_sim[i, j] = all(abs(exampleX - exampleY) <= alpha * exampleY + beta)
         }
       }
