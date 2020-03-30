@@ -161,12 +161,14 @@ DecisionRule <- R6::R6Class(
     #' @description
     #' toString method.
     toString = function() {
+
       rhs = NA
       if (self$type == "STAT3") {
         rhs = paste0("Cl", min(self$t), " U ... U ", "Cl", max(self$t))
       } else {
         rhs = paste0("Cl", self$t, ifelse(self$type == 'STAT1', ">=", "<="))
       }
+
       paste0(self$condition$toString(), " => ", rhs)
     },
 
