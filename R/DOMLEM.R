@@ -73,12 +73,14 @@ DOMLEM <- R6::R6Class(
       }
 
       # Create STAT3 type rules
-      for (s in seq(from = 1, to = classCount - 1)) {
-        for (t in seq(from = s + 1, to = classCount)) {
-          approx = self$roughSets$downward_U[s, ] & self$roughSets$upward_U[t, ]
-          rules = self$findRules(approximation = approx, P = self$P, t = s:t, ruleType = "STAT3")
+      if (classCount >= 2) {
+        for (s in seq(from = 1, to = classCount - 1)) {
+          for (t in seq(from = s + 1, to = classCount)) {
+            approx = self$roughSets$downward_U[s, ] & self$roughSets$upward_U[t, ]
+            rules = self$findRules(approximation = approx, P = self$P, t = s:t, ruleType = "STAT3")
 
-          RULES$STAT3 = self$addMinimalRules(existingRules = RULES$STAT3, newRules = rules)
+            RULES$STAT3 = self$addMinimalRules(existingRules = RULES$STAT3, newRules = rules)
+          }
         }
       }
 
