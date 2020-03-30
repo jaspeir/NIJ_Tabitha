@@ -41,6 +41,7 @@ decisionTable = tribble(
 )
 
 decisionTable$A1 = factor(decisionTable$A1, levels = c("Medium", "Good"), ordered = TRUE)
+decisionTable$d = factor(decisionTable$d, levels = c("Loss", "Profit"), ordered = TRUE)
 ```
 
 
