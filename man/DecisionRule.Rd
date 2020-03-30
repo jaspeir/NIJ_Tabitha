@@ -16,9 +16,9 @@ For STAT2 type of rules the conditions are upper bounds, and assignment goes to 
 \describe{
 \item{\code{condition}}{the left-hand side of the implication - a complex condition}
 
-\item{\code{t}}{the right-hand side of the implication - t-parameter of class union}
+\item{\code{t}}{the right-hand side of the implication - t-parameter of class union(s)}
 
-\item{\code{type}}{the right-hand side of the implication - a class union type (upward or downward)}
+\item{\code{type}}{the right-hand side of the implication - (class union or union of classes)}
 }
 \if{html}{\out{</div>}}
 }
@@ -28,6 +28,10 @@ For STAT2 type of rules the conditions are upper bounds, and assignment goes to 
 \item \href{#method-new}{\code{DecisionRule$new()}}
 \item \href{#method-isMinimal}{\code{DecisionRule$isMinimal()}}
 \item \href{#method-isWeaker}{\code{DecisionRule$isWeaker()}}
+\item \href{#method-ruleMetrics}{\code{DecisionRule$ruleMetrics()}}
+\item \href{#method-print}{\code{DecisionRule$print()}}
+\item \href{#method-toString}{\code{DecisionRule$toString()}}
+\item \href{#method-equals}{\code{DecisionRule$equals()}}
 \item \href{#method-clone}{\code{DecisionRule$clone()}}
 }
 }
@@ -44,9 +48,9 @@ Create a new DecisionRule object.
 \describe{
 \item{\code{condition}}{the complex condition}
 
-\item{\code{t}}{the t-parameter of the class union}
+\item{\code{t}}{the t-parameter of the class union(s)}
 
-\item{\code{type}}{the type of the class union}
+\item{\code{type}}{the type of the rule}
 }
 \if{html}{\out{</div>}}
 }
@@ -91,6 +95,62 @@ Method to decide if this decision rule is a weaker implication compared to the p
 }
 \subsection{Returns}{
 a boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ruleMetrics"></a>}}
+\subsection{Method \code{ruleMetrics()}}{
+Method to calculate rule support, certainty, coverage, and strength
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$ruleMetrics(it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a named list of integers
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+print method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+toString method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$toString()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-equals"></a>}}
+\subsection{Method \code{equals()}}{
+Method to compare two DecisionRules
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$equals(other)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{other}}{the other decision rule to compare to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a single boolean value
 }
 }
 \if{html}{\out{<hr>}}

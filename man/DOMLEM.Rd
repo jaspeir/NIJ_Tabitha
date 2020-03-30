@@ -31,6 +31,8 @@ This is an extension of the original DOMLEM algorithm to consider mixed-type att
 \item \href{#method-findRules}{\code{DOMLEM$findRules()}}
 \item \href{#method-rulesCover}{\code{DOMLEM$rulesCover()}}
 \item \href{#method-addMinimalRules}{\code{DOMLEM$addMinimalRules()}}
+\item \href{#method-print}{\code{DOMLEM$print()}}
+\item \href{#method-toString}{\code{DOMLEM$toString()}}
 \item \href{#method-clone}{\code{DOMLEM$clone()}}
 }
 }
@@ -127,6 +129,24 @@ Method to add the minimal decision rules to the existing set of rules.
 \subsection{Returns}{
 a set of decision rules
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+print method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DOMLEM$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toString"></a>}}
+\subsection{Method \code{toString()}}{
+toString method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DOMLEM$toString()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

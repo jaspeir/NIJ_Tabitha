@@ -27,6 +27,8 @@ A complex condition is the conjunction of elementary conditions.
 \item \href{#method-findBestElementary}{\code{ComplexCondition$findBestElementary()}}
 \item \href{#method-reduceConditions}{\code{ComplexCondition$reduceConditions()}}
 \item \href{#method-getConstants}{\code{ComplexCondition$getConstants()}}
+\item \href{#method-getConstantsGrouped}{\code{ComplexCondition$getConstantsGrouped()}}
+\item \href{#method-contains}{\code{ComplexCondition$contains()}}
 \item \href{#method-append}{\code{ComplexCondition$append()}}
 \item \href{#method-length}{\code{ComplexCondition$length()}}
 \item \href{#method-print}{\code{ComplexCondition$print()}}
@@ -200,6 +202,44 @@ a vector of filter values. Not filtered attributes have an NA value.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getConstantsGrouped"></a>}}
+\subsection{Method \code{getConstantsGrouped()}}{
+Method for creating an efficient representation of the constants used in the filter conditions, grouped by the type of variable and condition.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$getConstantsGrouped(it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a list of vector of filter values, one list for the following operator groups: (= or ~). (>=), and (<=). Not filtered attributes have an NA value.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-contains"></a>}}
+\subsection{Method \code{contains()}}{
+Method for deciding whether a provided elementary condition is part of this complex condition.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$contains(elem)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{elem}}{the elementary condition to check}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a boolean value
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-append"></a>}}
 \subsection{Method \code{append()}}{
 Method for appending an additional elementary condition to the current conditions.
@@ -227,7 +267,7 @@ Method that returns the number of elementary conditions in this complex conditio
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print"></a>}}
 \subsection{Method \code{print()}}{
-Print method.
+print method.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ComplexCondition$print()}\if{html}{\out{</div>}}
 }
