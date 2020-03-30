@@ -98,13 +98,6 @@ DOMLEM <- R6::R6Class(
       G = B    # objects still to cover
       E = c()  # the set of extracted rules
 
-
-      # TODO handle STAT3-type decision-rules
-      if (ruleType == "STAT3") {
-        return(c())
-      }
-      isLowerBound = ruleType == "STAT1" # Type of rule to generate (for dominance variables)
-
       static_examples = self$it
       EXAMPLES = self$it$clone()
 
@@ -124,8 +117,22 @@ DOMLEM <- R6::R6Class(
             S_index = map_int(S, ~ which(. == EXAMPLES$objects, arr.ind = TRUE))
             values = EXAMPLES$decisionTable[S_index, ][[criterion]]
             for (value in values) {
-              check = ElementaryCondition$new(attribute = criterion, value = value, it = EXAMPLES, isLowerBound = isLowerBound)
-              best = e$findBestElementary(G = G, it = EXAMPLES, check = check, best = best)
+
+              # The set of bound types to use when generating a new elementary
+              if (EXAMPLES$getType(criterion) == 'dominance') {
+                boundTypes = switch(ruleType,
+                  "STAT1" = c(TRUE),
+                  "STAT2" = c(FALSE),
+                  "STAT3" = c(TRUE, FALSE),
+                )
+              } else {
+                boundTypes = c(NA)
+              }
+
+              for (boundType in boundTypes) {
+                check = ElementaryCondition$new(attribute = criterion, value = value, it = EXAMPLES, isLowerBound = boundType)
+                best = e$findBestElementary(G = G, it = EXAMPLES, check = check, best = best)
+              }
             }
 
           }
