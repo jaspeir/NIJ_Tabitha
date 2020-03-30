@@ -159,7 +159,7 @@ DOMLEM <- R6::R6Class(
       }
 
       # Make rules from the extracted complex conditions:
-      rules = map(E, ~ DecisionRule$new(condition = ., t = t, type = ruleType))
+      rules = map(E, ~ DecisionRule$new(condition = ., t = self$it$decodeDecisions(t), type = ruleType))
 
       return(rules)
     },
