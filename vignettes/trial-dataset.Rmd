@@ -32,7 +32,22 @@ We start by reading the Input Data sheet of the Excel file into a data-frame. Th
 datasetPath = system.file("extdata", "JS_DRSA_Trial_Key_and_Data_Table.xlsx", package = "DRSA", mustWork = TRUE)
 decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
 
+
+decisionTable$Q2 = factor(decisionTable$Q2, levels = 20:23, labels = c("Unsuitable", "Low", "Moderate", "High"), ordered = T)
+
+decisionTable$QF4 = factor(decisionTable$QF4, levels = 31:33, labels = c("Easy", "Moderate", "Challenging"), ordered = T)
+
+decisionTable$Q3OD = factor(decisionTable$Q3OD, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
+decisionTable$Q3PSO = factor(decisionTable$Q3PSO, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
+decisionTable$Q3PSD = factor(decisionTable$Q3PSD, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
+decisionTable$Q3OTHVAL = factor(decisionTable$Q3OTHVAL, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
+
 decisionTable$QF2 = factor(decisionTable$QF2, levels = 8:9, labels = c("No", "Yes"), ordered = T)
+decisionTable$QF3ST = factor(decisionTable$QF3ST, levels = 8:9, labels = c("No", "Yes"), ordered = T)
+decisionTable$QF3PD = factor(decisionTable$QF3PD, levels = 8:9, labels = c("No", "Yes"), ordered = T)
+decisionTable$QF3IL = factor(decisionTable$QF3IL, levels = 8:9, labels = c("No", "Yes"), ordered = T)
+decisionTable$QF3ISP = factor(decisionTable$QF3ISP, levels = 8:9, labels = c("No", "Yes"), ordered = T)
+
 decisionTable$QF1 =  factor(decisionTable$QF1, levels = 1:7, labels = c('Lacks sufficient detail', 'Exclusion', 'Indications of non-association', 'Limited association', 'Association of class', 'High degree of association', 'Identification'), ordered = T)
 ```
 
