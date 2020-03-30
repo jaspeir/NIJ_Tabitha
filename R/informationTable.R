@@ -89,6 +89,14 @@ InformationTable <- R6::R6Class(
     },
 
     #' @description
+    #' Method to get the type of an attribute.
+    #' @param attribute the name of the attribute
+    #' @return the type
+    getType = function(attribute) {
+      return(self$metaData$type[self$metaData$name == attribute])
+    },
+
+    #' @description
     #' Method for creating a new information table by removing examples of belonging to the specified objects.
     #' @param objects the object to filter out
     #' @return a new information table instance
