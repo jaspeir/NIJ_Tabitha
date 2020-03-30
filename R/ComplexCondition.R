@@ -171,6 +171,46 @@ ComplexCondition <- R6::R6Class(
     },
 
     #' @description
+    #' Method for creating an efficient representation of the constants used in the filter conditions, grouped by the type of variable and condition.
+    #' @param it the information table to use
+    #' @return a list of vector of filter values, one list for the following operator groups: (= or ~). (>=), and (<=). Not filtered attributes have an NA value.
+    getConstantsGrouped = function(it) {
+
+      constantsPerGroup = rep(NA, nrow(it$metaData))
+      constants = list(
+        lowerBounds = constantsPerGroup,
+        upperBounds = constantsPerGroup,
+        others = constantsPerGroup
+      )
+
+      if (self$length() == 0) {
+        return(constants)
+      }
+
+      # NOTE: we do not handle the case when there are multiple elementary conditions on the same attribute
+      activeConstants = map_dfr(self$conditions, function(cond) {
+        list(name = cond$attribute, isLowerBound = cond$isLowerBound, value = as.character(cond$value))
+      })
+
+      getAttributeIndexes = function(isLowerBound) {
+        activeConstantsFiltered = if (is.na(isLowerBound)) {
+          activeConstants %>% filter(is.na(isLowerBound))
+        } else if (isLowerBound) {
+          activeConstants %>% filter(isLowerBound)
+        } else {
+          activeConstants %>% filter(!isLowerBound)
+        }
+        map_int(activeConstantsFiltered$name, ~ which(. == it$metaData$name, arr.ind = TRUE))
+      }
+
+      constants$others[getAttributeIndexes(NA)] = activeConstants %>% filter(is.na(isLowerBound)) %>% pull(value)
+      constants$lowerBounds[getAttributeIndexes(TRUE)] = activeConstants %>% filter(isLowerBound) %>% pull(value)
+      constants$upperBounds[getAttributeIndexes(FALSE)] = activeConstants %>% filter(!isLowerBound) %>% pull(value)
+
+      return(constants)
+    },
+
+    #' @description
     #' Method for deciding whether a provided elementary condition is part of this complex condition.
     #' @param elem the elementary condition to check
     #' @return a boolean value

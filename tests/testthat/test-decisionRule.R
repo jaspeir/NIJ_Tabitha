@@ -21,8 +21,8 @@ test_that("isWeaker - only t differs", {
 })
 
 test_that("isWeaker - different attributes", {
-  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
-  e2 = ElementaryCondition$new(attribute = "Q2", value = 421, it = informationTable, isLowerBound = F)
+  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = NA)
+  e2 = ElementaryCondition$new(attribute = "Q2", value = 421, it = informationTable, isLowerBound = NA)
   c1 = ComplexCondition$new(e1)
   c2 = ComplexCondition$new(e2)
   d1 = DecisionRule$new(condition = c1, t = 0, type = "STAT1")
@@ -32,8 +32,8 @@ test_that("isWeaker - different attributes", {
 })
 
 test_that("isWeaker - same attribute, different values", {
-  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
-  e2 = ElementaryCondition$new(attribute = "Q1", value = 0, it = informationTable, isLowerBound = F)
+  e1 = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = NA)
+  e2 = ElementaryCondition$new(attribute = "Q1", value = 0, it = informationTable, isLowerBound = NA)
   c1 = ComplexCondition$new(e1)
   c2 = ComplexCondition$new(e2)
   d1 = DecisionRule$new(condition = c1, t = 1, type = "STAT1")

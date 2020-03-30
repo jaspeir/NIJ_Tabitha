@@ -88,7 +88,7 @@ test_that("getConstants - single rule", {
   e = ElementaryCondition$new(attribute = "Q1", value = 42, it = informationTable, isLowerBound = F)
   c = ComplexCondition$new(e)
   constants = rep(NA_real_, nrow(informationTable$metaData))
-  constants[5] = 42
+  constants[5] = "42"
   expect_equal(c$getConstants(informationTable), constants)
 })
 
@@ -98,8 +98,8 @@ test_that("getConstants - two rules", {
 
   c = ComplexCondition$new(c(e1, e2))
   constants = rep(NA_real_, nrow(informationTable$metaData))
-  constants[5] = 42
-  constants[6] = 421
+  constants[5] = "42"
+  constants[6] = "421"
   expect_equal(c$getConstants(informationTable), constants)
 })
 
@@ -206,4 +206,53 @@ test_that("reduceConditions - two conditions, first covered", {
   c = ComplexCondition$new(c(e2, e1))
   reduced = c$reduceConditions(B = B, it = informationTable)
   expect_true(expectedReduced$equals(reduced))
+})
+
+test_that("getConstantsGrouped - empty", {
+  c = ComplexCondition$new()
+  constants = c$getConstantsGrouped(it = informationTable)
+  expect_true(all(map_lgl(constants, ~ all(is.na(.)))))
+})
+
+test_that("getConstantsGrouped - only misc filters", {
+  e1 = ElementaryCondition$new(attribute = "QF2", value = 8, it = informationTable, isLowerBound = NA)
+  e2 = ElementaryCondition$new(attribute = "QF4", value = 31, it = informationTable, isLowerBound = NA)
+  c = ComplexCondition$new(c(e1, e2))
+  constants = c$getConstantsGrouped(it = informationTable)
+  expect_true(all(is.na(constants$lowerBounds)))
+  expect_true(all(is.na(constants$upperBounds)))
+  expected = rep(NA_character_, nrow(informationTable$metaData))
+  expected[informationTable$metaData$name == "QF2"] = "8"
+  expected[informationTable$metaData$name == "QF4"] = "31"
+  expect_equal(constants$others, expected)
+})
+
+test_that("getConstantsGrouped - all types of filters", {
+  e1 = ElementaryCondition$new(attribute = "QF2", value = 8, it = informationTable, isLowerBound = NA)
+  e2 = ElementaryCondition$new(attribute = "QF4", value = 31, it = informationTable, isLowerBound = NA)
+
+  e3 = ElementaryCondition$new(attribute = "Q3OD", value = 5, it = informationTable, isLowerBound = T)
+
+  e4 = ElementaryCondition$new(attribute = "Q3PSO", value = 6, it = informationTable, isLowerBound = F)
+
+  e5 = ElementaryCondition$new(attribute = "Q3PSD", value = 7, it = informationTable, isLowerBound = T)
+  e6 = ElementaryCondition$new(attribute = "Q3PSD", value = 8, it = informationTable, isLowerBound = F)
+
+  c = ComplexCondition$new(c(e1, e2, e3, e4, e5, e6))
+  constants = c$getConstantsGrouped(it = informationTable)
+
+  expected = rep(NA_character_, nrow(informationTable$metaData))
+  expected[informationTable$metaData$name == "QF2"] = "8"
+  expected[informationTable$metaData$name == "QF4"] = "31"
+  expect_equal(constants$others, expected)
+
+  expected = rep(NA_character_, nrow(informationTable$metaData))
+  expected[informationTable$metaData$name == "Q3OD"] = "5"
+  expected[informationTable$metaData$name == "Q3PSD"] = "7"
+  expect_equal(constants$lowerBounds, expected)
+
+  expected = rep(NA_character_, nrow(informationTable$metaData))
+  expected[informationTable$metaData$name == "Q3PSO"] = "6"
+  expected[informationTable$metaData$name == "Q3PSD"] = "8"
+  expect_equal(constants$upperBounds, expected)
 })
