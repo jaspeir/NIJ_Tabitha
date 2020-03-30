@@ -137,10 +137,9 @@ InformationTable <- R6::R6Class(
     },
 
     #' @description
-    #' Method for calculating all downward- and upward class unions at once.
-    #' @return a pair of matrices for both class unions, where each row represents a class, and each column represents an object
-    classUnions = function() {
-
+    #' Method for encoding the decision column to the 1:N range, where N is the cardinality of this column.
+    #' @return the encoded decision column
+    encodeDecisionColumn = function() {
       decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
 
       decisions = self$decisionTable[[decisionColumn]]
@@ -148,6 +147,28 @@ InformationTable <- R6::R6Class(
 
       decisionIDs = 1:decisionCard
       decisions = factor(decisions, labels = decisionIDs, levels = sort(unique(decisions)), ordered = TRUE)
+      return(decisions)
+    },
+
+    #' @description
+    #' Method for decoding 1:N-encoded decisions.
+    #' @param encoded a vector of encoded decisions
+    #' @return a vector with the decoded decisions
+    decodeDecisionColumn = function(encoded) {
+
+      decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
+      decisions = self$decisionTable[[decisionColumn]]
+      uniqueDecisions = sort(unique(decisions))
+
+      return(uniqueDecisions[encoded])
+    },
+
+    #' @description
+    #' Method for calculating all downward- and upward class unions at once.
+    #' @return a pair of matrices for both class unions, where each row represents a class, and each column represents an object
+    classUnions = function() {
+
+      decisions = self$encodeDecisionColumn()
       objectCount = length(self$objects)
 
       upwardClassUnions = matrix(nrow = decisionCard, ncol = objectCount)
