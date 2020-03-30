@@ -101,7 +101,7 @@ ElementaryCondition <- R6::R6Class(
       return(
         self$attribute == other$attribute &&
         self$value == other$value &&
-        self$isLowerBound == other$isLowerBound
+        (is.na(self$isLowerBound) && is.na(other$isLowerBound) || self$isLowerBound == other$isLowerBound)
       )
     }
   )
