@@ -69,28 +69,44 @@ DecisionRule <- R6::R6Class(
         return(FALSE)
       }
 
-      # STAT1: self is weaker than rule, iff:
-      # "attributeSet(rule) is subset of attributeSet(self)
-      # rule$values <= self$values[restricted to attributeSet(rule)]
-      # rule$t >= self$t
-      otherValues = rule$condition$getConstants(it)
-      otherAttributes = !is.na(otherValues)
-      thisValues = self$condition$getConstants(it)
-      thisAttributes = !is.na(thisValues)
+      compareWithinGroup = function(other, this, group) {
+        otherValues = other[[group]]
+        otherAttributes = !is.na(otherValues)
+        thisValues = this[[group]]
+        thisAttributes = !is.na(thisValues)
 
-      if (isSubset(otherAttributes, thisAttributes)) {
+        if (!isSubset(otherAttributes, thisAttributes)) {
+          return(FALSE)
+        }
 
-        if (self$type == "STAT1" &&
-          all(otherValues[otherAttributes] <= thisAttributes[otherAttributes]) &&
-          rule$t >= self$t) {
+        return(
+        switch(group,
+          'others' =      TRUE,
+          'lowerBounds' = all(otherValues[otherAttributes] <= thisValues[otherAttributes]),
+          'upperBounds' = all(otherValues[otherAttributes] >= thisValues[otherAttributes])
+        ))
+      }
+
+      otherValuesGrouped = rule$condition$getConstantsGrouped(it)
+      thisValuesGrouped = self$condition$getConstantsGrouped(it)
+
+      # If only non-dominance attributes are present, then we cannot compare:
+      if (all(is.na(c(thisValuesGrouped$lowerBounds, thisValuesGrouped$upperBounds)))) {
+        return(FALSE)
+      }
+
+      valuesCompared = all(map_lgl(
+        c('others', 'lowerBounds', 'upperBounds'),
+        ~ compareWithinGroup(otherValuesGrouped, thisValuesGrouped, .)
+      ))
+
+      if (valuesCompared) {
+
+        if (self$type == "STAT1" && rule$t >= self$t) {
           return(TRUE)
-        } else if (self$type == "STAT2" &&
-                      all(otherValues[otherAttributes] >= thisAttributes[otherAttributes]) &&
-                      rule$t <= self$t) {
+        } else if (self$type == "STAT2" && rule$t <= self$t) {
           return(TRUE)
-        } else if (self$type == "STAT3" &&
-              #all(otherValues[otherAttributes] <= thisAttributes[otherAttributes]) &&
-              min(rule$t) >= min(self$t) && max(rule$t) <= max(self$t)) {
+        } else if (self$type == "STAT3" && min(rule$t) >= min(self$t) && max(rule$t) <= max(self$t)) {
           return(TRUE)
         } else {
           return(FALSE)
