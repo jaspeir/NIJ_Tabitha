@@ -154,7 +154,7 @@ InformationTable <- R6::R6Class(
     #' Method for decoding 1:N-encoded decisions.
     #' @param encoded a vector of encoded decisions
     #' @return a vector with the decoded decisions
-    decodeDecisionColumn = function(encoded) {
+    decodeDecisions = function(encoded) {
 
       decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
       decisions = self$decisionTable[[decisionColumn]]
@@ -169,6 +169,8 @@ InformationTable <- R6::R6Class(
     classUnions = function() {
 
       decisions = self$encodeDecisionColumn()
+      decisionCard = length(unique(decisions))
+      decisionIDs = 1:decisionCard
       objectCount = length(self$objects)
 
       upwardClassUnions = matrix(nrow = decisionCard, ncol = objectCount)
