@@ -119,6 +119,7 @@ DOMLEM <- R6::R6Class(
             for (value in values) {
 
               # The set of bound types to use when generating a new elementary
+              boundTypes = c()
               if (EXAMPLES$getType(criterion) == 'dominance') {
                 boundTypes = switch(ruleType,
                   "STAT1" = c(TRUE),
