@@ -142,7 +142,7 @@ DOMLEM <- R6::R6Class(
 
           # Detect endless rules being generated and finish creating the complex:
           if (e$contains(best)) {
-            break()
+            break
           }
 
           e$append(best)
