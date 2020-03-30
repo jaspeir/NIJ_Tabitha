@@ -71,8 +71,8 @@ test_that("isWeaker - D>=<=-rules same dom-only LHS, weaker RHS", {
   DecisionRule$debug('isWeaker')
   d1 = DecisionRule$new(condition = c, t = 4:5, type = "STAT3")
   d2 = DecisionRule$new(condition = c, t = 3:6, type = "STAT3")
-  expect_true(d1$isWeaker(it = informationTable, rule = d2))
-  expect_false(d2$isWeaker(it = informationTable, rule = d1))
+  expect_false(d1$isWeaker(it = informationTable, rule = d2))
+  expect_true(d2$isWeaker(it = informationTable, rule = d1))
 })
 
 
