@@ -156,11 +156,13 @@ InformationTable <- R6::R6Class(
     #' @return a vector with the decoded decisions
     decodeDecisions = function(encoded) {
 
-      decisionColumn = which(self$metaData$type == 'decision', arr.ind = TRUE)
-      decisions = self$decisionTable[[decisionColumn]]
-      uniqueDecisions = sort(unique(decisions))
+      decisionColumnIndex = which(self$metaData$type == 'decision', arr.ind = TRUE)
+      decisionColumn = self$decisionTable[[decisionColumnIndex]]
 
-      return(uniqueDecisions[encoded])
+      uniqueDecisions = sort(unique(decisionColumn))
+      decoded = uniqueDecisions[encoded]
+
+      return(decoded)
     },
 
     #' @description
