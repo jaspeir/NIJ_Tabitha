@@ -32,6 +32,7 @@ We start by reading the Input Data sheet of the Excel file into a data-frame. Th
 datasetPath = system.file("extdata", "JS_DRSA_Trial_Key_and_Data_Table.xlsx", package = "DRSA", mustWork = TRUE)
 decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
 
+decisionTable$QF2 = factor(decisionTable$QF2, levels = 8:9, labels = c("No", "Yes"), ordered = T)
 decisionTable$QF1 =  factor(decisionTable$QF1, levels = 1:7, labels = c('Lacks sufficient detail', 'Exclusion', 'Indications of non-association', 'Limited association', 'Association of class', 'High degree of association', 'Identification'), ordered = T)
 ```
 
