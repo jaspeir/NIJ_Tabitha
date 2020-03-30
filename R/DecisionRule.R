@@ -69,7 +69,7 @@ DecisionRule <- R6::R6Class(
         return(FALSE)
       }
 
-      # self is weaker than rule, iff:
+      # STAT1: self is weaker than rule, iff:
       # "attributeSet(rule) is subset of attributeSet(self)
       # rule$values <= self$values[restricted to attributeSet(rule)]
       # rule$t >= self$t
@@ -88,11 +88,10 @@ DecisionRule <- R6::R6Class(
                       all(otherValues[otherAttributes] >= thisAttributes[otherAttributes]) &&
                       rule$t <= self$t) {
           return(TRUE)
-        } else if (self$type == "STAT3") { #&&
+        } else if (self$type == "STAT3" &&
               #all(otherValues[otherAttributes] <= thisAttributes[otherAttributes]) &&
-              #rule$t >= self$t) {
-          #return(TRUE)
-          stop() # TODO implement comparison
+              min(rule$t) >= min(self$t) && max(rule$t) <= max(self$t)) {
+          return(TRUE)
         } else {
           return(FALSE)
         }
