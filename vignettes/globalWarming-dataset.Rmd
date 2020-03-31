@@ -59,14 +59,14 @@ We continue by creating the meta-data of our dataset. It contains important deta
 ```{r}
 metaData = tribble(
   ~name, ~type, ~alpha, ~beta,
-  'Fact', 'object', NA, NA,
+  'Fact', 'object', NA_real_, NA_real_,
   
-  'SolarEnergy', 'dominance', NA, NA,
-  'VolcanicActivity', 'dominance', NA, NA,
-  'ResidualCO2', 'dominance', NA, NA,
-  'Temperature', 'decision', NA, NA,
+  'SolarEnergy', 'dominance', NA_real_, NA_real_,
+  'VolcanicActivity', 'dominance', NA_real_, NA_real_,
+  'ResidualCO2', 'dominance', NA_real_, NA_real_,
+  'Temperature', 'decision', NA_real_, NA_real_,
 
-  'DaysCount',  'miscellaneous', NA, NA
+  'DaysCount',  'miscellaneous', NA_real_, NA_real_
 )
 ```
 
