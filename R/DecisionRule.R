@@ -178,12 +178,12 @@ DecisionRule <- R6::R6Class(
     toList = function(it) {
 
       metr = self$ruleMetrics(it)
-      list(LHS = rule$condition$toString(),
-           RHS = rule$getRHS_String(),
+      list(LHS = self$condition$toString(),
+           RHS = self$getRHS_String(),
            Support = metr$support,
            Certainty = metr$certainty,
            Coverage = round(metr$coverage, digits = 2),
-           dStrength = round(metr$strength, digits = 2)
+           Strength = round(metr$strength, digits = 2)
       )
     },
 
