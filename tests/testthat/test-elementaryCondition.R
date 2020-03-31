@@ -1,6 +1,3 @@
-#load("data/trial-informationTable.RData")
-trialIT = InformationTable$new(informationTable$decisionTable, informationTable$metaData)
-
 test_that("should succeed", {
   ElementaryCondition$new(attribute = "Q1", value = 80, it = trialIT, isLowerBound = NA)
   expect_true(TRUE)
