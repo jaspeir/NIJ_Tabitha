@@ -11,6 +11,8 @@ Description: This package provides functions used in the DRSA, including:
     - Upward and downward multi- and mega-unions
     - Decision rules
     - Rule support, certainty, strength, coverage and consistency.
+    It supports multiple types of attributes, including indiscernibility, similarity, and dominance.
+    The package also provides an implementation of the DOMLEM algorithm for extracting decision rules consistent with the dominance principle.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
