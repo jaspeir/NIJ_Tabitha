@@ -159,9 +159,8 @@ DecisionRule <- R6::R6Class(
     },
 
     #' @description
-    #' toString method.
-    toString = function() {
-
+    #' toString method for the RHS of the rule.
+    getRHS_String = function() {
       rhs = NA
       if (self$type == "STAT3") {
         rhs = paste0("Cl", min(self$t), " U ... U ", "Cl", max(self$t))
@@ -169,7 +168,13 @@ DecisionRule <- R6::R6Class(
         rhs = paste0("Cl", self$t, ifelse(self$type == 'STAT1', ">=", "<="))
       }
 
-      paste0(self$condition$toString(), " => ", rhs)
+      return(rhs)
+    },
+
+    #' @description
+    #' toString method.
+    toString = function() {
+      paste0(self$condition$toString(), " => ", self$getRHS_String())
     },
 
     #' @description
