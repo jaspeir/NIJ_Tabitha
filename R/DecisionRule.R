@@ -183,7 +183,8 @@ DecisionRule <- R6::R6Class(
            Support = metr$support,
            Certainty = metr$certainty,
            Coverage = round(metr$coverage, digits = 2),
-           Strength = round(metr$strength, digits = 2)
+           Strength = round(metr$strength, digits = 2),
+           Covers = paste(self$condition$complexCover(it), collapse = ", ")
       )
     },
 
