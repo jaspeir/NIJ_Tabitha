@@ -33,9 +33,9 @@ datasetPath = system.file("extdata", "JS_DRSA_Trial_Key_and_Data_Table.xlsx", pa
 decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
 
 
-decisionTable$Q2 = factor(decisionTable$Q2, levels = 20:23, labels = c("Unsuitable", "Low", "Moderate", "High"), ordered = T)
+#decisionTable$Q2 = factor(decisionTable$Q2, levels = 20:23, labels = c("Unsuitable", "Low", "Moderate", "High"), ordered = T)
 
-decisionTable$QF4 = factor(decisionTable$QF4, levels = 31:33, labels = c("Easy", "Moderate", "Challenging"), ordered = T)
+#decisionTable$QF4 = factor(decisionTable$QF4, levels = 31:33, labels = c("Easy", "Moderate", "Challenging"), ordered = T)
 
 decisionTable$Q3OD = factor(decisionTable$Q3OD, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
 decisionTable$Q3PSO = factor(decisionTable$Q3PSO, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
