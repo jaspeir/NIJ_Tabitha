@@ -37,6 +37,7 @@ decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
 
 #decisionTable$QF4 = factor(decisionTable$QF4, levels = 31:33, labels = c("Easy", "Moderate", "Challenging"), ordered = T)
 
+
 decisionTable$Q3OD = factor(decisionTable$Q3OD, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
 decisionTable$Q3PSO = factor(decisionTable$Q3PSO, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
 decisionTable$Q3PSD = factor(decisionTable$Q3PSD, levels = c(0, 1, 2, 5), labels = c("Not evaluated", "Insufficient Detail", "Value for exclusion", "Value for association"), ordered = T)
