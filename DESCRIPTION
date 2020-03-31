@@ -1,7 +1,7 @@
 Package: DRSA
 Type: Package
 Title: Dominance-based Rough Set Approach and the DOMLEM Algorithm
-Version: 0.1.0
+Version: 1.0.0
 Author: Endre Palatinus
 Maintainer: Endre Palatinus <palatinuse@gmail.com>
 Description: This package provides functions used in the DRSA, including:
