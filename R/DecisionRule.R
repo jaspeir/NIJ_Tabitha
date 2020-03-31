@@ -172,6 +172,22 @@ DecisionRule <- R6::R6Class(
     },
 
     #' @description
+    #' Method to convert this decision rule to a list, which can be merged into a dataframe for a list of decision rules.
+    #' @param it the information table to use
+    #' @return a named list with the LHS, RHS, and the metrics of this rule
+    toList = function(it) {
+
+      metr = self$ruleMetrics(it)
+      list(LHS = rule$condition$toString(),
+           RHS = rule$getRHS_String(),
+           Support = metr$support,
+           Certainty = metr$certainty,
+           Coverage = round(metr$coverage, digits = 2),
+           dStrength = round(metr$strength, digits = 2)
+      )
+    },
+
+    #' @description
     #' toString method.
     toString = function() {
       paste0(self$condition$toString(), " => ", self$getRHS_String())
