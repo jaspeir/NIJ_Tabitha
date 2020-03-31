@@ -49,6 +49,8 @@ ElementaryCondition <- R6::R6Class(
       self$attributeType = metaData$type
       self$alpha = metaData$alpha
       self$beta = metaData$beta
+
+      stopifnot(self$attributeType != 'dominance' || !is.na(isLowerBound))
     },
 
     #' @description
