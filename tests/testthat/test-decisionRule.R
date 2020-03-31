@@ -57,7 +57,6 @@ test_that("isWeaker - same dominance attribute, different values", {
 test_that("isWeaker - D>=<=-rules same non-dom LHS, weaker RHS", {
   e = ElementaryCondition$new(attribute = "Q1", value = 50, it = informationTable, isLowerBound = NA)
   c = ComplexCondition$new(e)
-  DecisionRule$debug('isWeaker')
   d1 = DecisionRule$new(condition = c, t = 4:5, type = "STAT3")
   d2 = DecisionRule$new(condition = c, t = 3:6, type = "STAT3")
   expect_false(d1$isWeaker(it = informationTable, rule = d2))
@@ -68,7 +67,6 @@ test_that("isWeaker - D>=<=-rules same dom-only LHS, weaker RHS", {
   e1 = ElementaryCondition$new(attribute = "Q3OD", value = 50, it = informationTable, isLowerBound = TRUE)
   e2 = ElementaryCondition$new(attribute = "Q3OD", value = 70, it = informationTable, isLowerBound = FALSE)
   c = ComplexCondition$new(c(e1, e2))
-  DecisionRule$debug('isWeaker')
   d1 = DecisionRule$new(condition = c, t = 4:5, type = "STAT3")
   d2 = DecisionRule$new(condition = c, t = 3:6, type = "STAT3")
   expect_false(d1$isWeaker(it = informationTable, rule = d2))
