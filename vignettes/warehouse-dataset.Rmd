@@ -68,7 +68,7 @@ Finally, we have everything we need to create an information table. We simply pr
 
 ```{r}
 warehouseIT = InformationTable$new(decisionTable, metaData)
-save(warehouseIT, file = "../data/warehouse-informationTable.RData")
+save(warehouseIT, file = "../data/warehouseIT.RData")
 ```
 
 # Calculating the rough sets

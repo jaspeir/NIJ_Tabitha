@@ -76,7 +76,7 @@ Finally, we have everything we need to create an information table. We simply pr
 
 ```{r}
 globalWarmingIT = InformationTable$new(decisionTable, metaData)
-save(globalWarmingIT, file = "../data/globalWarming-informationTable.RData")
+save(globalWarmingIT, file = "../data/globalWarmingIT.RData")
 ```
 
 # Calculating the rough sets

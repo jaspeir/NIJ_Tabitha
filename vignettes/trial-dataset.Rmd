@@ -86,7 +86,7 @@ metaData = tribble(
 Finally, we have everything we need to create an information table. We simply provide the decision table and the meta-data to the constructor of the `InformationTable` class.
 
 ```{r}
-informationTable = InformationTable$new(decisionTable, metaData)
-save(informationTable, file = "../data/trial-informationTable.RData")
+trialIT = InformationTable$new(decisionTable, metaData)
+save(informationTable, file = "../data/trialIT.RData")
 ```
 
