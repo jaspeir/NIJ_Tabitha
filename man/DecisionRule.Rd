@@ -30,6 +30,8 @@ For STAT2 type of rules the conditions are upper bounds, and assignment goes to 
 \item \href{#method-isWeaker}{\code{DecisionRule$isWeaker()}}
 \item \href{#method-ruleMetrics}{\code{DecisionRule$ruleMetrics()}}
 \item \href{#method-print}{\code{DecisionRule$print()}}
+\item \href{#method-getRHS_String}{\code{DecisionRule$getRHS_String()}}
+\item \href{#method-toList}{\code{DecisionRule$toList()}}
 \item \href{#method-toString}{\code{DecisionRule$toString()}}
 \item \href{#method-equals}{\code{DecisionRule$equals()}}
 \item \href{#method-clone}{\code{DecisionRule$clone()}}
@@ -124,6 +126,34 @@ print method.
 \if{html}{\out{<div class="r">}}\preformatted{DecisionRule$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getRHS_String"></a>}}
+\subsection{Method \code{getRHS_String()}}{
+toString method for the RHS of the rule.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$getRHS_String()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toList"></a>}}
+\subsection{Method \code{toList()}}{
+Method to convert this decision rule to a list, which can be merged into a dataframe for a list of decision rules.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DecisionRule$toList(it)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{it}}{the information table to use}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a named list with the LHS, RHS, and the metrics of this rule
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toString"></a>}}
