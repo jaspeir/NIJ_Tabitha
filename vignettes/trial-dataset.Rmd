@@ -87,6 +87,6 @@ Finally, we have everything we need to create an information table. We simply pr
 
 ```{r}
 trialIT = InformationTable$new(decisionTable, metaData)
-save(informationTable, file = "../data/trialIT.RData")
+save(trialIT, file = "../data/trialIT.RData")
 ```
 
