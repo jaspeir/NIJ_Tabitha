@@ -1,10 +1,6 @@
+library(testthat)
 library(DRSA)
 library(purrr)
-library(testthat)
-
-# Set-up code:
-load("data/trial-informationTable.RData")
-trialIT = InformationTable$new(informationTable$decisionTable, informationTable$metaData)
 
 P = names(trialIT$decisionTable)
 P = trialIT$partitionAttributes(P)

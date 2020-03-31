@@ -1,7 +1,6 @@
 library(testthat)
 library(DRSA)
 
-load("data/globalWarming-informationTable.RData")
 P = c("SolarEnergy", "VolcanicActivity", "ResidualCO2")
 
 test_that("decision rules obtained for all approximations", {

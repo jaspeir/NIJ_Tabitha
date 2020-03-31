@@ -3,9 +3,6 @@ library(testthat)
 
 test_that("rule metrics for the global warming dataset as in the Pawlak 2002 paper", {
 
-  #Set-up code:
-  load("data/globalWarming-informationTable.RData")
-
   # NOTE: for testing the rule metrics, we have to modify the dominance variables' types to indiscernibility.
   metaData = tribble(
     ~name, ~type, ~alpha, ~beta,
