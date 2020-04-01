@@ -42,8 +42,8 @@ test_that("should fail - meta-data missing alpha- and beta-parameters for simila
   metaData = tribble(
     ~name, ~type, ~alpha, ~beta,
     'object', 'object', NA, NA,
-    'decision', 'decision', NA, NA,
-    'attribute', 'similarity', NA, NA
+    'attribute', 'similarity', NA, NA,
+    'decision', 'decision', NA, NA
   )
 
   expect_error(InformationTable$new(decisionTable, metaData))
@@ -56,8 +56,8 @@ test_that("should fail - meta-data missing alpha-parameter for similarity attrib
   metaData = tribble(
     ~name, ~type, ~alpha, ~beta,
     'object', 'object', NA, NA,
-    'decision', 'decision', NA, NA,
-    'attribute', 'similarity', NA, 1.0
+    'attribute', 'similarity', NA, 1.0,
+    'decision', 'decision', NA, NA
   )
 
   expect_error(InformationTable$new(decisionTable, metaData))
@@ -70,8 +70,25 @@ test_that("should fail - meta-data missing beta-parameter for similarity attribu
   metaData = tribble(
     ~name, ~type, ~alpha, ~beta,
     'object', 'object', NA, NA,
-    'decision', 'decision', NA, NA,
-    'attribute', 'similarity', 0.0, NA
+    'attribute', 'similarity', 0.0, NA,
+    'decision', 'decision', NA, NA
+  )
+
+  expect_error(InformationTable$new(decisionTable, metaData))
+})
+
+test_that("should fail - similarity attribute is a factor", {
+  decisionTable = tribble(
+    ~object, ~attribute, ~decision,
+    'X1', 3, 'Pass'
+  )
+  decisionTable$attribute = factor(decisionTable$attribute)
+
+  metaData = tribble(
+    ~name, ~type, ~alpha, ~beta,
+    'object', 'object', NA, NA,
+    'attribute', 'similarity', 0.0, 1.0,
+    'decision', 'decision', NA, NA
   )
 
   expect_error(InformationTable$new(decisionTable, metaData))
@@ -84,8 +101,8 @@ test_that("should fail - meta-data missing object-column", {
   metaData = tribble(
     ~name, ~type, ~alpha, ~beta,
     'object', 'dominance', NA, NA,
-    'decision', 'decision', NA, NA,
-    'attribute', 'dominance', NA, NA
+    'attribute', 'dominance', NA, NA,
+    'decision', 'decision', NA, NA
   )
 
   expect_error(InformationTable$new(decisionTable, metaData))
@@ -98,8 +115,8 @@ test_that("should fail - meta-data more than one object-column", {
   metaData = tribble(
     ~name, ~type, ~alpha, ~beta,
     'object', 'object', NA, NA,
-    'decision', 'object', NA, NA,
-    'attribute', 'dominance', NA, NA
+    'attribute', 'dominance', NA, NA,
+    'decision', 'object', NA, NA
   )
 
   expect_error(InformationTable$new(decisionTable, metaData))

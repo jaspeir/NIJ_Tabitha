@@ -59,6 +59,7 @@ InformationTable <- R6::R6Class(
       stopifnot('data.frame' %in% class(metaData))
       stopifnot(setequal(c('name', 'type', 'alpha', 'beta'), names(metaData)))  # it should contain exactly the name, type, alpha and beta columns
       stopifnot(setequal(names(decisionTable), metaData$name))  # need meta-data for all columns of the decision table
+      stopifnot(all(names(decisionTable) == metaData$name))  # need meta-data and columns of the decision table to be in the same order
 
       metaData$type = factor(metaData$type,
                           levels = c('indiscernibility', 'similarity', 'dominance', 'misc', 'object', 'decision'),
@@ -83,6 +84,9 @@ InformationTable <- R6::R6Class(
         filter(is.na(alpha) | is.na(beta)) %>%
         nrow() == 0
       )  # all similarity variables need the alpha and beta parameters provided
+
+      isFactor = map_lgl(decisionTable, ~ 'factor' %in% class(.))
+      stopifnot(all(!isFactor[metaData$type == 'similarity']))  # similarity variables cannot be factors
 
       self$metaData = metaData
     },
