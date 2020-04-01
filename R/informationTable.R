@@ -33,7 +33,6 @@ InformationTable <- R6::R6Class(
       # ERROR-CHECKS on the decision table:
       stopifnot('data.frame' %in% class(decisionTable))
       stopifnot(ncol(decisionTable) >= 3)  # at least one attribute apart from object and decision
-      self$decisionTable = decisionTable
 
       # ERROR-CHECKS on the meta-data:
       if (all(is.na(metaData))) {
@@ -71,6 +70,10 @@ InformationTable <- R6::R6Class(
 
       decisionColumn = which(metaData$type == 'decision', arr.ind = TRUE)
       stopifnot(length(decisionColumn) == 1)  # we expect exactly one decision column
+      if (!'factor' %in% class(decisionTable[[decisionColumn]])) {
+        decisionTable[[decisionColumn]] = factor(decisionTable[[decisionColumn]], ordered = T)
+      }
+      self$decisionTable = decisionTable
 
       stopifnot(metaData %>%
         filter(type == 'similarity') %>%
