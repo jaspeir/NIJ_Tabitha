@@ -130,16 +130,19 @@ test_that("default metadata created - trial dataset", {
   decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
 
   it = InformationTable$new(decisionTable = decisionTable)
-  it$metaData$type[it$metaData$name == 'Q3OTH_RESP'] = 'misc'
-  it$objects
-  it$decisionTable$QF1
-  P = it$metaData$name[c(2:10, 12:17)]
+
+
+  P = it$metaData$name[!it$metaData$type %in% c('object', 'decision', 'misc')]
   it$classUnions()
   it$roughSets(P)
 
   domlem = DOMLEM$new(it, P)
   #domlem$main()
   #domlem
+
+  #rules = c(domlem$rules$STAT1, domlem$rules$STAT2, domlem$rules$STAT3)
+  #df = map_dfr(rules, function(d) d$toList(it))
+
 
   expect_true(TRUE)
 })
