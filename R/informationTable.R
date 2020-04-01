@@ -49,7 +49,8 @@ InformationTable <- R6::R6Class(
           name = names(decisionTable),
           type = c('object', rep('dominance', attributeCount - 2), 'decision'),
           alpha = rep(NA_real_, attributeCount),
-          beta = rep(NA_real_, attributeCount)
+          beta = rep(NA_real_, attributeCount),
+          stringsAsFactors = FALSE
         )
       }
 
