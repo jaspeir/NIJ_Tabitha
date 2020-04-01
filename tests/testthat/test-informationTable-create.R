@@ -105,19 +105,41 @@ test_that("should fail - meta-data more than one object-column", {
   expect_error(InformationTable$new(decisionTable, metaData))
 })
 
-test_that("default metadata created", {
+test_that("default metadata created - dummy dataset", {
   decisionTable = tribble(
     ~object, ~a1, ~decision,
     'X1', 3, 'Pass',
     'X2', 4, 'Pass',
     'X3', 5, 'Fail'
   )
+
   it = InformationTable$new(decisionTable = decisionTable)
+  it$decisionTable$decision
   it$metaData
   it$objects
   P = c('a1')
   domlem = DOMLEM$new(it, P)
+  domlem$main()
   domlem$rules
+
+  expect_true(TRUE)
+})
+
+test_that("default metadata created - trial dataset", {
+  datasetPath = system.file("extdata", "JS_DRSA_Trial_Key_and_Data_Table.xlsx", package = "DRSA", mustWork = TRUE)
+  decisionTable = readxl::read_excel(path = datasetPath, sheet = "Input_Data")
+
+  it = InformationTable$new(decisionTable = decisionTable)
+  it$metaData$type[it$metaData$name == 'Q3OTH_RESP'] = 'misc'
+  it$objects
+  it$decisionTable$QF1
+  P = it$metaData$name[c(2:10, 12:17)]
+  it$classUnions()
+  it$roughSets(P)
+
+  domlem = DOMLEM$new(it, P)
+  #domlem$main()
+  #domlem
 
   expect_true(TRUE)
 })

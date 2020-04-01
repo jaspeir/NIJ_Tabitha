@@ -51,6 +51,9 @@ InformationTable <- R6::R6Class(
           beta = rep(NA_real_, attributeCount),
           stringsAsFactors = FALSE
         )
+
+        # Set "misc" type to any column with NAs:
+        metaData$type[map_lgl(decisionTable, ~ any(is.na(.)))] = 'misc'
       }
 
       stopifnot('data.frame' %in% class(metaData))

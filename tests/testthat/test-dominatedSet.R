@@ -7,7 +7,7 @@ test_that("smallest element dominates no others", {
     "X4", 1, 1,
     "X5", 2, 2
   )
-  examples$decision = NA
+  examples$decision = 1:nrow(examples)
 
   it = InformationTable$new(examples)
   expect_equal(it$dominatedSet("X1", c("a", "b")), c("X1"))
@@ -22,7 +22,7 @@ test_that("largest element dominates all others", {
     "X4", 1, 1,
     "X5", 2, 2
   )
-  examples$decision = NA
+  examples$decision = 1:nrow(examples)
 
   it = InformationTable$new(examples)
   expect_equal(it$dominatedSet("X5", c("a", "b")), c("X1", "X2", "X3", "X4", "X5"))
@@ -37,7 +37,7 @@ test_that("elements of diamond relation dominate same elements", {
     "X4", 1, 1,
     "X5", 2, 2
   )
-  examples$decision = NA
+  examples$decision = 1:nrow(examples)
 
   it = InformationTable$new(examples)
   expect_equal(it$dominatedSet("X2", c("a", "b")), c("X1", "X2"))
@@ -50,7 +50,7 @@ test_that("should fail for missing object", {
     "X1", 1,
     "X2", 2
   )
-  examples$decision = NA
+  examples$decision = 1:nrow(examples)
 
   it = InformationTable$new(examples)
   expect_error(it$dominatedSet("X0", c("a")))
