@@ -104,3 +104,20 @@ test_that("should fail - meta-data more than one object-column", {
 
   expect_error(InformationTable$new(decisionTable, metaData))
 })
+
+test_that("default metadata created", {
+  decisionTable = tribble(
+    ~object, ~a1, ~decision,
+    'X1', 3, 'Pass',
+    'X2', 4, 'Pass',
+    'X3', 5, 'Fail'
+  )
+  it = InformationTable$new(decisionTable = decisionTable)
+  it$metaData
+  it$objects
+  P = c('a1')
+  domlem = DOMLEM$new(it, P)
+  domlem$rules
+
+  expect_true(TRUE)
+})
