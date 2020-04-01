@@ -405,7 +405,7 @@ InformationTable <- R6::R6Class(
 
       for (class in 1:nrow(downwardClassUnion)) {
         result = dominated_U[downwardClassUnion[class,], ]
-        approximations[class, ] = apply(result, MARGIN = 2, FUN = any)
+        approximations[class, ] = if(!is.null(dim(result))) apply(result, MARGIN = 2, FUN = any) else result
       }
 
       return(approximations)
