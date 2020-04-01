@@ -181,7 +181,7 @@ DecisionRule <- R6::R6Class(
       list(LHS = self$condition$toString(),
            RHS = self$getRHS_String(),
            Support = metr$support,
-           Certainty = metr$certainty,
+           Certainty = round(metr$certainty, digits = 2),
            Coverage = round(metr$coverage, digits = 2),
            Strength = round(metr$strength, digits = 2),
            Covers = paste(self$condition$complexCover(it), collapse = ", ")
